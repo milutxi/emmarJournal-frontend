@@ -1,0 +1,12 @@
+@import './styles/variables';
+@import './styles/mixins';
+
+
+#root {
+  font-family: $font-montserrat;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  color: $color-text;
+}
