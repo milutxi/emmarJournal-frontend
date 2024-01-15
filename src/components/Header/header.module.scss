@@ -2,11 +2,35 @@
 
 .header {
     @include flexbox;
+    margin-bottom: $indent__l;
 
     &__logo{
         width: 130px;
         @include responsive-mobile{
-            
+    
         }
+    }
+
+    &__navigation {
+        @include flexbox;
+        align-items: center;
+    }
+
+    &__enlace {
+        text-decoration: none;
+        color: red;
+    }
+
+    &__button {
+        cursor: pointer;
+        padding: $indent__base;
+        border: none;
+        font-family: $font-montserrat;
+        background-color: transparent;
+    }
+
+    &__button:hover {
+        border: 2px solid $color-goldenrod;
+        padding: $indent__base;
     }
 }
