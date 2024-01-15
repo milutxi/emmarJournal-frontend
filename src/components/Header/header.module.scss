@@ -1,0 +1,12 @@
+@import '../../App.scss';
+
+.header {
+    @include flexbox;
+
+    &__logo{
+        width: 130px;
+        @include responsive-mobile{
+            
+        }
+    }
+}
