@@ -11,7 +11,7 @@ const Header = () => {
                 <Link to="/journal" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>JOURNAL</button>
                 </Link>
-                <Link to="/client" className={styles["header__enlace"]}>
+                <Link to="/clients" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>KUNDER</button>
                 </Link>
                 <Link to="/treatments" className={styles["header__enlace"]}>
