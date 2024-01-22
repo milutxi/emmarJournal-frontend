@@ -1,4 +1,5 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
+import { Client } from "../types";
 
 export const loader = async (args: LoaderFunctionArgs) => {
     const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', {
@@ -10,16 +11,6 @@ export const loader = async (args: LoaderFunctionArgs) => {
     return{
         clients: await response.json()
     }
-
-}
-
-interface Client {
-    _id: string;
-    name: string;
-    lastName: string;
-    telephone: number;
-    email: string;
-    dateOfBirth: Date;
 }
 
 const Clients = () => {
