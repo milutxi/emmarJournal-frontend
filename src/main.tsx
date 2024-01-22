@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Index from './routes/index.tsx'
-import CreateClient, { action as createClientAction } from './routes/CreateClient/createClient.tsx'
+import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
 //import Clients from './routes/Clients/clients.tsx'
 
 const router = createBrowserRouter([
