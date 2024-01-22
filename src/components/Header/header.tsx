@@ -18,7 +18,7 @@ const Header = () => {
                     <button className={styles["header__button"]}>BEHANDLINGAR</button>
                 </Link>
                 <Link to="machines" className={styles["header__enlace"]}>
-                    <button className={styles["header__button"]}>MACHINES</button>
+                    <button className={styles["header__button"]}>MASKINER</button>
                 </Link>             
             </div>
         </div>

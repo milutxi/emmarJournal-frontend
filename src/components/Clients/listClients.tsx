@@ -2,10 +2,11 @@
 //import CreateClient from "../CreateClient/createClient";
 //import CreateClient, { action as createClientAction } from './routes/CreateClient/createClient.tsx'
 
-
 //state conditional 
 
-const ClientsList = () => {
+
+const ListClients = () => {
+
     return(
         <div>
     {/* // on page load show list
@@ -38,6 +39,6 @@ const ClientsList = () => {
     )
 }
 
-export default ClientsList;
+export default ListClients;
 
 

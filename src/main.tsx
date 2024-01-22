@@ -4,7 +4,11 @@ import App from './App.tsx'
 import './index.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Index from './routes/index.tsx'
-import ClientsList from './components/Clients/clients.tsx'
+//import ClientsList from './components/Clients/listClients.tsx'
+import Journal from './routes/journal.tsx'
+import Treatments from './routes/treatments.tsx'
+import Machines from './routes/machines.tsx'
+import Clients, {loader as clientsLoader} from './routes/clients.tsx'
 
 
 const router = createBrowserRouter([
@@ -18,19 +22,21 @@ const router = createBrowserRouter([
       },
       {
         path: "journal",
-        element: <h1>JOURNAL</h1>
+        element: <Journal />
       },
       {
         path: "clients",
-        element: <ClientsList />
+        loader: clientsLoader,
+        element: <Clients />
+        //element: <ClientsList />,
       },
       {
         path: "treatments",
-        element: <h1>BEHANDLINGAR</h1>
+        element: <Treatments />
       },
       {
         path: "machines",
-        element: <h1>MACHINES</h1>
+        element: <Machines />
       }
     ]
   }
