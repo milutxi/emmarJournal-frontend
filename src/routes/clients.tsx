@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Client } from "../types";
+import ListClients from "../components/Clients/listClients";
 
 export const loader = async (args: LoaderFunctionArgs) => {
     const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', {
@@ -18,9 +19,9 @@ const Clients = () => {
 
     return(
 
-        <ul>
-            {data?.clients.map(client => <li>{client.name}</li>)}
-        </ul>
+        <div>
+            {data?.clients.map(client => <ListClients client={client} />)}
+        </div>
 
     )
 }
