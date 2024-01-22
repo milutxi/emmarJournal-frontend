@@ -20,15 +20,15 @@ const Clients = () => {
     return(
 
         <div>
-            <h1>Clients</h1>
+            <h1>KUNDER</h1>
             <section>
                 <div>
                     {/* // on page load show list, add button onclick to show form */}
                     <button>+</button> 
                 </div>
-                <div>
+                {/* <div>
                     looking field & icon lens
-                </div>
+                </div> */}
             </section>
             <section>
                 {data?.clients.map(client => <ListClients client={client} />)}
