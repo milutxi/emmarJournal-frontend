@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Index from './routes/index.tsx'
+import Clients from './components/Clients/clients.tsx'
 
 
 const router = createBrowserRouter([
@@ -20,8 +21,8 @@ const router = createBrowserRouter([
         element: <h1>JOURNAL</h1>
       },
       {
-        path: "client",
-        element: <h1>KUNDER</h1>
+        path: "clients",
+        element: <Clients />
       },
       {
         path: "treatments",
