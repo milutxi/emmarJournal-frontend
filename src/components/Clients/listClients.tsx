@@ -2,37 +2,27 @@
 //import CreateClient from "../CreateClient/createClient";
 //import CreateClient, { action as createClientAction } from './routes/CreateClient/createClient.tsx'
 
+import { Client } from "../../types";
+
 //state conditional 
 
 
-const ListClients = () => {
-
+const ListClients = ({ client }: {client: Client}) => {
     return(
         <div>
-    {/* // on page load show list
-    // add button onclick show form */}
 
-        <h1>Clients List</h1>
-        <p>hello world</p>
-
-        <section>
-                <div>
-                    <button>+</button>
-                </div>
-                <div>
-                    looking field & icon lens
-                </div>
-            </section>
             <section>
-                <div>
-                    list of clients
-                </div>
-                <div>
-                    delete icon
-                </div>
-                <div>
-                    edit icon
-                </div>
+                <div>{client.name} {client.lastName}</div>
+                <div>{client.telephone}</div>
+                <div>{client.email}</div>
+            </section>
+           
+            <section>
+                delete icon
+            </section>
+        
+            <section>
+                edit icon
             </section>
 
         </div>
