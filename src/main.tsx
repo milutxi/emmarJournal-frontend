@@ -11,6 +11,10 @@ import Machines from './routes/machines.tsx'
 import Clients, {loader as clientsLoader} from './routes/clients.tsx'
 
 
+//import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
+//import Clients from './routes/Clients/clients.tsx'
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +33,10 @@ const router = createBrowserRouter([
         loader: clientsLoader,
         element: <Clients />
         //element: <ClientsList />,
+
+        //action: createClientAction,
+       // element: <CreateClient />,
+
       },
       {
         path: "treatments",
@@ -49,4 +57,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>,
 )
 
-//JOURNAL, KUNDER, BEHANDLINGAR, MACHINES
