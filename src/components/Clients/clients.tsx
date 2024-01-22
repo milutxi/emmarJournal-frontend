@@ -5,13 +5,13 @@
 
 //state conditional 
 
-const Clients = () => {
+const ClientsList = () => {
     return(
         <div>
     {/* // on page load show list
     // add button onclick show form */}
 
-        <h1>Clients</h1>
+        <h1>Clients List</h1>
         <p>hello world</p>
 
         <section>
@@ -38,6 +38,6 @@ const Clients = () => {
     )
 }
 
-export default Clients;
+export default ClientsList;
 
 
