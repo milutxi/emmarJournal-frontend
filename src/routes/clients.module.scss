@@ -1,0 +1,29 @@
+@import '../App.scss';
+
+.clientStyle {
+    margin: $indent__l 0px;
+
+    &__title{
+        padding: $indent__l;
+    }
+
+    &__add{
+        padding: $indent__m $indent__xl;
+        margin: 0px $indent__m;
+        text-align: left;
+    }
+
+    &__button{
+        border: 2px solid $color-goldenrod;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: $font-size__l;
+        padding: $indent__base $indent__m;
+    }
+
+    &__button:hover{
+        background-color: $color-goldenrod;
+        border: 2px solid $color-body-display;
+        
+    }
+}

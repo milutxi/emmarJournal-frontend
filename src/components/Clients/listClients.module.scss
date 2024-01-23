@@ -1,0 +1,89 @@
+@import '../../App.scss';
+
+.list {
+    @include listbox;
+    margin: $indent__m;
+    
+    &__data{
+        @include listbox;
+
+        align-items: center;
+        border: 2px solid;
+        cursor: pointer;
+        margin: $indent__s;
+        padding: $indent__s;
+        width: 90%;
+        @include responsive-mobile{
+            @include listbox-mobile;
+            justify-content: center;
+        }
+    }
+
+    &__dataName{
+        padding-left: $indent__base;
+        text-align: left;
+        width: 30%;
+        @include responsive-mobile{
+            text-align: center;
+            padding-left: 0px;
+            width: 100%;
+        }
+    }
+
+    &__dataTelephone{
+        text-align: left;
+        width: 30%;
+        @include responsive-mobile{
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+    &__dataEmail{
+        text-align: left;
+        width: 30%;
+        @include responsive-mobile{
+            text-align: center;
+            width: 100%;
+        }
+    }
+    &__icons{
+        @include listbox;
+        @include responsive-mobile{
+            flex-direction: column;
+        }
+    }
+
+    &__delete{
+        align-items: center;
+        border: 2px solid;
+        cursor: pointer;
+        font-size: $font-size__m;
+        margin: $indent__s;
+        padding: $indent__s;
+        @include responsive-mobile{
+          padding: 3px;
+        }
+    }
+
+    &__delete:hover{
+        background-color: $color-goldenrod;
+        border: 2px solid $color-body-display;
+    }
+
+    &__edit{
+        border: 2px solid;
+        cursor: pointer;
+        font-size: $font-size__m;
+        margin: $indent__s;
+        padding: $indent__s;
+        @include responsive-mobile{
+            padding: 3px;
+          }
+    }
+
+    &__edit:hover{
+        background-color: $color-goldenrod;
+        border: 2px solid $color-body-display;
+    }
+}

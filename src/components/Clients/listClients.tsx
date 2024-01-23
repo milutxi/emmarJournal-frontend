@@ -3,27 +3,31 @@
 //import CreateClient, { action as createClientAction } from './routes/CreateClient/createClient.tsx'
 
 import { Client } from "../../types";
-
+import styles from './listClients.module.scss'
+import { RiDeleteBinLine } from "react-icons/ri";
+import { GrEdit } from "react-icons/gr";
 //state conditional 
 
 
 const ListClients = ({ client }: {client: Client}) => {
     return(
-        <div>
+        <div className={styles.list}>
 
-            <section>
-                <div>{client.name} {client.lastName}</div>
-                <div>{client.telephone}</div>
-                <div>{client.email}</div>
+            <section className={styles["list__data"]}>
+                <div className={styles["list__dataName"]}>{client.name} {client.lastName}</div>
+                <div className={styles["list__dataTelephone"]}>{client.telephone}</div>
+                <div className={styles["list__dataEmail"]}>{client.email}</div>
             </section>
-           
-            <section>
-                delete icon
+           <div className={styles["list__icons"]}>
+
+            <section className={styles["list__delete"]}>
+                <RiDeleteBinLine />
             </section>
         
-            <section>
-                edit icon
+            <section className={styles["list__edit"]}>
+                <GrEdit />
             </section>
+           </div>
 
         </div>
     )

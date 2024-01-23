@@ -10,3 +10,12 @@
         @content 
     }
 }
+
+@mixin listbox {
+    display: flex;
+    flex-direction: row;
+}
+
+@mixin listbox-mobile {
+    flex-direction: column;
+}
