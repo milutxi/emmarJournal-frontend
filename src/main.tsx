@@ -4,16 +4,11 @@ import App from './App.tsx'
 import './index.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Index from './routes/index.tsx'
-//import ClientsList from './components/Clients/listClients.tsx'
 import Journal from './routes/journal.tsx'
 import Treatments from './routes/treatments.tsx'
 import Machines from './routes/machines.tsx'
 import Clients, {loader as clientsLoader} from './routes/clients.tsx'
-
-
-//import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
-//import Clients from './routes/Clients/clients.tsx'
-
+import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
 
 const router = createBrowserRouter([
   {
@@ -32,11 +27,6 @@ const router = createBrowserRouter([
         path: "clients",
         loader: clientsLoader,
         element: <Clients />
-        //element: <ClientsList />,
-
-        //action: createClientAction,
-       // element: <CreateClient />,
-
       },
       {
         path: "treatments",
@@ -45,6 +35,11 @@ const router = createBrowserRouter([
       {
         path: "machines",
         element: <Machines />
+      },
+      {
+        path: "addClient",
+        action: createClientAction,
+        element: <CreateClient />
       }
     ]
   }

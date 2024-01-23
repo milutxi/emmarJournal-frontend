@@ -25,7 +25,7 @@ export const action = async (args: ActionFunctionArgs) => {
         return { message }
     }
 
-    return redirect('/');
+    return redirect('/clients');
 }
 
 const CreateClient = () => {
