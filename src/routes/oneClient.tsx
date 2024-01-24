@@ -16,6 +16,10 @@ export const loader = async (args: LoaderFunctionArgs) => {
     
 }
 
+const formatDate = (date: Date | string) => {
+    const options = {day: 'numeric', month:'long', year: 'numeric'};
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+};
 
 const OneClient = () => {
     const client = useLoaderData() as Client
@@ -27,7 +31,7 @@ const OneClient = () => {
             <div>
                 <p>Telefone: {client.telephone}</p>
                 <p>e-mail: {client.email}</p>
-                <p>Födelsedag: {client.dateOfBirth}</p>
+                <p>Födelsedag: {formatDate(client.dateOfBirth)}</p>
             </div>
         </div>
     )
