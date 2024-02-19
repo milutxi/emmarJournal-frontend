@@ -6,9 +6,22 @@ import { Client } from "../../types";
 import styles from './listClients.module.scss'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
-import { Link } from "react-router-dom";
+import { Link, LoaderFunctionArgs } from "react-router-dom";
 
 const ListClients = ({ client }: {client: Client}) => {
+
+    const handleClickDelete = async(args:LoaderFunctionArgs) => {
+        const { params } = args;
+        const { id } = params;
+
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients/' + id, {
+            method: 'DELETE'
+        })
+     
+        await response.json()
+    }git 
+
+
     return(
         <div className={styles.list}>
             <Link to={`/clients/${client._id}`}>
