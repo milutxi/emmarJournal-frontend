@@ -1,9 +1,10 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router";
+import { useEffect, useState } from "react";
+import { LoaderFunctionArgs } from "react-router";
 import { Client } from "../types";
 import ListClients from "../components/Clients/listClients";
 import styles from './clients.module.scss'
 import CreateClient from "../components/CreateClient/createClient";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 export const loader = async (args: LoaderFunctionArgs) => {
     const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', {
@@ -18,11 +19,39 @@ export const loader = async (args: LoaderFunctionArgs) => {
 }
 
 const Clients = () => {
-    const data = useLoaderData() as { clients: Client[] } | undefined
+    const [clients, setClients] = useState<Client[]>([]);
+
+    //rerender to get the updated list of clients
+    useEffect(() => {
+        const fetchData = async ()=> {
+
+            const data = await loader ({} as LoaderFunctionArgs);
+            setClients(data.clients);
+        };
+        fetchData();
+    }, []);
+
 
     const addClientClick = () => {
         <CreateClient />
     }
+
+    const deleteClient = async (id: string) => {
+        console.log("hola")
+
+        try {
+            await fetch(import.meta.env.VITE_BACKEND_URL + '/clients/' + id, {
+                method: 'DELETE'
+            });
+
+            // Filter out the deleted client from the state
+            setClients(clients.filter(client => client._id !== id));
+
+        } catch (error) {
+            console.error("Error deleting client ", error);
+        }
+    }
+
 
     return(
         <div className={styles.clientStyle}>
@@ -38,12 +67,13 @@ const Clients = () => {
                         </button> 
                     </Link>
                 </div>
-                {/* <div>
-                    looking field & icon lens
-                </div> */}
-            
             <div>
-                {data?.clients.map(client => <ListClients client={client} />)}
+                {clients.map(client => 
+                    <ListClients 
+                        key={client._id}
+                        client={client}
+                        deleteClient={deleteClient} />
+                )}
             </div>
         </div>
     )

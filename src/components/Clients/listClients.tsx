@@ -1,29 +1,18 @@
-
-//import CreateClient from "../CreateClient/createClient";
-//import CreateClient, { action as createClientAction } from './routes/CreateClient/createClient.tsx'
-
 import { Client } from "../../types";
 import styles from './listClients.module.scss'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
-import { Link, LoaderFunctionArgs } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ListClients = ({ client }: {client: Client}) => {
+interface Props {
+    client: Client;
+    deleteClient : (id: string) => void;
+}
 
-    const handleClickDelete = async(args:LoaderFunctionArgs) => {
-        const { params } = args;
-        const { id } = params;
-
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients/' + id, {
-            method: 'DELETE'
-        })
-     
-        await response.json()
-    }git 
-
+const ListClients = ({ client, deleteClient }: Props) => {
 
     return(
-        <div className={styles.list}>
+        <div className={styles.list} key={client._id}>
             <Link to={`/clients/${client._id}`}>
                 <section className={styles["list__data"]}>
                     <div className={styles["list__dataName"]}>{client.name} {client.lastName}</div>
@@ -34,7 +23,7 @@ const ListClients = ({ client }: {client: Client}) => {
            <div className={styles["list__icons"]}>
 
             <section className={styles["list__delete"]}>
-                <RiDeleteBinLine />
+                <RiDeleteBinLine onClick={()=> deleteClient(client._id)} />
             </section>
         
             <section className={styles["list__edit"]}>
@@ -47,5 +36,3 @@ const ListClients = ({ client }: {client: Client}) => {
 }
 
 export default ListClients;
-
-
