@@ -1,22 +1,9 @@
 import { useEffect, useState } from "react";
-import { LoaderFunctionArgs } from "react-router";
 import { Client } from "../types";
 import ListClients from "../components/Clients/listClients";
 import styles from './clients.module.scss'
 import CreateClient from "../components/CreateClient/createClient";
 import { Link, } from "react-router-dom";
-
-export const loader = async (args: LoaderFunctionArgs) => {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', {
-        headers: {
-            'Accepts': 'application/json'
-        }
-    })
-
-    return{
-        clients: await response.json()
-    }
-}
 
 const Clients = () => {
     const [clients, setClients] = useState<Client[]>([]);
@@ -24,9 +11,20 @@ const Clients = () => {
     //rerender to get the updated list of clients
     useEffect(() => {
         const fetchData = async ()=> {
+            try {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', {
+                    headers: {
+                        'Accepts': 'application/json'
+                    }
+                });
 
-            const data = await loader ({} as LoaderFunctionArgs);
-            setClients(data.clients);
+            const data = await response.json(); 
+
+            setClients(data);
+
+            } catch (error) {
+            console.error("Error fetching clients: ", error);
+            }
         };
         fetchData();
     }, []);

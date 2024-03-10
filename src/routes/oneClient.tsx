@@ -16,9 +16,22 @@ export const loader = async (args: LoaderFunctionArgs) => {
     
 }
 
+
 const formatDate = (date: Date | string) => {
-    const options = {day: 'numeric', month:'long', year: 'numeric'};
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+    // If the input is already a Date object, just format it
+    if (date instanceof Date) {
+        return new Intl.DateTimeFormat('en-US').format(date);
+    } else {
+        // If it's a string, parse it into a Date object first
+        const parsedDate = new Date(date);
+        // Check if parsing was successful
+        if (!isNaN(parsedDate.getTime())) {
+            return new Intl.DateTimeFormat('en-US').format(parsedDate);
+        } else {
+            // Return the original string if parsing failed
+            return date;
+        }
+    }
 };
 
 const OneClient = () => {
