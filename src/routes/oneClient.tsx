@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Client } from "../types";
+import styles from './oneClient.module.scss'
 
 export const loader = async (args: LoaderFunctionArgs) => {
     const { params } = args;
@@ -38,15 +39,31 @@ const OneClient = () => {
     const client = useLoaderData() as Client
     
     return(
-    
-        <div>
-            <h1>{client.name} {client.lastName}</h1>
-            <div>
-                <p>Telefone: {client.telephone}</p>
-                <p>e-mail: {client.email}</p>
-                <p>Födelsedag: {formatDate(client.dateOfBirth)}</p>
+    <div className={styles.oneClientStyle}>
+        <div className={styles["oneClientStyle__left"]}>
+            <div className= {styles["oneClientStyle__card"]}>
+                <div>   
+                    <div className={styles["oneClientStyle__frame"]}>
+                    <div className={styles["oneClientStyle__frame2"]}>
+                    <div className= {styles["oneClientStyle__gubbe"]}>
+                        {/* client image or icon */}
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                <h2 className={styles["oneClientStyle__name"]}>{client.name} {client.lastName}</h2>
+                <div>
+                    <p>Telefone: {client.telephone}</p>
+                    <p>e-mail: {client.email}</p>
+                    <p>Födelsedag: {formatDate(client.dateOfBirth)}</p>
+                </div>
             </div>
         </div>
+        <div className={styles["oneClientStyle__right"]}>
+            <h2>Medical History</h2>
+        </div>
+
+    </div>
     )
 }
 
