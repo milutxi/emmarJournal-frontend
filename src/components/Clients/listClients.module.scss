@@ -4,7 +4,9 @@
     @include listbox;
     margin: $indent__m;
     justify-content: space-between;
-   
+    @include responsive-mobile{
+        align-items: center
+    }
     
     &__data{
         @include listbox;
@@ -22,8 +24,10 @@
         @include responsive-mobile{
             @include listbox-mobile;
             justify-content: center;
+            width: 92%;
         }
     }
+
     &__data:hover{
         border: 4px solid $color-goldenrod;
     }
