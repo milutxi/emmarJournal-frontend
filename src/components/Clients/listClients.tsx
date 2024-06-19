@@ -1,7 +1,7 @@
 import { Client } from "../../types";
 import styles from './listClients.module.scss'
 import { RiDeleteBinLine } from "react-icons/ri";
-import { GrEdit } from "react-icons/gr";
+//import { GrEdit } from "react-icons/gr";
 import { Link } from "react-router-dom";
 
 interface Props {

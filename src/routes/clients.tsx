@@ -35,19 +35,24 @@ const Clients = () => {
     }
 
     const deleteClient = async (id: string) => {
-        console.log("hola")
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this client?"
+          );
 
-        try {
-            await fetch(import.meta.env.VITE_BACKEND_URL + '/clients/' + id, {
-                method: 'DELETE'
-            });
+          if(confirmed){
 
-            // Filter out the deleted client from the state
-            setClients(clients.filter(client => client._id !== id));
-
-        } catch (error) {
-            console.error("Error deleting client ", error);
-        }
+              try {
+                  await fetch(import.meta.env.VITE_BACKEND_URL + '/clients/' + id, {
+                      method: 'DELETE'
+                    });
+                    
+                    // Filter out the deleted client from the state
+                    setClients(clients.filter(client => client._id !== id));
+                    
+                } catch (error) {
+                    console.error("Error deleting client ", error);
+                }
+            }
     }
 
 
