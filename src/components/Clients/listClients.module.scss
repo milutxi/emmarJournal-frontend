@@ -3,6 +3,8 @@
 .list {
     @include listbox;
     margin: $indent__m;
+    justify-content: space-between;
+   
     
     &__data{
         @include listbox;
@@ -10,14 +12,22 @@
         align-items: center;
         border: 2px solid;
         cursor: pointer;
-        margin: $indent__s;
-        padding: $indent__s;
-        width: 90%;
+        // margin: $indent__s;
+        // padding: $indent__s;
+
+        width: 95%;
+        text-decoration: none;
+        color: $color-text;
+      
         @include responsive-mobile{
             @include listbox-mobile;
             justify-content: center;
         }
     }
+    &__data:hover{
+        border: 4px solid $color-goldenrod;
+    }
+
 
     &__dataName{
         padding-left: $indent__base;
@@ -59,8 +69,8 @@
         border: 2px solid;
         cursor: pointer;
         font-size: $font-size__m;
-        margin: $indent__s;
-        padding: $indent__s;
+        // margin: $indent__s;
+        //padding: $indent__s;
         @include responsive-mobile{
           padding: 3px;
         }
@@ -75,8 +85,8 @@
         border: 2px solid;
         cursor: pointer;
         font-size: $font-size__m;
-        margin: $indent__s;
-        padding: $indent__s;
+        // margin: $indent__s;
+        // padding: $indent__s;
         @include responsive-mobile{
             padding: 3px;
           }

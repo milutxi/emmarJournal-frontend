@@ -13,22 +13,22 @@ const ListClients = ({ client, deleteClient }: Props) => {
 
     return(
         <div className={styles.list} key={client._id}>
-            <Link to={`/clients/${client._id}`}>
-                <section className={styles["list__data"]}>
+            <Link to={`/clients/${client._id}`} className={styles["list__data"]} >
+              
                     <div className={styles["list__dataName"]}>{client.name} {client.lastName}</div>
                     <div className={styles["list__dataTelephone"]}>{client.telephone}</div>
                     <div className={styles["list__dataEmail"]}>{client.email}</div>
-                </section>
+                
             </Link>
            <div className={styles["list__icons"]}>
 
             <section className={styles["list__delete"]}>
                 <RiDeleteBinLine onClick={()=> deleteClient(client._id)} />
             </section>
-        
+{/*         
             <section className={styles["list__edit"]}>
                 <GrEdit />
-            </section>
+            </section> */}
            </div>
 
         </div>
