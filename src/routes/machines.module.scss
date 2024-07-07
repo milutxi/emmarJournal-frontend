@@ -1,0 +1,9 @@
+@import '../App.scss';
+
+.machinesStyle {
+    margin: $indent__l 0px;
+    
+    &__title{
+        padding: $indent__l;
+    }
+}
