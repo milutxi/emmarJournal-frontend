@@ -15,12 +15,12 @@ import CreateMachine, { action as createMachineAction } from './components/Creat
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Index />,
+  },
+  {
+    path: "/app",
     element: <App />,
     children: [
-      {
-        index: true,
-        element: <Index />
-      },
       {
         path: "journal",
         element: <Journal />
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <Clients />
       },
       {
-        path: "/clients/:id",
+        path: "clients/:id",
         loader: oneClientLoader,
         element: <OneClient />
       },

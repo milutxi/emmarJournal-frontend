@@ -41,7 +41,7 @@ export const action = async (args: ActionFunctionArgs) => {
         return { message }
     }
 
-    return redirect('/machines')
+    return redirect('/app/machines')
 }
 
 const CreateMachine = () => {

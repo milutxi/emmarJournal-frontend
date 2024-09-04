@@ -12,7 +12,7 @@ const Machines = () => {
             <h1 className={styles["machinesStyle__title"]}>MASKINER</h1>
             <div className={styles["machinesStyle__add"]} >
                     {/* // on page load show list, add button onclick to show form */}
-                    <Link to ="/addMachine">
+                    <Link to ="/app/addMachine">
                         <button
                             className={styles["machinesStyle__button"]}
                             onClick={addMachineClick}>

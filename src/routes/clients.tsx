@@ -62,7 +62,7 @@ const Clients = () => {
             
                 <div className={styles["clientStyle__add"]} >
                     {/* // on page load show list, add button onclick to show form */}
-                    <Link to ="/addClient">
+                    <Link to ="/app/addClient">
                         <button
                             className={styles["clientStyle__button"]}
                             onClick={addClientClick}>

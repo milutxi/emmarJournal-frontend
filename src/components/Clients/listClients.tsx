@@ -13,7 +13,7 @@ const ListClients = ({ client, deleteClient }: Props) => {
 
     return(
         <div className={styles.list} key={client._id}>
-            <Link to={`/clients/${client._id}`} className={styles["list__data"]} >
+            <Link to={`/app/clients/${client._id}`} className={styles["list__data"]} >
               
                     <div className={styles["list__dataName"]}>{client.name} {client.lastName}</div>
                     <div className={styles["list__dataTelephone"]}>{client.telephone}</div>

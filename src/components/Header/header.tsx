@@ -5,19 +5,21 @@ const Header = () => {
     return(
         <div className={styles.header}>
             <div>
+                <Link to="/">
                 <img className={styles["header__logo"]} src="https://assets-global.website-files.com/6394edc1cd797257200998bc/63963420883c851c66e77a08_emmar%20beauty%20logo.svg" alt="emmar logo"></img>
+                </Link>
             </div>
             <div className={styles["header__navigation"]}>
-                <Link to="/journal" className={styles["header__enlace"]}>
+                <Link to="/app/journal" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>JOURNAL</button>
                 </Link>
-                <Link to="/clients" className={styles["header__enlace"]}>
+                <Link to="/app/clients" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>KUNDER</button>
                 </Link>
-                <Link to="/treatments" className={styles["header__enlace"]}>
+                <Link to="/app/treatments" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>BEHANDLINGAR</button>
                 </Link>
-                <Link to="machines" className={styles["header__enlace"]}>
+                <Link to="/app/machines" className={styles["header__enlace"]}>
                     <button className={styles["header__button"]}>MASKINER</button>
                 </Link>             
             </div>
