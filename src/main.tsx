@@ -11,6 +11,7 @@ import Clients from './routes/clients.tsx'
 import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
 import OneClient, {loader as oneClientLoader} from './routes/oneClient.tsx'
 import CreateMachine, { action as createMachineAction } from './components/CreateMachine/createMachine.tsx'
+import OneMachine, {loader as oneMachineLoader} from './routes/oneMachine.tsx'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
         path: "clients/:id",
         loader: oneClientLoader,
         element: <OneClient />
+      },
+      {
+        path: "machines/:id",
+        loader: oneMachineLoader,
+        element: <OneMachine />
       },
       {
         path: "treatments",
