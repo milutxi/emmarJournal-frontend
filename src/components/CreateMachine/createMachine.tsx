@@ -94,3 +94,11 @@
 // }
 
 // export default CreateMachine;
+
+const CreateMachine = () => {
+  <div>
+    <h1>Create New Machine</h1>
+  </div>;
+};
+
+export default CreateMachine;
