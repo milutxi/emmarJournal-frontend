@@ -1,65 +1,102 @@
-import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router-dom";
-import { ActionData } from "../../types";
+import { ActionFunctionArgs, Form } from "react-router-dom";
+import styles from "./createClient.module.scss";
 
 export const action = async (args: ActionFunctionArgs) => {
-    const { request } = args;
+  const { request } = args;
 
-    const formData = await request.formData();
-    
-    const name = formData.get('name');
-    const lastName = formData.get('lastName');
-    const telephone = formData.get('telephone');
-    const email = formData.get('email');
-    const dateOfBirth = formData.get('dateOfBirth');
+  const formData = await request.formData();
 
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/clients', { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({name, lastName, telephone, email, dateOfBirth}) 
-    })
+  const name = formData.get("name");
+  const lastName = formData.get("lastName");
+  const telephone = formData.get("telephone");
+  const email = formData.get("email");
+  const dateOfBirth = formData.get("dateOfBirth");
 
-    if (!response.ok) {
-        const { message } = await response.json();
-        return { message }
-    }
+  const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/clients", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, lastName, telephone, email, dateOfBirth }),
+  });
 
-    return redirect('/app/clients');
-}
+  if (!response.ok) {
+    const errorData = await response.json();
 
-const CreateClient = () => {
-    const error = useActionData() as ActionData;
-    return (
-        <div>
-            <h2>Skapa en ny kund</h2>
-            <Form method="post">
-                { error &&  <p><b>Error: </b>{error.message}</p> }
-                <div>
-                    <label htmlFor="name">Kundens namn</label>
-                    <input type="text" name="name" id="name" required />
-                </div>
-                <div>
-                    <label htmlFor="lastName">Kundens efternamn</label>
-                    <input type="text" name="lastName" id="lastName" required />
-                </div>
-                <div>
-                    <label htmlFor="telephone">Telefonnummer</label>
-                    <input type="text" name="telephone" id="telephone" />
-                </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" id="email" />
-                </div>
-                <div>
-                    <label htmlFor="dateOfBirth"> Födelsedatum</label>
-                    <input type="date" name="dateOfBirth" id="dateOfBirth" />
-                </div>
-                <button type="submit">SKAPA KUND</button>
+    return {
+      success: false,
+      message: errorData.message || "Could not create client",
+    };
+  }
 
-            </Form>
-        </div>
-    )
-}
+  return { success: true };
+};
+
+//props from parent modal controller
+type Props = {
+  onClose: () => void;
+};
+
+const CreateClient = ({ onClose }: Props) => {
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalBox}>
+        <button className={styles.closeBtn} onClick={onClose}>
+          ✕
+        </button>
+
+        <h2 className={styles.title}>Skapa Ny Kund</h2>
+
+        <Form method="post" action="." className={styles.clientForm}>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="Förnamn"
+            required
+            className={styles.input}
+          />
+
+          <input
+            id="lastName"
+            type="text"
+            name="lastName"
+            placeholder="Efternamn"
+            required
+            className={styles.input}
+          />
+
+          <input
+            id="telephone"
+            type="text"
+            name="telephone"
+            placeholder="Telefonnummer"
+            required
+            className={styles.input}
+          />
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Email"
+            className={styles.input}
+          />
+
+          <input
+            id="dateOfBirth"
+            type="date"
+            name="dateOfBirth"
+            className={styles.input}
+          />
+
+          <button type="submit" className={styles.createBtn}>
+            Skapa Kund
+          </button>
+        </Form>
+      </div>
+    </div>
+  );
+};
 
 export default CreateClient;

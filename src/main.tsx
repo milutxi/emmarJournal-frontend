@@ -1,16 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.scss'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Index from './routes/index.tsx'
-import Journal from './routes/journal.tsx'
-import Treatments from './routes/treatments.tsx'
-import Machines from './routes/machines.tsx'
-import Clients from './routes/clients.tsx'
-import CreateClient, { action as createClientAction } from './components/CreateClient/createClient.tsx'
-import OneClient, {loader as oneClientLoader} from './routes/oneClient.tsx'
-import CreateMachine, { action as createMachineAction } from './components/CreateMachine/createMachine.tsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "./index.scss";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Index from "./routes/index.tsx";
+import Journal from "./routes/journal.tsx";
+import Treatments from "./routes/treatments.tsx";
+import Machines from "./routes/machines.tsx";
+import Clients from "./routes/clients.tsx";
+import { action as createClientAction } from "./components/CreateClient/createClient";
+// import CreateClient, {action as createClientAction} from "./components/CreateClient/createClient.tsx";
+import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
+import CreateMachine, {
+  action as createMachineAction,
+} from "./components/CreateMachine/createMachine.tsx";
 
 const router = createBrowserRouter([
   {
@@ -23,43 +26,43 @@ const router = createBrowserRouter([
     children: [
       {
         path: "journal",
-        element: <Journal />
+        element: <Journal />,
       },
       {
         path: "clients",
-        element: <Clients />
+        element: <Clients />,
+        action: createClientAction,
       },
       {
         path: "clients/:id",
         loader: oneClientLoader,
-        element: <OneClient />
+        element: <OneClient />,
       },
       {
         path: "treatments",
-        element: <Treatments />
+        element: <Treatments />,
       },
       {
         path: "machines",
-        element: <Machines />
+        element: <Machines />,
       },
       {
         path: "addClient",
         action: createClientAction,
-        element: <CreateClient />
+        element: <Clients />,
       },
       {
         path: "addMachine",
         action: createMachineAction,
-        element: <CreateMachine />
-      }
-    ]
-  }
-])
+        element: <CreateMachine />,
+      },
+    ],
+  },
+]);
 
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>,
-)
-
+);
