@@ -1,51 +1,49 @@
-@import '../App.scss';
+@use "../styles/variables" as *;
+@use "../styles/mixins" as*;
 
 .oneClientStyle {
-    margin: $indent__l 0px;
-    display: flex;
+  margin: $indent__l 0px;
+  display: flex;
 
-    &__left{
-        margin: $indent__s;
-        width: 30%;
-    }
-    
-    &__card{
-        border: 1px solid black;
-        border-radius: 5%;
-        padding: $indent__m;
+  &__left {
+    margin: $indent__s;
+    width: 30%;
+  }
 
-    }
+  &__card {
+    border: 1px solid black;
+    border-radius: 5%;
+    padding: $indent__m;
+  }
 
-    &__frame{
-        margin: $indent__s;
-        border: 5px solid black;
-    }
+  &__frame {
+    margin: $indent__s;
+    border: 5px solid black;
+  }
 
-    &__frame2{
-        border: 1px dotted black;
-        margin: $indent__s;
-        padding: $indent__s;
-    }
+  &__frame2 {
+    border: 1px dotted black;
+    margin: $indent__s;
+    padding: $indent__s;
+  }
 
-    &__gubbe{
-        border: 1px dotted black;
-        border-radius: 50%;
-        background-color: $color-goldenrod;
-        height: 155px;
-    }
+  &__gubbe {
+    border: 1px dotted black;
+    border-radius: 50%;
+    background-color: $color-goldenrod;
+    height: 155px;
+  }
 
-    &__name{
-        padding: $indent__m 0px;
-        font-variant-caps: all-small-caps;
-    }
+  &__name {
+    padding: $indent__m 0px;
+    font-variant-caps: all-small-caps;
+  }
 
-    &__right{
-        border: 1px solid black;
-        border-radius: 5%;
-        margin: $indent__s;
-        padding: $indent__m;
-        width: 70%;
-        
-    }
-
+  &__right {
+    border: 1px solid black;
+    border-radius: 5%;
+    margin: $indent__s;
+    padding: $indent__m;
+    width: 70%;
+  }
 }
