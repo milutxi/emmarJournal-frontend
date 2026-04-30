@@ -1,3 +1,5 @@
+@use "./variables" as *;
+
 @mixin flexbox {
     display: flex;
     flex-direction: row;
