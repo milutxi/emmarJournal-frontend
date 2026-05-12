@@ -3,101 +3,133 @@
 
 .list {
   @include listbox;
-  margin: $indent__m;
+  margin: $indent__s;
   justify-content: space-between;
+
   @include responsive-mobile {
     align-items: center;
   }
 
+  /* ROW */
   &__data {
+    background: #f5f5f5;
+
     @include listbox;
 
     align-items: center;
-    border: 2px solid;
-    cursor: pointer;
-    // margin: $indent__s;
-    // padding: $indent__s;
+    justify-content: space-between;
 
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+
+    padding: 12px 16px;
     width: 95%;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
     text-decoration: none;
     color: $color-text;
 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+    &:hover {
+      border-color: $color-goldenrod;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+
     @include responsive-mobile {
-      @include listbox-mobile;
-      justify-content: center;
       width: 92%;
     }
   }
 
-  &__data:hover {
-    border: 4px solid $color-goldenrod;
+  /* TEXT COLUMNS (KEEP SINGLE LINE) */
+  &__dataName,
+  &__dataTelephone,
+  &__dataEmail {
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
   }
 
   &__dataName {
     padding-left: $indent__base;
-    text-align: left;
-    width: 30%;
+    font-weight: 600;
+
     @include responsive-mobile {
-      text-align: center;
-      padding-left: 0px;
       width: 100%;
+      text-align: center;
+      padding-left: 0;
     }
   }
 
   &__dataTelephone {
-    text-align: left;
-    width: 30%;
     @include responsive-mobile {
-      text-align: center;
       width: 100%;
+      text-align: center;
     }
   }
 
   &__dataEmail {
-    text-align: left;
-    width: 30%;
+    color: #666;
+
     @include responsive-mobile {
-      text-align: center;
       width: 100%;
+      text-align: center;
     }
   }
+
+  /* ACTIONS INLINE */
   &__icons {
     @include listbox;
-    @include responsive-mobile {
-      flex-direction: column;
-    }
-  }
-
-  &__delete {
     align-items: center;
-    border: 2px solid;
-    cursor: pointer;
-    font-size: $font-size__m;
-    // margin: $indent__s;
-    //padding: $indent__s;
+    gap: 8px;
+    margin-left: auto;
+    padding-left: 12px;
+    border-left: 1px solid #eee;
+    flex-shrink: 0;
+
     @include responsive-mobile {
-      padding: 3px;
+      flex-direction: row;
     }
   }
 
-  &__delete:hover {
-    background-color: $color-goldenrod;
-    border: 2px solid $color-body-display;
-  }
+  /* BUTTONS (COMPACT INLINE) */
+  &__edit,
+  &__delete {
+    width: 34px;
+    height: 34px;
 
-  &__edit {
-    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: white;
     cursor: pointer;
+
     font-size: $font-size__m;
-    // margin: $indent__s;
-    // padding: $indent__s;
+
+    transition: all 0.2s ease;
+
     @include responsive-mobile {
-      padding: 3px;
+      padding: 0;
     }
   }
 
   &__edit:hover {
     background-color: $color-goldenrod;
     border: 2px solid $color-body-display;
+  }
+
+  &__delete:hover {
+    background-color: #ff4d4f;
+    border: 2px solid #ff4d4f;
+    color: white;
   }
 }

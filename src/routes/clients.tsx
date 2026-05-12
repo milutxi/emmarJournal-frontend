@@ -66,12 +66,12 @@ const Clients = () => {
           className={styles["clientStyle__button"]}
           onClick={() => setIsCreateOpen(true)}
         >
-          +
+          + Ny Kund
         </button>
       </div>
 
       {/* Clients list */}
-      <div>
+      <div className={styles.clientListStyle}>
         {clients.map((client) => (
           <ListClients
             key={client._id}
