@@ -9,7 +9,7 @@ export interface Client {
   lastName: string;
   telephone: string;
   email: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
 }
 
 export interface Machine {
