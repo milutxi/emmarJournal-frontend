@@ -9,7 +9,7 @@ import Journal from "./routes/journal.tsx";
 import Treatments from "./routes/treatments.tsx";
 import Machines from "./routes/machines.tsx";
 import Clients from "./routes/clients.tsx";
-import { action as createClientAction } from "./components/CreateClient/createClient";
+// import { action as createClientAction } from "./components/CreateClient/createClient";
 // import CreateClient, {action as createClientAction} from "./components/CreateClient/createClient.tsx";
 import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
 // import CreateMachine, {
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       {
         path: "clients",
         element: <Clients />,
-        action: createClientAction,
+        //action: createClientAction,
       },
       {
         path: "clients/:id",
@@ -47,11 +47,11 @@ const router = createBrowserRouter([
         path: "machines",
         element: <Machines />,
       },
-      {
-        path: "addClient",
-        action: createClientAction,
-        element: <Clients />,
-      },
+      // {
+      //   path: "addClient",
+      //   action: createClientAction,
+      //   element: <Clients />,
+      // },
       {
         // path: "addMachine",
         // // action: createMachineAction,
