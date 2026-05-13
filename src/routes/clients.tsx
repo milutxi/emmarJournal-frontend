@@ -9,9 +9,9 @@ import ClientModal from "../components/ClientModal/clientModal";
 
 const Clients = () => {
   const [clients, setClients] = useState<Client[]>([]);
-
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [searchClient, setSearchClient] = useState("");
 
   // Fetch clients
   useEffect(() => {
@@ -56,12 +56,26 @@ const Clients = () => {
     }
   };
 
+  const filteredClients = clients.filter((client) => {
+    const fullName = `${client.name} ${client.lastName}`.toLowerCase();
+    return fullName.includes(searchClient.toLowerCase());
+  });
+
   return (
     <div className={styles.clientStyle}>
       <h1 className={styles["clientStyle__title"]}>KUNDER</h1>
+      {/* Toolbar */}
+      <div className={styles["clientStyle__toolbar"]}>
+        <input
+          type="text"
+          placeholder="Sök kund..."
+          value={searchClient}
+          onChange={(e) => setSearchClient(e.target.value)}
+          className={styles["clientStyle__search"]}
+        />
 
-      {/* Add button */}
-      <div className={styles["clientStyle__add"]}>
+        {/* Add button */}
+
         <button
           className={styles["clientStyle__button"]}
           onClick={() => setIsCreateOpen(true)}
@@ -72,7 +86,7 @@ const Clients = () => {
 
       {/* Clients list */}
       <div className={styles.clientListStyle}>
-        {clients.map((client) => (
+        {filteredClients.map((client) => (
           <ListClients
             key={client._id}
             client={client}
