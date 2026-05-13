@@ -1,49 +1,160 @@
+// @use "../styles/variables" as *;
+// @use "../styles/mixins" as*;
+
+// .oneClientStyle {
+//   margin: $indent__l 0px;
+//   display: flex;
+
+//   &__left {
+//     margin: $indent__s;
+//     width: 30%;
+//   }
+
+//   &__card {
+//     border: 1px solid black;
+//     border-radius: 5%;
+//     padding: $indent__m;
+//   }
+
+//   &__frame {
+//     margin: $indent__s;
+//     border: 5px solid black;
+//   }
+
+//   &__frame2 {
+//     border: 1px dotted black;
+//     margin: $indent__s;
+//     padding: $indent__s;
+//   }
+
+//   &__gubbe {
+//     border: 1px dotted black;
+//     border-radius: 50%;
+//     background-color: $color-goldenrod;
+//     height: 155px;
+//   }
+
+//   &__name {
+//     padding: $indent__m 0px;
+//     font-variant-caps: all-small-caps;
+//   }
+
+//   &__right {
+//     border: 1px solid black;
+//     border-radius: 5%;
+//     margin: $indent__s;
+//     padding: $indent__m;
+//     width: 70%;
+//   }
+// }
 @use "../styles/variables" as *;
-@use "../styles/mixins" as*;
+@use "../styles/mixins" as *;
 
 .oneClientStyle {
-  margin: $indent__l 0px;
+  max-width: 1200px;
+  margin: $indent__l auto;
+  padding: 0 $indent__m;
+
   display: flex;
+  gap: $indent__l;
+  align-items: flex-start;
+}
 
-  &__left {
-    margin: $indent__s;
-    width: 30%;
+/* LEFT SIDE */
+.oneClientStyle__left {
+  width: 30%;
+  min-width: 280px;
+  position: sticky;
+  top: 20px;
+}
+
+/* CARD */
+.oneClientStyle__card {
+  border-radius: 12px;
+  padding: $indent__m;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e6e6e6;
+}
+
+/* AVATAR AREA */
+.oneClientStyle__avatarWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: $indent__m;
+}
+
+.oneClientStyle__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: $color-goldenrod;
+  border: 2px solid #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    color: #fff;
+
+    font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
+
+   user-select: none;
+}
+
+/* NAME */
+.oneClientStyle__name {
+  text-align: center;
+  font-variant-caps: all-small-caps;
+  margin-bottom: $indent__m;
+}
+
+/* INFO */
+.oneClientStyle__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+/* RIGHT SIDE */
+.oneClientStyle__right {
+  flex: 1;
+  min-height: 500px;
+
+  border-radius: 12px;
+  padding: $indent__m;
+  background: #fafafa;
+  border: 1px solid #e6e6e6;
+}
+
+/* HEADER */
+.oneClientStyle__header {
+  margin-bottom: $indent__m;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+/* EMPTY STATE */
+.oneClientStyle__emptyState {
+  margin-top: $indent__l;
+  text-align: center;
+  color: #777;
+
+  p {
+    font-size: 16px;
+    margin-bottom: 6px;
   }
 
-  &__card {
-    border: 1px solid black;
-    border-radius: 5%;
-    padding: $indent__m;
-  }
-
-  &__frame {
-    margin: $indent__s;
-    border: 5px solid black;
-  }
-
-  &__frame2 {
-    border: 1px dotted black;
-    margin: $indent__s;
-    padding: $indent__s;
-  }
-
-  &__gubbe {
-    border: 1px dotted black;
-    border-radius: 50%;
-    background-color: $color-goldenrod;
-    height: 155px;
-  }
-
-  &__name {
-    padding: $indent__m 0px;
-    font-variant-caps: all-small-caps;
-  }
-
-  &__right {
-    border: 1px solid black;
-    border-radius: 5%;
-    margin: $indent__s;
-    padding: $indent__m;
-    width: 70%;
+  span {
+    font-size: 13px;
+    opacity: 0.7;
   }
 }
