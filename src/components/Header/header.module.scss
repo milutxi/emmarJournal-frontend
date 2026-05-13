@@ -3,7 +3,7 @@
 
 .header {
   @include flexbox;
-  margin-bottom: $indent__l;
+  margin: $indent__s;
 
   &__logo {
     width: 130px;
@@ -16,21 +16,50 @@
     align-items: center;
   }
 
-  &__enlace {
-    text-decoration: none;
-    color: red;
-  }
-
   &__button {
-    cursor: pointer;
-    padding: $indent__base;
-    border: none;
-    font-family: $font-montserrat;
-    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: black;
+    font-size: small;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 80%;
+      height: 0.175rem;
+      background: #d2aa37;
+      bottom: 0;
+      transform: scale(0, 1);
+      transition: transform 0.6s ease;
+    }
+
+    &:hover {
+      transform: translateY(2px);
+      text-decoration-color: #d2aa37;
+    }
+
+    &:hover::after {
+      transform: scale(1, 1);
+    }
   }
 
   &__button:hover {
-    border: 2px solid $color-goldenrod;
     padding: $indent__base;
+    transform: translateY(2px);
+    text-decoration-color: #d2aa37;
+  }
+
+  &__buttonActive {
+    border: 0 0 2px 0 solid $color-goldenrod;
+    padding: $indent__base;
+    color: black;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
   }
 }
