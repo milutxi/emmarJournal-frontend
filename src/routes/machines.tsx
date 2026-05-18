@@ -34,6 +34,30 @@ const Machines = () => {
     //     <CreateMachine />
     // }
 
+   const deleteMachine = async (id: string) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this machine?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/machine/" + id,
+      {
+        method: "DELETE",
+      }
+    );
+
+    setMachines(
+      machines.filter((machine) => machine._id !== id)
+    );
+
+  } catch (error) {
+    console.error("Error deleting machine:", error);
+  }
+};
+
   return (
    <div className={styles.machinesStyle}>
   
@@ -53,7 +77,7 @@ const Machines = () => {
       <ListMachines
         key={machine._id}
         machine={machine}
-        // deleteMachine={deleteMachine}
+        deleteMachine={deleteMachine}
         // onEdit={setEditingMachine}
       />
     ))}
