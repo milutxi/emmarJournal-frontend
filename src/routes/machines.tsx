@@ -35,37 +35,32 @@ const Machines = () => {
     // }
 
   return (
-    <div>
-      <h1 className={styles["machinesStyle__title"]}>MASKINER</h1>
-      <div className={styles.grid}>
-        {machines.map((machine) => (
-          <ListMachines
-            key={machine._id}
-            machine={machine}
-            //deleteMachine={deleteMachine}
-           // onEdit={setEditingMachine}
-          />
-        ))}
-      </div>
+   <div className={styles.machinesStyle}>
+  
+  <div className={styles["machinesStyle__top"]}>
+    <h1 className={styles["machinesStyle__title"]}>
+      MASKINER
+    </h1>
+
+    {/* future button/filter area */}
+    <div className={styles["machinesStyle__actions"]}>
+      {/* button goes here later */}
     </div>
-    //     <div className={styles.machinesStyle}>
-    //       <h1 className={styles["machinesStyle__title"]}>MASKINER</h1>
-    //       <div className={styles["machinesStyle__add"]}>
-    //         {/* // on page load show list, add button onclick to show form */}
-    //         {/* <Link to ="/app/addMachine">
-    //                         <button
-    //                             className={styles["machinesStyle__button"]}
-    //                             onClick={addMachineClick}>
-    //                             CLICK HERE TO ADD A NEW MACHINE
-    //                         </button>
-    //                     </Link> */}
-    //       </div>
-    //       <div>
-    //         {machines.map((machine) => (
-    //           <ListMachines key={machine._id} machine={machine} />
-    //         ))}
-    //       </div>
-    //     </div>
+  </div>
+
+  <div className={styles["machinesStyle__grid"]}>
+    {machines.map((machine) => (
+      <ListMachines
+        key={machine._id}
+        machine={machine}
+        // deleteMachine={deleteMachine}
+        // onEdit={setEditingMachine}
+      />
+    ))}
+  </div>
+
+</div>
+ 
   );
 };
 

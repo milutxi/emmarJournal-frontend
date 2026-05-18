@@ -1,27 +1,104 @@
+// @use "../styles/variables" as *;
+// @use "../styles/mixins" as *;
+
+// .clientStyle {
+//   padding: $indent__m;
+
+//   &__title {
+//     padding: $indent__l;
+//   }
+
+//   &__add {
+//     padding: $indent__m $indent__xl;
+//     margin: 0px $indent__m;
+//     text-align: left;
+//   }
+
+//   &__toolbar {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     gap: $indent__m;
+
+//     margin-bottom: $indent__m;
+//     margin: 0 $indent__xl+9  $indent__l;
+//   }
+
+//   &__search {
+//     flex: 1;
+
+//     padding: 12px 16px;
+
+//     border: 1px solid #dcdcdc;
+//     border-radius: 10px;
+
+//     font-size: 14px;
+
+//     outline: none;
+
+//     &:focus {
+//       border-color: $color-goldenrod;
+//     }
+//   }
+
+//   &__button {
+//     display: flex;
+//     align-items: center;
+//     gap: 8px;
+
+//     border: none;
+//     border-radius: 10px;
+
+//     padding: 12px 18px;
+
+//     background: $color-goldenrod;
+//     color: white;
+
+//     font-size: 14px;
+//     font-weight: 600;
+
+//     cursor: pointer;
+
+//     transition: all 0.2s ease;
+
+//     &:hover {
+//       transform: scale(1.02);
+//       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+//     }
+
+//     &:active {
+//       transform: scale(1.02);
+//     }
+//   }
+// }
+
+// .clientListStyle {
+//   margin: 0 $indent__xl;
+// }
+
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
 .clientStyle {
-  margin: $indent__l 0px;
+  padding: $indent__m;
 
   &__title {
-    padding: $indent__l;
-  }
-
-  &__add {
-    padding: $indent__m $indent__xl;
-    margin: 0px $indent__m;
-    text-align: left;
+    padding-bottom: $indent__l;
   }
 
   &__toolbar {
-    display: flex;
-    justify-content: space-between;
+    @include flexbox;
+
     align-items: center;
+
     gap: $indent__m;
 
-    margin-bottom: $indent__m;
-    margin: 0 $indent__xl+9  $indent__l;
+    margin-bottom: $indent__l;
+
+    @include responsive-mobile {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 
   &__search {
@@ -44,6 +121,7 @@
   &__button {
     display: flex;
     align-items: center;
+
     gap: 8px;
 
     border: none;
@@ -63,6 +141,7 @@
 
     &:hover {
       transform: scale(1.02);
+
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
     }
 
@@ -73,5 +152,8 @@
 }
 
 .clientListStyle {
-  margin: 0 $indent__xl;
+  display: flex;
+  flex-direction: column;
+
+  gap: $indent__s;
 }

@@ -1,10 +1,40 @@
 @use "../styles/variables" as *;
-@use "../styles/mixins" as*;
+@use "../styles/mixins" as *;
 
 .machinesStyle {
-  margin: $indent__l 0px;
+
+  padding: $indent__m;
+
+  &__top {
+    @include flexbox;
+
+    align-items: center;
+
+    margin-bottom: $indent__m;
+
+    @include responsive-mobile {
+      flex-direction: column;
+      align-items: flex-start;
+
+      gap: $indent__s;
+    }
+  }
 
   &__title {
-    padding: $indent__l;
+    font-size: $font-size__l;
+
+    color: $color-lynx-black;
+  }
+
+  &__actions {
+    display: flex;
+
+    gap: $indent__s;
+  }
+
+  &__grid {
+    @include gridbox(320px);
+
+    gap: $indent__m;
   }
 }
