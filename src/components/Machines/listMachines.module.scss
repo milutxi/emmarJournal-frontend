@@ -17,6 +17,47 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   }
+
+  &__actions {
+  margin-top: auto;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: $indent__m;
+}
+
+&__edit,
+&__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 1.2rem;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+  &__delete {
+  color: #b42318;
+
+  &:hover {
+    color: red;
+  }
+}
+
+&__edit {
+  color: $color-body-display;
+
+  &:hover {
+    color: $color-goldenrod;
+  }
+}
 }
 
 .card__header h3 {
@@ -28,8 +69,9 @@
   font-size: 14px;
 }
 
-.card__actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: auto;
-}
+// .card__actions {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: auto;
+// }
+
