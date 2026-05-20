@@ -1,8 +1,8 @@
 import { Machine } from "../../types";
 import styles from "./listMachines.module.scss";
-//import { Link } from "react-router-dom";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
+import { Link } from "react-router-dom";
 
 interface Props {
   machine: Machine;
@@ -17,26 +17,30 @@ const ListMachines = ({ machine, deleteMachine, onEdit }: Props) => {
         <h3>{machine.mName}</h3>
       </div>
 
-      <div className={styles.card__body}>
-        <p><strong>Company:</strong> {machine.mManufactureCompany}</p>
-        <p><strong>Model:</strong> {machine.mModelNumber}</p>
-        <p><strong>Serial:</strong> {machine.mSerialNumber}</p>
-      </div>
+      <Link to={`/app/machines/${machine._id}`} className={styles.card__body}>
+        <p>
+          <strong>Company:</strong> {machine.mManufactureCompany}
+        </p>
+        <p>
+          <strong>Model:</strong> {machine.mModelNumber}
+        </p>
+        <p>
+          <strong>Serial:</strong> {machine.mSerialNumber}
+        </p>
+      </Link>
 
       <div className={styles.card__actions}>
+        <section className={styles.card__edit}>
+          <GrEdit />
+        </section>
 
-  <section className={styles.card__edit}>
-    <GrEdit />
-  </section>
-
-  <section
-    className={styles.card__delete}
-    onClick={() => deleteMachine(machine._id)}
-  >
-    <RiDeleteBinLine />
-  </section>
-
-</div>
+        <section
+          className={styles.card__delete}
+          onClick={() => deleteMachine(machine._id)}
+        >
+          <RiDeleteBinLine />
+        </section>
+      </div>
     </div>
   );
 };

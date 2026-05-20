@@ -10,6 +10,7 @@ import Treatments from "./routes/treatments.tsx";
 import Machines from "./routes/machines.tsx";
 import Clients from "./routes/clients.tsx";
 import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
+import OneMachine, { loader as oneMachineLoader } from "./routes/oneMachine.tsx";
 // import CreateMachine, {
 //  // action as createMachineAction,
 // } from "./components/CreateMachine/createMachine.tsx";
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
         // // action: createMachineAction,
         // element: <CreateMachine />,
       },
+      {
+				path: "machines/:id",
+				loader: oneMachineLoader,
+				element: <OneMachine />,
+			},
     ],
   },
 ]);

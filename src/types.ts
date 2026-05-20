@@ -26,4 +26,9 @@ export interface Machine {
   mPurchaseDate: Date;
   mServiceLokalDate: Date;
   mServiceManufactureDate: Date;
+  mCommentsLokalService: string;
+  mCommentsManufactureService: string;
+  mServiceLokalNextDate: Date;
+  mServiceManufactureNextDate: Date;
+  
 }
