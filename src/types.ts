@@ -16,19 +16,19 @@ export interface Machine {
   _id: string;
   mName: string;
   mManufactureCompany: string;
-  mManufactureYear: Date;
+  mManufactureYear: string;
   mModelNumber: string;
   mSerialNumber: string;
   mDescription: string;
   mComments: string;
-  mStartLeasingDate: Date;
-  mFinishLeasingDate: Date;
-  mPurchaseDate: Date;
-  mServiceLokalDate: Date;
-  mServiceManufactureDate: Date;
+  mStartLeasingDate: string;
+  mFinishLeasingDate: string;
+  mPurchaseDate: string;
+  mServiceLokalDate: string;
+  mServiceManufactureDate: string;
   mCommentsLokalService: string;
   mCommentsManufactureService: string;
-  mServiceLokalNextDate: Date;
-  mServiceManufactureNextDate: Date;
+  mServiceLokalNextDate: string;
+  mServiceManufactureNextDate: string;
   
 }
