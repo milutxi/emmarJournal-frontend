@@ -112,3 +112,85 @@
     opacity: 0.9;
   }
 }
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  label {
+    font-size: $font-size__s;
+    font-weight: 600;
+    color: $color-body-display;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+
+    padding: $indent__s;
+
+    border-radius: 16px;
+
+    border: 1px solid $color-dark-outline;
+
+    background: #fafafa;
+
+    font-size: $font-size__base;
+
+    color: $color-text;
+
+    transition: 0.2s ease;
+
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+
+      border-color: $color-lynx-black;
+
+      background: white;
+
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  textarea {
+  resize: vertical;
+}
+}
+
+.rowOne {
+  display: grid;
+
+  grid-template-columns: 3fr 2fr 1fr;
+
+  gap: $indent__m;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rowTwo {
+  display: grid;
+
+  grid-template-columns: 3fr 1fr;
+
+  gap: $indent__m;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
