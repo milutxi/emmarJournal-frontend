@@ -5,8 +5,10 @@ import styles from "./machines.module.scss";
 //import { Link } from "react-router-dom";
  import { Machine } from "../types";
 import { useEffect, useState } from "react";
+
 const Machines = () => {
     const [machines, setMachines] = useState<Machine[]>([]);
+    const [showCreateModal, setShowCreateModal] = useState(false);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -58,6 +60,8 @@ const Machines = () => {
   }
 };
 
+
+
   return (
    <div className={styles.machinesStyle}>
   
@@ -66,10 +70,12 @@ const Machines = () => {
       MASKINER
     </h1>
 
-    {/* future button/filter area */}
-    <div className={styles["machinesStyle__actions"]}>
-      {/* button goes here later */}
-    </div>
+    <button
+    className={styles["machinesPage__createButton"]}
+    onClick={() => setShowCreateModal(true)}
+  >
+    + Ny maskin
+  </button>
   </div>
 
   <div className={styles["machinesStyle__grid"]}>
