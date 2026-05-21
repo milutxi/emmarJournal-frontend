@@ -1,5 +1,6 @@
 import styles from "./createMachineModal.module.scss";
 import { useState } from "react";
+import BasicInfoStep from "./steps/basicInfoStep";
 
 type Props = {
   onClose: () => void;
@@ -26,102 +27,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
 
         <div className={styles.stepContent}>
           {step === 1 && (
-            <div className={styles.formSection}>
-              <h2>Grundinformation</h2>
-              <div className={styles.rowOne}>
-                <div className={styles.inputGroup}>
-                  <label>Namn</label>
-
-                  <input
-                    type="text"
-                    value={formData.mName}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mName: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className={styles.inputGroup}>
-                  <label>Modellnummer</label>
-
-                  <input
-                    type="text"
-                    value={formData.mModelNumber}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mModelNumber: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className={styles.inputGroup}>
-                  <label>Serienummer</label>
-
-                  <input
-                    type="text"
-                    value={formData.mSerialNumber}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mSerialNumber: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className={styles.rowTwo}>
-                <div className={styles.inputGroup}>
-                  <label>Tillverkare</label>
-
-                  <input
-                    type="text"
-                    value={formData.mManufactureCompany}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mManufactureCompany: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className={styles.inputGroup}>
-                  <label>Tillverkningsår</label>
-
-                  <input
-                    type="date"
-                    value={formData.mManufactureYear}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mManufactureYear: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className={styles.inputGroup}>
-                <label>Beskrivning</label>
-
-                <textarea
-                  rows={5}
-                  value={formData.mDescription}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      mDescription: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </div>
+            <BasicInfoStep formData={formData} setFormData={setFormData} />
           )}
 
           {step === 2 && <h2>Anskaffning</h2>}
