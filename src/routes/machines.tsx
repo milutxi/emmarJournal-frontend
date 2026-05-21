@@ -5,7 +5,7 @@ import styles from "./machines.module.scss";
 //import { Link } from "react-router-dom";
  import { Machine } from "../types";
 import { useEffect, useState } from "react";
-
+import CreateMachineModal from "../components/CreateMachineModal/createMachineModal";
 const Machines = () => {
     const [machines, setMachines] = useState<Machine[]>([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -88,6 +88,12 @@ const Machines = () => {
       />
     ))}
   </div>
+
+  {showCreateModal && (
+    <CreateMachineModal
+      onClose ={()=> setShowCreateModal(false)}
+      />
+  )}
 
 </div>
  
