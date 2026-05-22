@@ -4,7 +4,7 @@ import BasicInfoStep from "./steps/basicInfoStep";
 import { CreateMachineForm } from "../../types";
 import AcquisitionStep from "./steps/acquisitionsStep";
 import LocalserviceStep from "./steps/localserviceStep";
-import TillverkarserviceStep from "./steps/TillverkarserviceStep";
+import TillverkarserviceStep from "./steps/tillverkarserviceStep";
 import CommentsStep from "./steps/commentsStep";
 
 type Props = {

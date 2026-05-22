@@ -1,16 +1,15 @@
 import { Machine } from "../../types";
 import styles from "./listMachines.module.scss";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { GrEdit } from "react-icons/gr";
+
 import { Link } from "react-router-dom";
 
 interface Props {
   machine: Machine;
   deleteMachine: (id: string) => void;
-  onEdit: (machine: Machine) => void;
 }
 
-const ListMachines = ({ machine, deleteMachine, onEdit }: Props) => {
+const ListMachines = ({ machine, deleteMachine }: Props) => {
   return (
     <div className={styles.card}>
       <div className={styles.card__header}>
@@ -31,7 +30,7 @@ const ListMachines = ({ machine, deleteMachine, onEdit }: Props) => {
 
       <div className={styles.card__actions}>
         <section className={styles.card__edit}>
-          <GrEdit />
+          
         </section>
 
         <section

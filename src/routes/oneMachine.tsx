@@ -1,6 +1,7 @@
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
 import { Machine } from "../types";
 import styles from "./oneMachine.module.scss";
+import { useState } from "react";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -28,26 +29,116 @@ const formatDate = (date: Date | string) => {
 };
 
 const OneMachine = () => {
-  const machine = useLoaderData() as Machine;
+  const loadedMachine = useLoaderData() as Machine;
+
+  const [machine, setMachine] = useState(loadedMachine);
 
   const isLeasing = machine.mStartLeasingDate || machine.mFinishLeasingDate;
+
+  const [editSection, setEditSection] = useState<string | null>(null);
+
+  const updateMachine = async (update: Partial<Machine>) => {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/machine/" + machine._id,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(update),
+      },
+    );
+    if (!response.ok) throw new Error("Update failed");
+    return response.json();
+  };
+
+  const [basicForm, setBasicForm] = useState({
+    mName: machine.mName,
+    mModelNumber: machine.mModelNumber,
+    mSerialNumber: machine.mSerialNumber,
+    mManufactureCompany: machine.mManufactureCompany,
+    mManufactureYear: machine.mManufactureYear,
+    mDescription: machine.mDescription,
+  });
+
+  const [acquisitionForm, setAcquisitionForm] = useState({
+    mStartLeasingDate: machine.mStartLeasingDate,
+    mFinishLeasingDate: machine.mFinishLeasingDate,
+    mPurchaseDate: machine.mPurchaseDate,
+  });
+
+  const [commentsForm, setCommentsForm] = useState({
+    mComments: machine.mComments,
+  });
+
+  const [localServiceForm, setLocalServiceForm] = useState({
+    mServiceLokalDate: machine.mServiceLokalDate,
+    mServiceLokalNextDate: machine.mServiceLokalNextDate,
+    mCommentsLokalService: machine.mCommentsLokalService,
+  });
+
+  const [manufacturerServiceForm, setManufacturerServiceForm] = useState({
+    mServiceManufactureDate: machine.mServiceManufactureDate,
+    mServiceManufactureNextDate: machine.mServiceManufactureNextDate,
+    mCommentsManufactureService: machine.mCommentsManufactureService,
+  });
 
   return (
     <div className={styles.oneMachineStyle}>
       {/* LEFT SIDE */}
       <div className={styles["oneMachineStyle__left"]}>
         <div className={styles["oneMachineStyle__card"]}>
-          <h1 className={styles["oneMachineStyle__name"]}>{machine.mName}</h1>
+          {/* <h1 className={styles["oneMachineStyle__name"]}>{machine.mName}</h1> */}
+          {editSection === "basic" ? (
+            <input
+              type="text"
+              value={basicForm.mName}
+              onChange={(e) =>
+                setBasicForm({
+                  ...basicForm,
+                  mName: e.target.value,
+                })
+              }
+            />
+          ) : (
+            <h1 className={styles["oneMachineStyle__name"]}>{machine.mName}</h1>
+          )}
 
           <div className={styles["oneMachineStyle__mainInfo"]}>
             <p>
               <span>Modell</span>
-              {machine.mModelNumber || "-"}
+              {editSection === "basic" ? (
+                <input
+                  type="text"
+                  value={basicForm.mModelNumber}
+                  onChange={(e) =>
+                    setBasicForm({
+                      ...basicForm,
+                      mModelNumber: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                machine.mModelNumber || "-"
+              )}
             </p>
 
             <p>
               <span>Serienummer</span>
-              {machine.mSerialNumber || "-"}
+              {editSection === "basic" ? (
+                <input
+                  type="text"
+                  value={basicForm.mSerialNumber}
+                  onChange={(e) =>
+                    setBasicForm({
+                      ...basicForm,
+                      mSerialNumber: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                machine.mSerialNumber || "-"
+              )}
             </p>
           </div>
 
@@ -56,12 +147,44 @@ const OneMachine = () => {
           <div className={styles["oneMachineStyle__secondaryInfo"]}>
             <p>
               <span>Tillverkare</span>
-              {machine.mManufactureCompany || "-"}
+              {editSection === "basic" ? (
+                <input
+                  type="text"
+                  value={basicForm.mManufactureCompany}
+                  onChange={(e) =>
+                    setBasicForm({
+                      ...basicForm,
+                      mManufactureCompany: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                machine.mManufactureCompany || "-"
+              )}
             </p>
 
             <p>
               <span>Tillverkningsår</span>
-              {formatDate(machine.mManufactureYear)}
+              {editSection === "basic" ? (
+                <input
+                  type="date"
+                  value={
+                    basicForm.mManufactureYear
+                      ? new Date(basicForm.mManufactureYear)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setBasicForm({
+                      ...basicForm,
+                      mManufactureYear: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                formatDate(machine.mManufactureYear)
+              )}
             </p>
           </div>
           <div className={styles["oneMachineStyle__divider"]}></div>
@@ -70,9 +193,43 @@ const OneMachine = () => {
             <span>Beskrivning</span>
 
             <div className={styles["oneMachineStyle__textBox"]}>
-              {machine.mDescription || "Ingen beskrivning tillgänglig."}
+              {editSection === "basic" ? (
+                <textarea
+                  value={basicForm.mDescription}
+                  onChange={(e) =>
+                    setBasicForm({
+                      ...basicForm,
+                      mDescription: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                machine.mDescription || "Ingen beskrivning tillgänglig."
+              )}
             </div>
           </div>
+
+          {editSection === "basic" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine = await updateMachine(basicForm);
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("basic")}>Redigera</button>
+          )}
         </div>
       </div>
 
@@ -82,19 +239,57 @@ const OneMachine = () => {
           <h3>Anskaffning</h3>
           {isLeasing ? (
             <div className={styles["oneMachineStyle__infoGroup"]}>
-                <p>
-                  <span>Typ:</span> LEASING
-                </p>
+              <p>
+                <span>Typ:</span> LEASING
+              </p>
               <div className={styles["oneMachineStyle__inlineInfo"]}>
-
                 <p>
                   <span>Startdatum:</span>
-                  {formatDate(machine.mStartLeasingDate)}
+
+                  {editSection === "acquisition" ? (
+                    <input
+                      type="date"
+                      value={
+                        acquisitionForm.mStartLeasingDate
+                          ? new Date(acquisitionForm.mStartLeasingDate)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        setAcquisitionForm({
+                          ...acquisitionForm,
+                          mStartLeasingDate: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    formatDate(machine.mStartLeasingDate)
+                  )}
                 </p>
 
                 <p>
                   <span>Slutdatum:</span>
-                  {formatDate(machine.mFinishLeasingDate)}
+                  {editSection === "acquisition" ? (
+                    <input
+                      type="date"
+                      value={
+                        acquisitionForm.mFinishLeasingDate
+                          ? new Date(acquisitionForm.mFinishLeasingDate)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        setAcquisitionForm({
+                          ...acquisitionForm,
+                          mFinishLeasingDate: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    formatDate(machine.mFinishLeasingDate)
+                  )}
                 </p>
               </div>
             </div>
@@ -107,18 +302,95 @@ const OneMachine = () => {
 
                 <p>
                   <span>Inköpsdatum:</span>
-                  {formatDate(machine.mPurchaseDate)}
+                  {editSection === "acquisition" ? (
+                    <input
+                      type="date"
+                      value={
+                        acquisitionForm.mPurchaseDate
+                          ? new Date(acquisitionForm.mPurchaseDate)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        setAcquisitionForm({
+                          ...acquisitionForm,
+                          mPurchaseDate: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    formatDate(machine.mPurchaseDate)
+                  )}
                 </p>
               </div>
             </div>
+          )}
+
+          {editSection === "acquisition" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine = await updateMachine(acquisitionForm);
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("acquisition")}>
+              Redigera
+            </button>
           )}
         </section>
 
         <section className={styles["oneMachineStyle__section"]}>
           <h3>Kommentarer</h3>
           <div className={styles["oneMachineStyle__textBox"]}>
-            {machine.mComments || "Inga kommentarer tillgängliga."}
+            {editSection === "comments" ? (
+              <textarea
+                value={commentsForm.mComments}
+                onChange={(e) =>
+                  setCommentsForm({
+                    ...commentsForm,
+                    mComments: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              machine.mComments || "Ingen kommentarer tillgängliga."
+            )}
           </div>
+
+          {editSection === "comments" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine = await updateMachine(commentsForm);
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("comments")}>Redigera</button>
+          )}
         </section>
 
         <section className={styles["oneMachineStyle__section"]}>
@@ -126,16 +398,92 @@ const OneMachine = () => {
           <div className={styles["oneMachineStyle__inlineInfo"]}>
             <p>
               <span>Datum:</span>
-              {formatDate(machine.mServiceLokalDate)}
+              {editSection === "localService" ? (
+                <input
+                  type="date"
+                  value={
+                    localServiceForm.mServiceLokalDate
+                      ? new Date(localServiceForm.mServiceLokalDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setLocalServiceForm({
+                      ...localServiceForm,
+                      mServiceLokalDate: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                formatDate(machine.mServiceLokalDate)
+              )}
             </p>
             <p>
               <span>Nästa servicedatum:</span>
-              {formatDate(machine.mServiceLokalNextDate)}
+              {editSection === "localService" ? (
+                <input
+                  type="date"
+                  value={
+                    localServiceForm.mServiceLokalNextDate
+                      ? new Date(localServiceForm.mServiceLokalNextDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setLocalServiceForm({
+                      ...localServiceForm,
+                      mServiceLokalNextDate: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                formatDate(machine.mServiceLokalNextDate)
+              )}
             </p>
           </div>
           <div className={styles["oneMachineStyle__textBox"]}>
-            {machine.mCommentsLokalService || "Inga kommentarer för lokal service."}
+            {editSection === "localService" ? (
+              <textarea
+                value={localServiceForm.mCommentsLokalService}
+                onChange={(e) =>
+                  setLocalServiceForm({
+                    ...localServiceForm,
+                    mCommentsLokalService: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              machine.mCommentsLokalService ||
+              "Inga kommentarer för lokal service."
+            )}
           </div>
+
+          {editSection === "localService" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine =
+                      await updateMachine(localServiceForm);
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("localService")}>
+              Redigera
+            </button>
+          )}
         </section>
 
         <section className={styles["oneMachineStyle__section"]}>
@@ -143,17 +491,97 @@ const OneMachine = () => {
           <div className={styles["oneMachineStyle__inlineInfo"]}>
             <p>
               <span>Datum:</span>
-              {formatDate(machine.mServiceManufactureDate)}
+              {editSection === "manufacturerService" ? (
+                <input
+                  type="date"
+                  value={
+                    manufacturerServiceForm.mServiceManufactureDate
+                      ? new Date(
+                          manufacturerServiceForm.mServiceManufactureDate,
+                        )
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setManufacturerServiceForm({
+                      ...manufacturerServiceForm,
+                      mServiceManufactureDate: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                formatDate(machine.mServiceManufactureDate)
+              )}
             </p>
             <p>
               <span>Nästa servicedatum:</span>
-              {formatDate(machine.mServiceManufactureNextDate)}
+              {editSection === "manufacturerService" ? (
+                <input
+                  type="date"
+                  value={
+                    manufacturerServiceForm.mServiceManufactureNextDate
+                      ? new Date(
+                          manufacturerServiceForm.mServiceManufactureNextDate,
+                        )
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setManufacturerServiceForm({
+                      ...manufacturerServiceForm,
+                      mServiceManufactureNextDate: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                formatDate(machine.mServiceManufactureNextDate)
+              )}
             </p>
           </div>
           <div className={styles["oneMachineStyle__textBox"]}>
-            {machine.mCommentsManufactureService ||
-              "Inga kommentarer för tillverkarservice."}
+            {editSection === "manufacturerService" ? (
+              <textarea
+                value={manufacturerServiceForm.mCommentsManufactureService}
+                onChange={(e) =>
+                  setManufacturerServiceForm({
+                    ...manufacturerServiceForm,
+                    mCommentsManufactureService: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              machine.mCommentsManufactureService ||
+              "Inga kommentarer för tillverkarservice."
+            )}
           </div>
+
+          {editSection === "manufacturerService" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine = await updateMachine(
+                      manufacturerServiceForm,
+                    );
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("manufacturerService")}>
+              Redigera
+            </button>
+          )}
         </section>
       </div>
     </div>
