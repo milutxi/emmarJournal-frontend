@@ -42,7 +42,7 @@ const ClientModal = ({ onClose, initialData }: Props) => {
 
       onClose();
 
-      window.location.reload();
+      //window.location.reload();
     } catch (error) {
       console.error("Submit error:", error);
     }
