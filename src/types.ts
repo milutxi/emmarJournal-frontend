@@ -30,5 +30,24 @@ export interface Machine {
   mCommentsManufactureService: string;
   mServiceLokalNextDate: string;
   mServiceManufactureNextDate: string;
-  
+  }
+
+
+  export interface CreateMachineForm {
+  mName: string;
+  mManufactureCompany: string;
+  mManufactureYear: string;
+  mModelNumber: string;
+  mSerialNumber: string;
+  mDescription: string;
+  mComments: string;
+  mStartLeasingDate: string;
+  mFinishLeasingDate: string;
+  mPurchaseDate: string;
+  mServiceLokalDate: string;
+  mServiceManufactureDate: string;
+  mCommentsLokalService: string;
+  mCommentsManufactureService: string;
+  mServiceLokalNextDate: string;
+  mServiceManufactureNextDate: string;
 }

@@ -1,6 +1,7 @@
 import styles from "./createMachineModal.module.scss";
 import { useState } from "react";
 import BasicInfoStep from "./steps/basicInfoStep";
+import { CreateMachineForm } from "../../types";
 
 type Props = {
   onClose: () => void;
@@ -8,20 +9,51 @@ type Props = {
 
 const CreateMachineModal = ({ onClose }: Props) => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateMachineForm>({
     mName: "",
     mModelNumber: "",
     mSerialNumber: "",
     mManufactureCompany: "",
     mManufactureYear: "",
     mDescription: "",
+    mComments: "",
+    mStartLeasingDate: "",
+    mFinishLeasingDate: "",
+    mPurchaseDate: "",
+    mServiceLokalDate: "",
+    mServiceManufactureDate: "",
+    mCommentsLokalService: "",
+    mCommentsManufactureService: "",
+    mServiceLokalNextDate: "",
+    mServiceManufactureNextDate: "",
   });
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/machine",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (!response.ok) throw new Error("Failed to create machine");
+
+      onClose();
+    } catch (error) {
+      console.error("Submit error:", error);
+    }
+  };
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <button className={styles.closeButton} onClick={onClose}>
-          x
+          X
         </button>
         <h1>Ny maskin</h1>
 
@@ -45,7 +77,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
           {step < 4 ? (
             <button onClick={() => setStep(step + 1)}>Nästa</button>
           ) : (
-            <button>Skapa maskin</button>
+            <button onClick={handleSubmit}>Skapa maskin</button>
           )}
         </div>
       </div>

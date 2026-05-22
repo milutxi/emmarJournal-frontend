@@ -1,8 +1,9 @@
+import { CreateMachineForm } from "../../../types";
 import styles from "../createMachineModal.module.scss";
 
 type Props = {
-  formData: any;
-  setFormData: React.Dispatch<React.SetStateAction<any>>;
+  formData: CreateMachineForm;
+  setFormData: React.Dispatch<CreateMachineForm>;
 };
 
 export default function BasicInfoStep({
