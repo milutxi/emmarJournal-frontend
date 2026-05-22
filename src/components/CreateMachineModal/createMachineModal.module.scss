@@ -194,3 +194,94 @@
   }
 }
 
+.acquisitionSelector {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: $indent__xl;
+
+  padding: $indent__m 0;
+
+  border-top: 1px solid $color-dark-outline;
+  border-bottom: 1px solid $color-dark-outline;
+
+  @include responsive-mobile {
+    gap: $indent__m;
+  }
+}
+
+.acquisitionOption {
+  display: flex;
+
+  align-items: center;
+
+  gap: $indent__s;
+
+  font-size: $font-size__base;
+
+  font-weight: 600;
+
+  color: $color-text;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    color: $color-lynx-black;
+  }
+
+  input[type="radio"] {
+    width: 18px;
+    height: 18px;
+
+    cursor: pointer;
+
+    accent-color: $color-lynx-black;
+  }
+}
+
+.centeredDate {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.centeredDate .inputGroup {
+  width: 320px;
+
+  @include responsive-mobile {
+    width: 100%;
+  }
+}
+
+.rowDates {
+   width: fit-content;
+  display: flex;
+
+ justify-content: center;
+
+  gap: $indent__m;
+  margin: 0 auto;
+
+  @include responsive-mobile {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.rowDates .inputGroup {
+  width: 260px;
+
+  @include responsive-mobile {
+    width: 100%;
+  }
+}
+

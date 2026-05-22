@@ -50,4 +50,5 @@ export interface Machine {
   mCommentsManufactureService: string;
   mServiceLokalNextDate: string;
   mServiceManufactureNextDate: string;
+  acquisitionType: "leasing" | "purchase";
 }

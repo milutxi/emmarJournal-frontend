@@ -2,6 +2,7 @@ import styles from "./createMachineModal.module.scss";
 import { useState } from "react";
 import BasicInfoStep from "./steps/basicInfoStep";
 import { CreateMachineForm } from "../../types";
+import AcquisitionStep from "./steps/acquisitionsStep";
 
 type Props = {
   onClose: () => void;
@@ -26,6 +27,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
     mCommentsManufactureService: "",
     mServiceLokalNextDate: "",
     mServiceManufactureNextDate: "",
+    acquisitionType: "purchase",
   });
 
   const handleSubmit = async () => {
@@ -62,7 +64,9 @@ const CreateMachineModal = ({ onClose }: Props) => {
             <BasicInfoStep formData={formData} setFormData={setFormData} />
           )}
 
-          {step === 2 && <h2>Anskaffning</h2>}
+          {step === 2 && (
+            <AcquisitionStep formData={formData} setFormData={setFormData} />
+          )}
           {step === 3 && <h2>Service</h2>}
           {step === 4 && <h2>Kommentarer</h2>}
         </div>
