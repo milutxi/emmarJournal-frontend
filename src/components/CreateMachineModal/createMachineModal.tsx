@@ -3,6 +3,9 @@ import { useState } from "react";
 import BasicInfoStep from "./steps/basicInfoStep";
 import { CreateMachineForm } from "../../types";
 import AcquisitionStep from "./steps/acquisitionsStep";
+import LocalserviceStep from "./steps/localserviceStep";
+import TillverkarserviceStep from "./steps/TillverkarserviceStep";
+import CommentsStep from "./steps/commentsStep";
 
 type Props = {
   onClose: () => void;
@@ -67,8 +70,20 @@ const CreateMachineModal = ({ onClose }: Props) => {
           {step === 2 && (
             <AcquisitionStep formData={formData} setFormData={setFormData} />
           )}
-          {step === 3 && <h2>Service</h2>}
-          {step === 4 && <h2>Kommentarer</h2>}
+
+          {step === 3 && (
+            <LocalserviceStep formData={formData} setFormData={setFormData}/>
+          )}
+
+          {step === 4 && (
+            <TillverkarserviceStep formData={formData} setFormData={setFormData}/>
+          )}
+
+          {step === 5 && (
+            <CommentsStep formData={formData} setFormData={setFormData} />
+          )
+          
+          }
         </div>
 
         <div className={styles.actions}>
@@ -78,7 +93,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
             <div />
           )}
 
-          {step < 4 ? (
+          {step < 5 ? (
             <button onClick={() => setStep(step + 1)}>Nästa</button>
           ) : (
             <button onClick={handleSubmit}>Skapa maskin</button>
