@@ -36,6 +36,7 @@ const OneMachine = () => {
   const isLeasing = machine.mStartLeasingDate || machine.mFinishLeasingDate;
 
   const [editSection, setEditSection] = useState<string | null>(null);
+  
 
   const updateMachine = async (update: Partial<Machine>) => {
     const response = await fetch(
