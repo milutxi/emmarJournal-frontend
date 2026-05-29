@@ -52,3 +52,11 @@ export interface Machine {
   mServiceManufactureNextDate: string;
   acquisitionType: "leasing" | "purchase";
 }
+
+export interface Treatment {
+  _id: string;
+  tname: string;
+  tdescription: string;
+  tduration: number;
+  tprice: number;
+}
