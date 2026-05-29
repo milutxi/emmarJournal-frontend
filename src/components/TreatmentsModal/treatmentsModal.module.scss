@@ -1,2 +1,134 @@
-@use "../../styles/mixins" as *;
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.modalBox {
+  position: relative;
+  background: $color-bg;
+
+  width: 100%;
+  max-width: 600px;
+
+  padding: $indent__l;
+
+  border-radius: 12px;
+  border: 1px solid $color-dark-outline;
+
+  display: flex;
+  flex-direction: column;
+  gap: $indent__base;
+}
+
+.title {
+  font-size: $font-size__m;
+  color: $color-lynx-black;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__base;
+}
+
+.input,
+.textarea {
+  width: 100%;
+
+  padding: $indent__s;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+
+  font-size: $font-size__base;
+  font-family: $font-montserrat;
+
+  background: white;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.inlineFields {
+  display: flex;
+  gap: $indent__base;
+}
+
+.field {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.field label {
+  text-align: left;
+  font-size: $font-size__s;
+  color: $color-body-display;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: $indent__s;
+}
+
+.closeBtn {
+  position: absolute;
+  top: $indent__base;
+  right: $indent__base;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  font-size: $font-size__m;
+  color: $color-lynx-black;
+}
+
+.createBtn {
+  background: $color-goldenrod;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: $indent__s $indent__base;
+
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: transparent;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+
+  padding: $indent__s $indent__base;
+
+  cursor: pointer;
+}
