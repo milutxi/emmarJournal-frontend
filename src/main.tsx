@@ -10,10 +10,12 @@ import Treatments from "./routes/treatments.tsx";
 import Machines from "./routes/machines.tsx";
 import Clients from "./routes/clients.tsx";
 import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
-import OneMachine, { loader as oneMachineLoader } from "./routes/oneMachine.tsx";
-// import CreateMachine, {
-//  // action as createMachineAction,
-// } from "./components/CreateMachine/createMachine.tsx";
+import OneMachine, {
+  loader as oneMachineLoader,
+} from "./routes/oneMachine.tsx";
+import OneTreatment, {
+  loader as oneTreatmentLoader,
+} from "./routes/oneTreatment.tsx";
 
 const router = createBrowserRouter([
   {
@@ -42,23 +44,22 @@ const router = createBrowserRouter([
         element: <Treatments />,
       },
       {
+        path: "treatments/:id",
+        loader: oneTreatmentLoader,
+        element: <OneTreatment />,
+      },
+      {
         path: "machines",
         element: <Machines />,
       },
       {
-        // path: "addMachine",
-        // // action: createMachineAction,
-        // element: <CreateMachine />,
+        path: "machines/:id",
+        loader: oneMachineLoader,
+        element: <OneMachine />,
       },
-      {
-				path: "machines/:id",
-				loader: oneMachineLoader,
-				element: <OneMachine />,
-			},
     ],
   },
 ]);
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
