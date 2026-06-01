@@ -3,7 +3,7 @@
 
 .list {
   @include listbox;
-  margin: $indent__s;
+
   justify-content: space-between;
 
   @include responsive-mobile {
