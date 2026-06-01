@@ -1,2 +1,54 @@
-@use "../../styles/mixins" as *;
-@use "../../styles/variables" as *;
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  padding: $indent__l;
+}
+
+.header {
+  @include flexbox;
+  align-items: center;
+  margin-bottom: $indent__l;
+
+  @include responsive-mobile {
+    flex-direction: column;
+    gap: $indent__base;
+  }
+}
+
+.grid {
+  @include gridbox(320px);
+  gap: $indent__m;
+}
+
+.newButton {
+  display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 12px 18px;
+
+    background: $color-goldenrod;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.02);
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    }
+
+    &:active {
+      transform: scale(1.02);
+    }
+}

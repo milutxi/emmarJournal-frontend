@@ -1,10 +1,11 @@
+import TreatmentCard from "../components/TreatmentCard/treatmentCard";
 import Treatmentsmodal from "../components/TreatmentsModal/treatmentsModal";
 import { Treatment } from "../types";
 
-//import styles from "./treatments.module.scss";
+import styles from "./treatments.module.scss";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 const Treatments = () => {
   const [treatments, setTreatments] = useState<Treatment[]>([]);
@@ -42,28 +43,28 @@ const Treatments = () => {
   };
 
   return (
-    <div>
-      <h1>BEHANDLINGAR</h1>
-      <button onClick={() => setShowModal(true)}>Ny behandling</button>
+    <div className={styles.page}>
+      <div className={styles.header}>
+        <h1>BEHANDLINGAR</h1>
+        <button className={styles.newButton} onClick={() => setShowModal(true)}>+ Ny behandling</button>
+      </div>
+      <div className={styles.grid}>
+        {treatments.map((treatment) => (
+          <div>
+            {/* <Link to={`/app/treatments/${treatment._id}`}>{treatment.tname}</Link> */}
 
-      {treatments.map((treatment) => (
-        <div key={treatment._id}>
-          <Link to={`/app/treatments/${treatment._id}`}>{treatment.tname}</Link>
+            <TreatmentCard key={treatment._id} treatment={treatment} onDelete={deleteTreatment}/>
 
-          <button
-            onClick={() => deleteTreatment(treatment._id, treatment.tname)}
-          >
-            Ta bort
-          </button>
-        </div>
-      ))}
+          </div>
+        ))}
 
-      {showModal && (
-        <Treatmentsmodal
-          onClose={() => setShowModal(false)}
-          onCreated={loadTreatments}
-        />
-      )}
+        {showModal && (
+          <Treatmentsmodal
+            onClose={() => setShowModal(false)}
+            onCreated={loadTreatments}
+          />
+        )}
+      </div>
     </div>
   );
 };

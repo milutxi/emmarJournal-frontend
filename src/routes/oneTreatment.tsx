@@ -1,149 +1,155 @@
-//import styles from "./oneTreatment.module.scss";
-import { useState } from "react";
-import { Treatment } from "../types";
-import { LoaderFunctionArgs, useLoaderData } from "react-router";
+//I decide not to use it as a loader, since is too small for this, better as component card directly in the page.
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const { id } = params;
-  const response = await fetch(
-    import.meta.env.VITE_BACKEND_URL + "/treatment/" + id,
-    {
-      headers: {
-        Acdept: "application/json",
-      },
-    },
-  );
 
-  return response.json();
-};
 
-const OneTreatment = () => {
-  const treatment = useLoaderData() as Treatment;
 
-  const [editMode, setEditMode] = useState(false);
+// //import styles from "./oneTreatment.module.scss";
+// import { useState } from "react";
+// import { Treatment } from "../types";
+// import { LoaderFunctionArgs, useLoaderData } from "react-router";
 
-  const [formData, setFormData] = useState({
-    tname: treatment.tname,
-    tdescription: treatment.tdescription,
-    tduration: treatment.tduration,
-    tprice: treatment.tprice,
-  });
+// export const loader = async ({ params }: LoaderFunctionArgs) => {
+//   const { id } = params;
+//   const response = await fetch(
+//     import.meta.env.VITE_BACKEND_URL + "/treatment/" + id,
+//     {
+//       headers: {
+//         Acdept: "application/json",
+//       },
+//     },
+//   );
 
-  const updateTreatment = async () => {
-    const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/treatment/" + treatment._id,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      },
-    );
+//   return response.json();
+// };
 
-    if (!response.ok) {
-      throw new Error("Failed to update treatment");
-    }
+// const OneTreatment = () => {
+//   const treatment = useLoaderData() as Treatment;
 
-    const updatedTreatment = await response.json();
+//   const [editMode, setEditMode] = useState(false);
 
-    setFormData({
-      tname: updatedTreatment.tname,
-      tdescription: updatedTreatment.tdescription,
-      tduration: updatedTreatment.tduration,
-      tprice: updatedTreatment.tprice,
-    });
+//   const [formData, setFormData] = useState({
+//     tname: treatment.tname,
+//     tdescription: treatment.tdescription,
+//     tduration: treatment.tduration,
+//     tprice: treatment.tprice,
+//   });
 
-    setEditMode(false);
+//   const updateTreatment = async () => {
+//     const response = await fetch(
+//       import.meta.env.VITE_BACKEND_URL + "/treatment/" + treatment._id,
+//       {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(formData),
+//       },
+//     );
 
-    window.location.reload();
-  };
+//     if (!response.ok) {
+//       throw new Error("Failed to update treatment");
+//     }
 
-  return (
-    <div>
-      {editMode ? (
-        <input
-          value={formData.tname}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              tname: e.target.value,
-            })
-          }
-        />
-      ) : (
-        <h1>{treatment.tname}</h1>
-      )}
-      <section>
-        <h3>Beskrivning</h3>
-        <div>
-          {editMode ? (
-            <textarea
-              value={formData.tdescription}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  tdescription: e.target.value,
-                })
-              }
-            />
-          ) : (
-            treatment.tdescription || "Ingen beskrivning tillgänglig."
-          )}
-        </div>
-      </section>
+//     const updatedTreatment = await response.json();
 
-      <section>
-        <h3>Tid</h3>
+//     setFormData({
+//       tname: updatedTreatment.tname,
+//       tdescription: updatedTreatment.tdescription,
+//       tduration: updatedTreatment.tduration,
+//       tprice: updatedTreatment.tprice,
+//     });
 
-        {editMode ? (
-          <input
-            type="number"
-            value={formData.tduration}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                tduration: Number(e.target.value),
-              })
-            }
-          />
-        ) : (
-          <p>
-            {treatment.tduration ? `${treatment.tduration} min` : "Ej angiven"}
-          </p>
-        )}
-      </section>
+//     setEditMode(false);
 
-      <section>
-        <h3>Pris</h3>
+//     window.location.reload();
+//   };
 
-        {editMode ? (
-          <input
-            type="number"
-            value={formData.tprice}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                tprice: Number(e.target.value),
-              })
-            }
-          />
-        ) : (
-          <p>{treatment.tprice ? `${treatment.tprice} kr` : "Ej angivet"}</p>
-        )}
-      </section>
+//   return (
+//     <div>
+//       {editMode ? (
+//         <input
+//           value={formData.tname}
+//           onChange={(e) =>
+//             setFormData({
+//               ...formData,
+//               tname: e.target.value,
+//             })
+//           }
+//         />
+//       ) : (
+//         <h1>{treatment.tname}</h1>
+//       )}
+//       <section>
+//         <h3>Beskrivning</h3>
+//         <div>
+//           {editMode ? (
+//             <textarea
+//               value={formData.tdescription}
+//               onChange={(e) =>
+//                 setFormData({
+//                   ...formData,
+//                   tdescription: e.target.value,
+//                 })
+//               }
+//             />
+//           ) : (
+//             treatment.tdescription || "Ingen beskrivning tillgänglig."
+//           )}
+//         </div>
+//       </section>
 
-      {editMode ? (
-        <div>
-          <button onClick={updateTreatment}>Spara</button>
+//       <section>
+//         <h3>Tid</h3>
 
-          <button onClick={() => setEditMode(false)}>Avbryt</button>
-        </div>
-      ) : (
-        <button onClick={() => setEditMode(true)}>Redigera</button>
-      )}
-    </div>
-  );
-};
+//         {editMode ? (
+//           <input
+//             type="number"
+//             value={formData.tduration}
+//             onChange={(e) =>
+//               setFormData({
+//                 ...formData,
+//                 tduration: Number(e.target.value),
+//               })
+//             }
+//           />
+//         ) : (
+//           <p>
+//             {treatment.tduration ? `${treatment.tduration} min` : "Ej angiven"}
+//           </p>
+//         )}
+//       </section>
 
-export default OneTreatment;
+//       <section>
+//         <h3>Pris</h3>
+
+//         {editMode ? (
+//           <input
+//             type="number"
+//             value={formData.tprice}
+//             onChange={(e) =>
+//               setFormData({
+//                 ...formData,
+//                 tprice: Number(e.target.value),
+//               })
+//             }
+//           />
+//         ) : (
+//           <p>{treatment.tprice ? `${treatment.tprice} kr` : "Ej angivet"}</p>
+//         )}
+//       </section>
+
+//       {editMode ? (
+//         <div>
+//           <button onClick={updateTreatment}>Spara</button>
+
+//           <button onClick={() => setEditMode(false)}>Avbryt</button>
+//         </div>
+//       ) : (
+//         <button onClick={() => setEditMode(true)}>Redigera</button>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default OneTreatment;
+

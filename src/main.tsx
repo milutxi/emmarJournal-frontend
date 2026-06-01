@@ -13,9 +13,9 @@ import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
 import OneMachine, {
   loader as oneMachineLoader,
 } from "./routes/oneMachine.tsx";
-import OneTreatment, {
-  loader as oneTreatmentLoader,
-} from "./routes/oneTreatment.tsx";
+// import OneTreatment, {
+//   loader as oneTreatmentLoader,
+// } from "./routes/oneTreatment.tsx";
 
 const router = createBrowserRouter([
   {
@@ -43,11 +43,11 @@ const router = createBrowserRouter([
         path: "treatments",
         element: <Treatments />,
       },
-      {
-        path: "treatments/:id",
-        loader: oneTreatmentLoader,
-        element: <OneTreatment />,
-      },
+      // {
+      //   path: "treatments/:id",
+      //   loader: oneTreatmentLoader,
+      //   element: <OneTreatment />,
+      // },
       {
         path: "machines",
         element: <Machines />,
