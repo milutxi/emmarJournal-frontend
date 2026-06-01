@@ -6,6 +6,7 @@ import ListClients from "../components/Clients/listClients";
 import styles from "./clients.module.scss";
 
 import ClientModal from "../components/ClientModal/clientModal";
+import { FiSearch } from "react-icons/fi";
 
 const Clients = () => {
   const [clients, setClients] = useState<Client[]>([]);
@@ -63,9 +64,20 @@ const Clients = () => {
 
   return (
     <div className={styles.clientStyle}>
-      <h1 className={styles["clientStyle__title"]}>KUNDER</h1>
+      <div className={styles["clientStyle__header"]}>
+        <h1 className={styles["clientStyle__title"]}>KUNDER</h1>
+        {/* Add button */}
+        <button
+          className={styles["clientStyle__button"]}
+          onClick={() => setIsCreateOpen(true)}
+        >
+          + Ny Kund
+        </button>
+      </div>
+
       {/* Toolbar */}
       <div className={styles["clientStyle__toolbar"]}>
+        <FiSearch className={styles["clientStyle__searchIcon"]} />
         <input
           type="text"
           placeholder="Sök kund..."
@@ -73,15 +85,6 @@ const Clients = () => {
           onChange={(e) => setSearchClient(e.target.value)}
           className={styles["clientStyle__search"]}
         />
-
-        {/* Add button */}
-
-        <button
-          className={styles["clientStyle__button"]}
-          onClick={() => setIsCreateOpen(true)}
-        >
-          + Ny Kund
-        </button>
       </div>
 
       {/* Clients list */}
