@@ -53,16 +53,16 @@
 .oneClientStyle {
   max-width: 1200px;
   margin: $indent__l auto;
-  padding: 0 $indent__m;
+  //padding: 0 $indent__m;
 
   display: flex;
-  gap: $indent__l;
+  gap: $indent__s;
   align-items: flex-start;
 }
 
 /* LEFT SIDE */
 .oneClientStyle__left {
-  width: 30%;
+  width: 25%;
   min-width: 280px;
   position: sticky;
   top: 20px;
