@@ -130,7 +130,14 @@ const OneClient = () => {
       {/* RIGHT SIDE */}
       <div className={styles.oneClientStyle__right}>
         <div className={styles.oneClientStyle__header}>
-          <h2>Medical History</h2>
+          <h2 className={styles["oneClientStyle__title"]}>Client Journal
+
+          </h2>
+        <div  className={styles["oneClientStyle__meny"]}>
+
+          <button className={styles["oneClientStyle__button"]}>+ Ny konsult</button>
+          <button className={styles["oneClientStyle__button"]}>+ Ny Behandling Session</button>
+        </div>
         </div>
 
         {/* EMPTY STATE (future timeline area) */}

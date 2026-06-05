@@ -94,13 +94,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-    color: #fff;
+  color: #fff;
 
-    font-size: 32px;
+  font-size: 32px;
   font-weight: 600;
   letter-spacing: 1px;
 
-   user-select: none;
+  user-select: none;
 }
 
 /* NAME */
@@ -135,10 +135,58 @@
 
 /* HEADER */
 .oneClientStyle__header {
-  margin-bottom: $indent__m;
+  // margin-bottom: $indent__m;
 
-  h2 {
-    margin: 0;
+  // h2 {
+  //   margin: 0;
+  // }
+  @include flexbox;
+  align-items: center;
+  margin-bottom: $indent__l;
+
+  @include responsive-mobile {
+    flex-direction: column;
+    gap: $indent__base;
+  }
+}
+
+.oneClientStyle__title {
+  font-size: $font-size__m;
+  color: $color-lynx-black;
+}
+.oneClientStyle__meny {
+  display: flex;
+  gap: $indent__base;
+}
+.oneClientStyle__button {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 18px;
+
+  background: $color-goldenrod;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    transform: scale(1.02);
   }
 }
 
