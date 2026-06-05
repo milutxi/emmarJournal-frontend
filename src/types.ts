@@ -30,10 +30,10 @@ export interface Machine {
   mCommentsManufactureService: string;
   mServiceLokalNextDate: string;
   mServiceManufactureNextDate: string;
-  }
+}
 
-
-  export interface CreateMachineForm {
+export interface CreateMachineForm {
+  _id: string;
   mName: string;
   mManufactureCompany: string;
   mManufactureYear: string;

@@ -13,7 +13,7 @@ import OneClient, { loader as oneClientLoader } from "./routes/oneClient.tsx";
 import OneMachine, {
   loader as oneMachineLoader,
 } from "./routes/oneMachine.tsx";
-import NewTreatment from "./routes/newTreatment.tsx";
+import NewTreatment, { loader as newTreatmentLoader } from "./routes/newTreatment.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "clients/:id/treatment/new",
-        loader: oneClientLoader,
+        loader: newTreatmentLoader,
         element: <NewTreatment />,
       },
       {
