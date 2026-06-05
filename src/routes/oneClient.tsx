@@ -69,6 +69,7 @@
 // export default OneClient;
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Client } from "../types";
 import styles from "./oneClient.module.scss";
 
@@ -96,6 +97,7 @@ const formatDate = (date: string) => {
 
 const OneClient = () => {
   const client = useLoaderData() as Client;
+  const navigate = useNavigate();
 
   return (
     <div className={styles.oneClientStyle}>
@@ -136,7 +138,10 @@ const OneClient = () => {
         <div  className={styles["oneClientStyle__meny"]}>
 
           <button className={styles["oneClientStyle__button"]}>+ Ny konsult</button>
-          <button className={styles["oneClientStyle__button"]}>+ Ny Behandling Session</button>
+          <button 
+            className={styles["oneClientStyle__button"]}
+            onClick={() => navigate(`/app/clients/${client._id}/treatment/new`)}
+            >+ Ny Behandling Session</button>
         </div>
         </div>
 

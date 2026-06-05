@@ -1,0 +1,12 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.newTreatmentStyle {
+  max-width: 1200px;
+  margin: $indent__l auto;
+  
+
+  display: flex;
+  gap: $indent__s;
+  align-items: flex-start;
+}
