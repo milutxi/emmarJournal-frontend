@@ -1,7 +1,7 @@
 import styles from "./oneClient.module.scss";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
-import { Client, Treatment, Machine } from "../types";
+import { Client, Treatment, Machine, TreatmentBlock } from "../types";
 import { useState } from "react";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -32,35 +32,76 @@ const NewTreatment = () => {
     machines: Machine[];
   };
 
-  console.log("client:", client);
-  console.log("treatments:", treatments);
-  console.log("machines:", machines);
+  const [treatmentBlocks, setTreatmentBlocks] = useState<TreatmentBlock[]>([
+    {
+      treatmentId: "",
+      machineIds: [],
+      price: 0,
+      discount: 0,
+      notes: "",
+    },
+  ]);
 
-  const [selectedTreatment, setSelectedTreatment] = useState("");
-  const [selectedMachine, setSelectedMachine] = useState("");
-  const [price, setPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [duration, setDuration] = useState(0);
-  //const [notes, setNotes] = useState("");
+  const grandTotal = treatmentBlocks.reduce(
+    (sum, block) => sum + (block.price - block.discount),
+    0,
+  );
 
-  const totalPrice = price - discount;
-
-  const handleTreatmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const treatmentId = e.target.value;
-
-    setSelectedTreatment(treatmentId);
+  const handleTreatmentChange = (index: number, treatmentId: string) => {
+    const updatedBlocks = [...treatmentBlocks];
 
     const treatment = treatments.find((t) => t._id === treatmentId);
 
+    updatedBlocks[index].treatmentId = treatmentId;
+
     if (treatment) {
-      setPrice(treatment.tprice);
-      setDuration(treatment.tduration);
+      updatedBlocks[index].price = treatment.tprice;
     }
+
+    setTreatmentBlocks(updatedBlocks);
   };
 
-  const handleMachineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const machineId = e.target.value;
-    setSelectedMachine(machineId);
+  const handleMachineChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const machineIds = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value,
+    );
+    const updatedBlocks = [...treatmentBlocks];
+
+    updatedBlocks[index].machineIds = machineIds;
+
+    setTreatmentBlocks(updatedBlocks);
+  };
+
+  const handleDiscountChange = (index: number, value: number) => {
+    const updatedBlocks = [...treatmentBlocks];
+
+    updatedBlocks[index].discount = value;
+
+    setTreatmentBlocks(updatedBlocks);
+  };
+
+  const block = treatmentBlocks[0];
+
+  const duration =
+    treatments.find((t) => t._id === block.treatmentId)?.tduration || 0;
+
+  const addTreatmentBlock = () => {
+    setTreatmentBlocks([
+      ...treatmentBlocks,
+      {
+        treatmentId: "",
+        machineIds: [],
+        price: 0,
+        discount: 0,
+        notes: "",
+      },
+    ]);
+
+    console.log(treatmentBlocks);
   };
 
   return (
@@ -69,37 +110,52 @@ const NewTreatment = () => {
       <p>
         {client.name} {client.lastName}
       </p>
-      <p>
-        BEHANDLING:
-        <select value={selectedTreatment} onChange={handleTreatmentChange}>
-          <option value="">Välj behandling</option>
-          {treatments.map((treatment) => (
-            <option key={treatment._id} value={treatment._id}>
-              {treatment.tname}{" "}
+      <div>
+        <p>Number of treatments: {treatmentBlocks.length}</p>
+        <p>
+          BEHANDLING:
+          <select
+            value={block.treatmentId}
+            onChange={(e) => handleTreatmentChange(0, e.target.value)}
+          >
+            <option value="">Välj behandling</option>
+            {treatments.map((treatment) => (
+              <option key={treatment._id} value={treatment._id}>
+                {treatment.tname}{" "}
+              </option>
+            ))}
+          </select>
+        </p>
+        <p>Tid: {duration}min</p>
+        <p>
+          Price:
+          <input type="number" value={block.price} readOnly />
+          <input
+            type="number"
+            value={block.discount}
+            onChange={(e) => handleDiscountChange(0, Number(e.target.value))}
+          />
+          <input type="number" value={block.price - block.discount} readOnly />
+        </p>
+
+        <p> MASKIN </p>
+        <select
+          multiple
+          value={block.machineIds}
+          onChange={(e) => handleMachineChange(0, e)}
+        >
+          <option value="">Välj Maskin</option>
+          {machines.map((machine) => (
+            <option key={machine._id} value={machine._id}>
+              {machine.mName}{" "}
             </option>
           ))}
         </select>
-        Tid: {duration}min
-        <input type="number" value={price} readOnly />
-        <input
-          type="number"
-          value={discount}
-          onChange={(e) => setDiscount(Number(e.target.value))}
-        />
-        <input type="number" value={totalPrice} readOnly />
-        Tid: Duration:
-      </p>
-      <p> MASKIN </p>
-      <select value={selectedMachine} onChange={handleMachineChange}>
-        <option value="">Välj Maskin</option>
-        {machines.map((machine) => (
-          <option key={machine._id} value={machine._id}>
-            {machine.mName}{" "}
-          </option>
-        ))}
-      </select>
-
-      <p> NOTES</p>
+        <h3> Session Summary</h3>
+        <p>Total: {grandTotal} kr</p>
+        <p> NOTES</p>
+      </div>
+      <button onClick={addTreatmentBlock}>+ Add Treatment</button>
     </div>
   );
 };
