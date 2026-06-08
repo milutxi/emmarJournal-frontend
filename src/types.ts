@@ -60,3 +60,18 @@ export interface Treatment {
   tduration: number;
   tprice: number;
 }
+
+export interface Journal {
+  _id: string;
+  clientId: string;
+  treatmentIds: string[];
+  machineIds: string[];
+  jDate: string;
+  price: number;
+  discount?: number;
+  totalPrice: number;
+  notes?: string;
+  medicalHistoryReviewed: boolean;
+  consentConfirmed: boolean;
+  signedAt: string;
+}
