@@ -75,3 +75,11 @@ export interface Journal {
   consentConfirmed: boolean;
   signedAt: string;
 }
+
+export interface TreatmentBlock {
+  treatmentId: string;
+  machineIds: string[];
+  price: number;
+  discount: number;
+  notes: string;
+}
