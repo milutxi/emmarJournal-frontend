@@ -110,52 +110,61 @@ const NewTreatment = () => {
       <p>
         {client.name} {client.lastName}
       </p>
-      <div>
-        <p>Number of treatments: {treatmentBlocks.length}</p>
-        <p>
-          BEHANDLING:
+      {treatmentBlocks.map((block, index) => (
+        <div key={index}>
+          <h3>Number of treatments: {index + 1}</h3>
+          <p>
+            BEHANDLING:
+            <select
+              value={block.treatmentId}
+              onChange={(e) => handleTreatmentChange(index, e.target.value)}
+            >
+              <option value="">Välj behandling</option>
+              {treatments.map((treatment) => (
+                <option key={treatment._id} value={treatment._id}>
+                  {treatment.tname}{" "}
+                </option>
+              ))}
+            </select>
+          </p>
+          <p>Tid: {duration}min</p>
+          <p>
+            Price:
+            <input type="number" value={block.price} readOnly />
+            <input
+              type="number"
+              value={block.discount}
+              onChange={(e) =>
+                handleDiscountChange(index, Number(e.target.value))
+              }
+            />
+            <input
+              type="number"
+              value={block.price - block.discount}
+              readOnly
+            />
+          </p>
+
+          <p> MASKIN </p>
           <select
-            value={block.treatmentId}
-            onChange={(e) => handleTreatmentChange(0, e.target.value)}
+            multiple
+            value={block.machineIds}
+            onChange={(e) => handleMachineChange(index, e)}
           >
-            <option value="">Välj behandling</option>
-            {treatments.map((treatment) => (
-              <option key={treatment._id} value={treatment._id}>
-                {treatment.tname}{" "}
+            <option value="">Välj Maskin</option>
+            {machines.map((machine) => (
+              <option key={machine._id} value={machine._id}>
+                {machine.mName}{" "}
               </option>
             ))}
           </select>
-        </p>
-        <p>Tid: {duration}min</p>
-        <p>
-          Price:
-          <input type="number" value={block.price} readOnly />
-          <input
-            type="number"
-            value={block.discount}
-            onChange={(e) => handleDiscountChange(0, Number(e.target.value))}
-          />
-          <input type="number" value={block.price - block.discount} readOnly />
-        </p>
 
-        <p> MASKIN </p>
-        <select
-          multiple
-          value={block.machineIds}
-          onChange={(e) => handleMachineChange(0, e)}
-        >
-          <option value="">Välj Maskin</option>
-          {machines.map((machine) => (
-            <option key={machine._id} value={machine._id}>
-              {machine.mName}{" "}
-            </option>
-          ))}
-        </select>
-        <h3> Session Summary</h3>
-        <p>Total: {grandTotal} kr</p>
-        <p> NOTES</p>
-      </div>
+          <p> NOTES</p>
+        </div>
+      ))}
       <button onClick={addTreatmentBlock}>+ Add Treatment</button>
+      <h3> Session Summary</h3>
+      <p>Total: {grandTotal} kr</p>
     </div>
   );
 };
