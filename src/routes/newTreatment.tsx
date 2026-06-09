@@ -1,8 +1,10 @@
 import styles from "./oneClient.module.scss";
+import { useEffect } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Client, Treatment, Machine, TreatmentBlock } from "../types";
 import { useState } from "react";
+
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -25,12 +27,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   };
 };
 
+
+
 const NewTreatment = () => {
   const { client, treatments, machines } = useLoaderData() as {
     client: Client;
     treatments: Treatment[];
     machines: Machine[];
   };
+
+
 
   const [treatmentBlocks, setTreatmentBlocks] = useState<TreatmentBlock[]>([
     {
@@ -104,6 +110,17 @@ const NewTreatment = () => {
     console.log(treatmentBlocks);
   };
 
+  const handleNotesChange = ( index: number, value: string) => {
+    const updatedBlocks = [...treatmentBlocks];
+    updatedBlocks[index].notes = value;
+
+    setTreatmentBlocks(updatedBlocks);
+  };
+
+useEffect(() => {
+  console.log(treatmentBlocks);
+}, [treatmentBlocks]);
+
   return (
     <div className={styles.newTreatmentStyle}>
       <h1>New Treatment Session</h1>
@@ -158,8 +175,16 @@ const NewTreatment = () => {
               </option>
             ))}
           </select>
-
-          <p> NOTES</p>
+<div>
+  <label>Komentär:</label>
+  <textarea 
+    value={block.notes} 
+    onChange={(e) => handleNotesChange(index, e.target.value)} 
+    rows={4}
+    placeholder="Behandling antekningar"
+    />
+</div>
+          
         </div>
       ))}
       <button onClick={addTreatmentBlock}>+ Add Treatment</button>
@@ -168,5 +193,7 @@ const NewTreatment = () => {
     </div>
   );
 };
+
+
 
 export default NewTreatment;
