@@ -1,4 +1,4 @@
-import styles from "./oneClient.module.scss";
+import styles from "./newTreatment.module.scss";
 import { useEffect } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
@@ -37,11 +37,15 @@ const NewTreatment = () => {
     {
       treatmentId: "",
       machineIds: [],
+      duration: 0,
       price: 0,
       discount: 0,
       notes: "",
     },
   ]);
+  const [sessionDate, setSessionDAte] = useState(
+    new Date().toISOString().split("T")[0],
+  );
 
   const grandTotal = treatmentBlocks.reduce(
     (sum, block) => sum + (block.price - block.discount),
@@ -57,6 +61,7 @@ const NewTreatment = () => {
 
     if (treatment) {
       updatedBlocks[index].price = treatment.tprice;
+      updatedBlocks[index].duration = treatment.tduration;
     }
 
     setTreatmentBlocks(updatedBlocks);
@@ -85,10 +90,10 @@ const NewTreatment = () => {
     setTreatmentBlocks(updatedBlocks);
   };
 
-  const block = treatmentBlocks[0];
-
-  const duration =
-    treatments.find((t) => t._id === block.treatmentId)?.tduration || 0;
+  const totalDuration = treatmentBlocks.reduce(
+    (sum, block) => sum + block.duration,
+    0,
+  );
 
   const addTreatmentBlock = () => {
     setTreatmentBlocks([
@@ -96,6 +101,7 @@ const NewTreatment = () => {
       {
         treatmentId: "",
         machineIds: [],
+        duration: 0,
         price: 0,
         discount: 0,
         notes: "",
@@ -118,86 +124,187 @@ const NewTreatment = () => {
     setTreatmentBlocks(updatedBlocks);
   };
 
+  const treatmentCount = treatmentBlocks.length;
+
+  const totalDiscount = treatmentBlocks.reduce(
+    (sum, block) => sum + block.discount,
+    0,
+  );
+
+  const subtotal = treatmentBlocks.reduce((sum, block) => sum + block.price, 0);
+
   useEffect(() => {
     console.log(treatmentBlocks);
   }, [treatmentBlocks]);
 
   return (
     <div className={styles.newTreatmentStyle}>
-      <h1>New Treatment Session</h1>
-      <p>
-        {client.name} {client.lastName}
-      </p>
-      {treatmentBlocks.map((block, index) => (
-        <div key={index}>
-          <h3>Number of treatments: {index + 1}</h3>
-          <p>
-            BEHANDLING:
-            <select
-              value={block.treatmentId}
-              onChange={(e) => handleTreatmentChange(index, e.target.value)}
-            >
-              <option value="">Välj behandling</option>
-              {treatments.map((treatment) => (
-                <option key={treatment._id} value={treatment._id}>
-                  {treatment.tname}{" "}
-                </option>
-              ))}
-            </select>
-          </p>
-          <p>Tid: {duration}min</p>
-          <p>
-            Price:
-            <input type="number" value={block.price} readOnly />
-            <input
-              type="number"
-              value={block.discount}
-              onChange={(e) =>
-                handleDiscountChange(index, Number(e.target.value))
-              }
-            />
-            <input
-              type="number"
-              value={block.price - block.discount}
-              readOnly
-            />
-          </p>
-
-          <p> MASKIN </p>
-          <select
-            multiple
-            value={block.machineIds}
-            onChange={(e) => handleMachineChange(index, e)}
-          >
-            <option value="">Välj Maskin</option>
-            {machines.map((machine) => (
-              <option key={machine._id} value={machine._id}>
-                {machine.mName}{" "}
-              </option>
-            ))}
-          </select>
+      <div className={styles.newTreatmentStyle__left}>
+        <div className={styles.sessionHeader}>
           <div>
-            <label>Komentär:</label>
-            <textarea
-              value={block.notes}
-              onChange={(e) => handleNotesChange(index, e.target.value)}
-              rows={4}
-              placeholder="Behandling antekningar"
-            />
+            <h1>Ny behandling Session</h1>
+            <h2>
+              {client.name} {client.lastName}
+            </h2>
           </div>
-
-          <button type="button" onClick={addTreatmentBlock}>
-            + Add Behandling
-          </button>
-          {treatmentBlocks.length > 1 && (
-            <button type="button" onClick={() => removeTreatmentBlock(index)}>
-              Ta bort Behandling
-            </button>
-          )}
         </div>
-      ))}
-      <h3> Session Summary</h3>
-      <p>Total: {grandTotal} kr</p>
+
+        <div>
+          <label>Behandlingsdatum</label>
+          <input
+            type="date"
+            value={sessionDate}
+            onChange={(e) => setSessionDAte(e.target.value)}
+          />
+        </div>
+        {treatmentBlocks.map((block, index) => (
+          <div key={index} className={styles.treatmentCard}>
+            <div className={styles.treatmentCard__header}>
+              <h3>Behandling: {index + 1}</h3>
+              {treatmentBlocks.length > 1 && (
+                <button
+                  className={styles.removeButton}
+                  type="button"
+                  onClick={() => removeTreatmentBlock(index)}
+                >
+                  Ta bort Behandling
+                </button>
+              )}
+            </div>
+            <div>
+              <select
+                value={block.treatmentId}
+                onChange={(e) => handleTreatmentChange(index, e.target.value)}
+              >
+                <option value="">Välj behandling</option>
+                {treatments.map((treatment) => (
+                  <option key={treatment._id} value={treatment._id}>
+                    {treatment.tname}{" "}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <p>Tid: {block.duration}min</p>
+            <div className={styles.priceSection}>
+              <div>
+                <label>Price:</label>
+                <input type="number" value={block.price} readOnly />
+              </div>
+              <div>
+                <label>Discount:</label>
+                <input
+                  type="number"
+                  value={block.discount}
+                  onChange={(e) =>
+                    handleDiscountChange(index, Number(e.target.value))
+                  }
+                />
+              </div>
+              <div>
+                <label>Total:</label>
+                <input
+                  type="number"
+                  value={block.price - block.discount}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div>
+              <label> MASKIN </label>
+              <select
+                multiple
+                value={block.machineIds}
+                onChange={(e) => handleMachineChange(index, e)}
+              >
+                <option value="">Välj Maskin</option>
+                {machines.map((machine) => (
+                  <option key={machine._id} value={machine._id}>
+                    {machine.mName}{" "}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Behandlingsanteckningar:</label>
+              <textarea
+                value={block.notes}
+                onChange={(e) => handleNotesChange(index, e.target.value)}
+                rows={4}
+                placeholder="Behandling antekningar"
+              />
+            </div>
+
+            <button
+              className={styles.addButton}
+              type="button"
+              onClick={addTreatmentBlock}
+            >
+              + Add Behandling
+            </button>
+          </div>
+        ))}
+
+{/* Medicine History */}
+
+
+
+
+
+
+      </div>
+
+
+
+      {/* summary on the right side */}
+
+      <div className={styles.newTreatmentStyle__right}>
+        <div className={styles.sessionSummary}>
+          <h2>Session Summary</h2>
+
+          <p>
+            <strong>Client:</strong> {client.name} {client.lastName}
+          </p>
+
+          <p>
+            <strong>Date:</strong> {sessionDate}
+          </p>
+
+          <p>
+            <strong>Treatments:</strong> {treatmentCount}
+          </p>
+
+          <ul>
+            {treatmentBlocks.map((block, index) => {
+              const treatment = treatments.find(
+                (t) => t._id === block.treatmentId,
+              );
+
+              return (
+                <li key={index}>
+                  {treatment?.tname || "No treatment selected"}
+                </li>
+              );
+            })}
+          </ul>
+          <p>
+            <strong>Total behandlingstid:</strong>{" "}
+            {Math.floor(totalDuration / 60)}h {totalDuration % 60}min
+          </p>
+
+          <p>
+            <strong>Subtotal:</strong> {subtotal} kr
+          </p>
+
+          <p>
+            <strong>Total discount:</strong> {totalDiscount} kr
+          </p>
+
+          <p>
+            <strong>Total:</strong> {grandTotal} kr
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

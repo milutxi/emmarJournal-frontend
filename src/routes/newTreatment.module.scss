@@ -2,11 +2,122 @@
 @use "../styles/mixins" as *;
 
 .newTreatmentStyle {
-  max-width: 1200px;
-  margin: $indent__l auto;
-  
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $indent__l;
+  padding: $indent__l;
 
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.newTreatmentStyle__left {
   display: flex;
-  gap: $indent__s;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.sessionHeader {
+  @include flexbox;
+  align-items: center;
+  background: white;
+  border: 1px solid $color-dark-outline;
+  border-radius: 12px;
+  padding: $indent__m;
+  margin-bottom: $indent__m;
+
+  @include responsive-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $indent__m;
+  }
+}
+
+.treatmentCard {
+  background-color: white;
+  border: 1px solid $color-dark-outline;
+  border-radius: 12px;
+  padding: $indent__m;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.treatmentCard h3 {
+  color: $color-body-display;
+  font-size: $font-size__m;
+  margin: 0;
+}
+
+.priceSection {
+  @include gridbox(180px);
+  gap: $indent__m;
+}
+
+.treatmentCard input,
+.treatmentCard select,
+.treatmentCard textarea {
+  width: 100%;
+  padding: $indent__s;
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+  font-family: $font-montserrat;
+}
+
+.treatmentCard textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.sessionSummary {
+  background-color: white;
+  border-left: 4px solid $color-goldenrod;
+  border-radius: 12px;
+  padding: $indent__m;
+  position: sticky;
+  top: $indent__m;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sessionSummary h2 {
+  color: $color-goldenrod;
+  margin-top: 0;
+}
+
+.sessionSummary strong {
+  color: $color-body-display;
+}
+
+.addButton {
+  background-color: $color-goldenrod;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.addButton:hover {
+  opacity: 0.9;
+}
+
+.removeButton {
+  background: transparent;
+  border: 1px solid $color-goldenrod;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  color: $color-body-display;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: $color-goldenrod;
+  opacity: 0.7;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
