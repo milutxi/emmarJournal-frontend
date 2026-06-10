@@ -234,27 +234,18 @@ const NewTreatment = () => {
                 placeholder="Behandling antekningar"
               />
             </div>
-
-            <button
-              className={styles.addButton}
-              type="button"
-              onClick={addTreatmentBlock}
-            >
-              + Add Behandling
-            </button>
           </div>
         ))}
+        <button
+          className={styles.addButton}
+          type="button"
+          onClick={addTreatmentBlock}
+        >
+          + Add Behandling
+        </button>
 
-{/* Medicine History */}
-
-
-
-
-
-
+        {/* Medicine History */}
       </div>
-
-
 
       {/* summary on the right side */}
 
