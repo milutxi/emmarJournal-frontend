@@ -5,7 +5,6 @@ import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Client, Treatment, Machine, TreatmentBlock } from "../types";
 import { useState } from "react";
 
-
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
@@ -27,16 +26,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   };
 };
 
-
-
 const NewTreatment = () => {
   const { client, treatments, machines } = useLoaderData() as {
     client: Client;
     treatments: Treatment[];
     machines: Machine[];
   };
-
-
 
   const [treatmentBlocks, setTreatmentBlocks] = useState<TreatmentBlock[]>([
     {
@@ -110,16 +105,22 @@ const NewTreatment = () => {
     console.log(treatmentBlocks);
   };
 
-  const handleNotesChange = ( index: number, value: string) => {
+  const removeTreatmentBlock = (index: number) => {
+    if (treatmentBlocks.length === 1) return;
+
+    setTreatmentBlocks(treatmentBlocks.filter((_, i) => i !== index));
+  };
+
+  const handleNotesChange = (index: number, value: string) => {
     const updatedBlocks = [...treatmentBlocks];
     updatedBlocks[index].notes = value;
 
     setTreatmentBlocks(updatedBlocks);
   };
 
-useEffect(() => {
-  console.log(treatmentBlocks);
-}, [treatmentBlocks]);
+  useEffect(() => {
+    console.log(treatmentBlocks);
+  }, [treatmentBlocks]);
 
   return (
     <div className={styles.newTreatmentStyle}>
@@ -175,25 +176,30 @@ useEffect(() => {
               </option>
             ))}
           </select>
-<div>
-  <label>Komentär:</label>
-  <textarea 
-    value={block.notes} 
-    onChange={(e) => handleNotesChange(index, e.target.value)} 
-    rows={4}
-    placeholder="Behandling antekningar"
-    />
-</div>
-          
+          <div>
+            <label>Komentär:</label>
+            <textarea
+              value={block.notes}
+              onChange={(e) => handleNotesChange(index, e.target.value)}
+              rows={4}
+              placeholder="Behandling antekningar"
+            />
+          </div>
+
+          <button type="button" onClick={addTreatmentBlock}>
+            + Add Behandling
+          </button>
+          {treatmentBlocks.length > 1 && (
+            <button type="button" onClick={() => removeTreatmentBlock(index)}>
+              Ta bort Behandling
+            </button>
+          )}
         </div>
       ))}
-      <button onClick={addTreatmentBlock}>+ Add Treatment</button>
       <h3> Session Summary</h3>
       <p>Total: {grandTotal} kr</p>
     </div>
   );
 };
-
-
 
 export default NewTreatment;
