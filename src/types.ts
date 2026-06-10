@@ -79,6 +79,7 @@ export interface Journal {
 export interface TreatmentBlock {
   treatmentId: string;
   machineIds: string[];
+  duration: number;
   price: number;
   discount: number;
   notes: string;
