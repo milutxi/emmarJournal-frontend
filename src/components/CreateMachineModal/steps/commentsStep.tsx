@@ -15,7 +15,57 @@ const CommentsStep = ({
 }: Props) => {
   return (
     <div className={styles.formSection}>
-      <h2>Kommentarer</h2>
+      {/* <div >
+
+      <label className={styles.parameters} >
+  Requires Treatment Parameters?
+</label>
+
+<input
+  type="checkbox"
+  checked={formData.requiresTreatmentParameters}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      requiresTreatmentParameters: e.target.checked,
+    })
+  }
+/>
+  </div> */}
+
+   <h3>Maskinen kräver behandlingsparametrar?</h3>
+
+  <div className={styles.acquisitionSelector}>
+    <label className={styles.acquisitionOption}>
+      <input
+        type="radio"
+        name="requiresTreatmentParameters"
+        checked={formData.requiresTreatmentParameters === true}
+        onChange={() =>
+          setFormData({
+            ...formData,
+            requiresTreatmentParameters: true,
+          })
+        }
+      />
+      Ja
+    </label>
+
+    <label className={styles.acquisitionOption}>
+      <input
+        type="radio"
+        name="requiresTreatmentParameters"
+        checked={formData.requiresTreatmentParameters === false}
+        onChange={() =>
+          setFormData({
+            ...formData,
+            requiresTreatmentParameters: false,
+          })
+        }
+      />
+      Nej
+    </label>
+  </div>
 
 <div className={styles.inputGroup}>
   <label>Kommentarer</label>
