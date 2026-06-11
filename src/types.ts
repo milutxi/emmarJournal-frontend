@@ -30,6 +30,8 @@ export interface Machine {
   mCommentsManufactureService: string;
   mServiceLokalNextDate: string;
   mServiceManufactureNextDate: string;
+  requiresTreatmentParameters: boolean;
+  acquisitionType: "leasing" | "purchase";
 }
 
 export interface CreateMachineForm {
@@ -50,6 +52,7 @@ export interface CreateMachineForm {
   mCommentsManufactureService: string;
   mServiceLokalNextDate: string;
   mServiceManufactureNextDate: string;
+  requiresTreatmentParameters: boolean;
   acquisitionType: "leasing" | "purchase";
 }
 
