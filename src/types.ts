@@ -35,7 +35,6 @@ export interface Machine {
 }
 
 export interface CreateMachineForm {
-  _id: string;
   mName: string;
   mManufactureCompany: string;
   mManufactureYear: string;

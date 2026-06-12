@@ -32,11 +32,7 @@ const OneMachine = () => {
   const loadedMachine = useLoaderData() as Machine;
 
   const [machine, setMachine] = useState(loadedMachine);
-
-  const isLeasing = machine.mStartLeasingDate || machine.mFinishLeasingDate;
-
   const [editSection, setEditSection] = useState<string | null>(null);
-  
 
   const updateMachine = async (update: Partial<Machine>) => {
     const response = await fetch(
@@ -63,12 +59,18 @@ const OneMachine = () => {
   });
 
   const [acquisitionForm, setAcquisitionForm] = useState({
+    acquisitionType: machine.acquisitionType,
     mStartLeasingDate: machine.mStartLeasingDate,
     mFinishLeasingDate: machine.mFinishLeasingDate,
     mPurchaseDate: machine.mPurchaseDate,
   });
+  const isLeasing =
+    editSection === "acquisition"
+      ? acquisitionForm.acquisitionType === "leasing"
+      : machine.acquisitionType === "leasing";
 
   const [commentsForm, setCommentsForm] = useState({
+    requiresTreatmentParameters: machine.requiresTreatmentParameters,
     mComments: machine.mComments,
   });
 
@@ -236,7 +238,7 @@ const OneMachine = () => {
 
       {/* RIGHT SIDE */}
       <div className={styles["oneMachineStyle__right"]}>
-        <section className={styles["oneMachineStyle__section"]}>
+        {/* <section className={styles["oneMachineStyle__section"]}>
           <h3>Anskaffning</h3>
           {isLeasing ? (
             <div className={styles["oneMachineStyle__infoGroup"]}>
@@ -247,15 +249,17 @@ const OneMachine = () => {
                 <p>
                   <span>Startdatum:</span>
 
-                  {editSection === "acquisition" ? (
+                  {editSection === "acquisition" && (
+                     <div className={styles.acquisitionSelector}>
+
                     <input
                       type="date"
                       value={
                         acquisitionForm.mStartLeasingDate
-                          ? new Date(acquisitionForm.mStartLeasingDate)
-                              .toISOString()
-                              .split("T")[0]
-                          : ""
+                        ? new Date(acquisitionForm.mStartLeasingDate)
+                        .toISOString()
+                        .split("T")[0]
+                        : ""
                       }
                       onChange={(e) =>
                         setAcquisitionForm({
@@ -263,23 +267,26 @@ const OneMachine = () => {
                           mStartLeasingDate: e.target.value,
                         })
                       }
-                    />
+                      />
                   ) : (
                     formatDate(machine.mStartLeasingDate)
+                  </div>
                   )}
                 </p>
 
-                <p>
+<p>
                   <span>Slutdatum:</span>
-                  {editSection === "acquisition" ? (
+                  {editSection === "acquisition" && (
+                    <div className={styles.acquisitionSelector}>
+
                     <input
                       type="date"
                       value={
                         acquisitionForm.mFinishLeasingDate
-                          ? new Date(acquisitionForm.mFinishLeasingDate)
-                              .toISOString()
-                              .split("T")[0]
-                          : ""
+                        ? new Date(acquisitionForm.mFinishLeasingDate)
+                        .toISOString()
+                        .split("T")[0]
+                        : ""
                       }
                       onChange={(e) =>
                         setAcquisitionForm({
@@ -287,9 +294,10 @@ const OneMachine = () => {
                           mFinishLeasingDate: e.target.value,
                         })
                       }
-                    />
+                      />
                   ) : (
                     formatDate(machine.mFinishLeasingDate)
+                      </div>
                   )}
                 </p>
               </div>
@@ -303,15 +311,17 @@ const OneMachine = () => {
 
                 <p>
                   <span>Inköpsdatum:</span>
-                  {editSection === "acquisition" ? (
+                  {editSection === "acquisition" && (
+                    <div className={styles.acquisitionSelector}>
+
                     <input
                       type="date"
                       value={
                         acquisitionForm.mPurchaseDate
-                          ? new Date(acquisitionForm.mPurchaseDate)
-                              .toISOString()
-                              .split("T")[0]
-                          : ""
+                        ? new Date(acquisitionForm.mPurchaseDate)
+                        .toISOString()
+                        .split("T")[0]
+                        : ""
                       }
                       onChange={(e) =>
                         setAcquisitionForm({
@@ -319,9 +329,10 @@ const OneMachine = () => {
                           mPurchaseDate: e.target.value,
                         })
                       }
-                    />
+                      />
                   ) : (
                     formatDate(machine.mPurchaseDate)
+                      </div>
                   )}
                 </p>
               </div>
@@ -350,6 +361,168 @@ const OneMachine = () => {
             <button onClick={() => setEditSection("acquisition")}>
               Redigera
             </button>
+          )}
+        </section> */}
+
+        <section className={styles["oneMachineStyle__section"]}>
+          <h3>Anskaffning</h3>
+
+          {editSection === "acquisition" ? (
+            <>
+              {/* EDIT MODE */}
+              <div className={styles.acquisitionSelector}>
+                <label>
+                  <input
+                    type="radio"
+                    name="acquisitionType"
+                    checked={acquisitionForm.acquisitionType === "purchase"}
+                    onChange={() =>
+                      setAcquisitionForm({
+                        ...acquisitionForm,
+                        acquisitionType: "purchase",
+                        mStartLeasingDate: "",
+                        mFinishLeasingDate: "",
+                      })
+                    }
+                  />
+                  Köp
+                </label>
+
+                <label>
+                  <input
+                    type="radio"
+                    name="acquisitionType"
+                    checked={acquisitionForm.acquisitionType === "leasing"}
+                    onChange={() =>
+                      setAcquisitionForm({
+                        ...acquisitionForm,
+                        acquisitionType: "leasing",
+                        mPurchaseDate: "",
+                      })
+                    }
+                  />
+                  Leasing
+                </label>
+              </div>
+              {/* IF ACQUISITION FORM IS LEASING SHOW BOTH START AND FINISH DATE */}
+              {acquisitionForm.acquisitionType === "leasing" ? (
+                <div className={styles["oneMachineStyle__inlineInfo"]}>
+                  <p>
+                    <span>Startdatum:</span>
+                    <input
+                      type="date"
+                      value={
+                        acquisitionForm.mStartLeasingDate
+                          ? new Date(acquisitionForm.mStartLeasingDate)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        setAcquisitionForm({
+                          ...acquisitionForm,
+                          mStartLeasingDate: e.target.value,
+                        })
+                      }
+                    />
+                  </p>
+
+                  <p>
+                    <span>Slutdatum:</span>
+                    <input
+                      type="date"
+                      value={
+                        acquisitionForm.mFinishLeasingDate
+                          ? new Date(acquisitionForm.mFinishLeasingDate)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        setAcquisitionForm({
+                          ...acquisitionForm,
+                          mFinishLeasingDate: e.target.value,
+                        })
+                      }
+                    />
+                  </p>
+                </div>
+              ) : (
+                // IF NOT LEASING FORM, IT IS PURCHASE, THEN SHOW THE PURCHASE DATE
+                <p>
+                  <span>Inköpsdatum:</span>
+                  <input
+                    type="date"
+                    value={
+                      acquisitionForm.mPurchaseDate
+                        ? new Date(acquisitionForm.mPurchaseDate)
+                            .toISOString()
+                            .split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setAcquisitionForm({
+                        ...acquisitionForm,
+                        mPurchaseDate: e.target.value,
+                      })
+                    }
+                  />
+                </p>
+              )}
+
+              <div>
+                <button
+                  onClick={async () => {
+                    try {
+                      const updatedMachine =
+                        await updateMachine(acquisitionForm);
+                      setMachine(updatedMachine);
+                      setEditSection(null);
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }}
+                >
+                  Spara
+                </button>
+
+                <button onClick={() => setEditSection(null)}>Avbryt</button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* DISPLAY MODE */}
+
+              <div className={styles["oneMachineStyle__infoGroup"]}>
+                <p>
+                  <span>Typ:</span> {/* LEASING INFO */}
+                  {machine.acquisitionType === "leasing" ? "LEASING" : "KÖP"}
+                </p>
+
+                {machine.acquisitionType === "leasing" ? (
+                  <div className={styles["oneMachineStyle__inlineInfo"]}>
+                    <p>
+                      <span>Startdatum:</span>{" "}
+                      {formatDate(machine.mStartLeasingDate)}
+                    </p>
+
+                    <p>
+                      <span>Slutdatum:</span>{" "}
+                      {formatDate(machine.mFinishLeasingDate)}
+                    </p>
+                  </div>
+                ) : (
+                  <p>
+                    <span>Inköpsdatum:</span> {/* IF NOT PURCHASE INFO */}
+                    {formatDate(machine.mPurchaseDate)}
+                  </p>
+                )}
+              </div>
+
+              <button onClick={() => setEditSection("acquisition")}>
+                Redigera
+              </button>
+            </>
           )}
         </section>
 

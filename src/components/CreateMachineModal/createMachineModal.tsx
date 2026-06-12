@@ -30,6 +30,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
     mCommentsManufactureService: "",
     mServiceLokalNextDate: "",
     mServiceManufactureNextDate: "",
+    requiresTreatmentParameters: false,
     acquisitionType: "purchase",
   });
 
