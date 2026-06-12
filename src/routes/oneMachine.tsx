@@ -402,21 +402,50 @@ const OneMachine = () => {
 
         <section className={styles["oneMachineStyle__section"]}>
           <h3>Kommentarer</h3>
-          <div className={styles["oneMachineStyle__textBox"]}>
+        
             {editSection === "comments" ? (
-              <textarea
-                value={commentsForm.mComments}
-                onChange={(e) =>
-                  setCommentsForm({
-                    ...commentsForm,
-                    mComments: e.target.value,
-                  })
-                }
-              />
+              <>
+                <div className={styles.parameterToggle}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={commentsForm.requiresTreatmentParameters}
+                      onChange={(e) =>
+                        setCommentsForm({
+                          ...commentsForm,
+                          requiresTreatmentParameters: e.target.checked,
+                        })
+                      }
+                    />
+                    Kräver behandlingsparametrar
+                  </label>
+                </div>
+                 <div className={styles["oneMachineStyle__textBox"]}>
+
+                <textarea
+                  value={commentsForm.mComments}
+                  onChange={(e) =>
+                    setCommentsForm({
+                      ...commentsForm,
+                      mComments: e.target.value,
+                    })
+                  }
+                  />
+                  </div>
+              </>
             ) : (
-              machine.mComments || "Ingen kommentarer tillgängliga."
+              <>
+                <div className={styles.parameterStatus}>
+                  <strong>Kräver Behandlingsparametrar:</strong>{" "}
+                  {machine.requiresTreatmentParameters ? "Ja" : "Nej"}
+                </div>
+
+                <div className={styles["oneMachineStyle__textBox"]}>
+                  {machine.mComments || "Ingen kommentarer tillgängliga."}
+                </div>
+              </>
             )}
-          </div>
+          
 
           {editSection === "comments" ? (
             <div>
