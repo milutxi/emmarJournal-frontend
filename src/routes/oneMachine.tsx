@@ -64,10 +64,10 @@ const OneMachine = () => {
     mFinishLeasingDate: machine.mFinishLeasingDate,
     mPurchaseDate: machine.mPurchaseDate,
   });
-  const isLeasing =
-    editSection === "acquisition"
-      ? acquisitionForm.acquisitionType === "leasing"
-      : machine.acquisitionType === "leasing";
+  // const isLeasing =
+  //   editSection === "acquisition"
+  //     ? acquisitionForm.acquisitionType === "leasing"
+  //     : machine.acquisitionType === "leasing";
 
   const [commentsForm, setCommentsForm] = useState({
     requiresTreatmentParameters: machine.requiresTreatmentParameters,
@@ -238,132 +238,6 @@ const OneMachine = () => {
 
       {/* RIGHT SIDE */}
       <div className={styles["oneMachineStyle__right"]}>
-        {/* <section className={styles["oneMachineStyle__section"]}>
-          <h3>Anskaffning</h3>
-          {isLeasing ? (
-            <div className={styles["oneMachineStyle__infoGroup"]}>
-              <p>
-                <span>Typ:</span> LEASING
-              </p>
-              <div className={styles["oneMachineStyle__inlineInfo"]}>
-                <p>
-                  <span>Startdatum:</span>
-
-                  {editSection === "acquisition" && (
-                     <div className={styles.acquisitionSelector}>
-
-                    <input
-                      type="date"
-                      value={
-                        acquisitionForm.mStartLeasingDate
-                        ? new Date(acquisitionForm.mStartLeasingDate)
-                        .toISOString()
-                        .split("T")[0]
-                        : ""
-                      }
-                      onChange={(e) =>
-                        setAcquisitionForm({
-                          ...acquisitionForm,
-                          mStartLeasingDate: e.target.value,
-                        })
-                      }
-                      />
-                  ) : (
-                    formatDate(machine.mStartLeasingDate)
-                  </div>
-                  )}
-                </p>
-
-<p>
-                  <span>Slutdatum:</span>
-                  {editSection === "acquisition" && (
-                    <div className={styles.acquisitionSelector}>
-
-                    <input
-                      type="date"
-                      value={
-                        acquisitionForm.mFinishLeasingDate
-                        ? new Date(acquisitionForm.mFinishLeasingDate)
-                        .toISOString()
-                        .split("T")[0]
-                        : ""
-                      }
-                      onChange={(e) =>
-                        setAcquisitionForm({
-                          ...acquisitionForm,
-                          mFinishLeasingDate: e.target.value,
-                        })
-                      }
-                      />
-                  ) : (
-                    formatDate(machine.mFinishLeasingDate)
-                      </div>
-                  )}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className={styles["oneMachineStyle__infoGroup"]}>
-              <div className={styles["oneMachineStyle__inlineInfo"]}>
-                <p>
-                  <span>Typ:</span> KÖP
-                </p>
-
-                <p>
-                  <span>Inköpsdatum:</span>
-                  {editSection === "acquisition" && (
-                    <div className={styles.acquisitionSelector}>
-
-                    <input
-                      type="date"
-                      value={
-                        acquisitionForm.mPurchaseDate
-                        ? new Date(acquisitionForm.mPurchaseDate)
-                        .toISOString()
-                        .split("T")[0]
-                        : ""
-                      }
-                      onChange={(e) =>
-                        setAcquisitionForm({
-                          ...acquisitionForm,
-                          mPurchaseDate: e.target.value,
-                        })
-                      }
-                      />
-                  ) : (
-                    formatDate(machine.mPurchaseDate)
-                      </div>
-                  )}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {editSection === "acquisition" ? (
-            <div>
-              <button
-                onClick={async () => {
-                  try {
-                    const updatedMachine = await updateMachine(acquisitionForm);
-                    setMachine(updatedMachine);
-                    setEditSection(null);
-                  } catch (error) {
-                    console.error(error);
-                  }
-                }}
-              >
-                Spara
-              </button>
-
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
-            </div>
-          ) : (
-            <button onClick={() => setEditSection("acquisition")}>
-              Redigera
-            </button>
-          )}
-        </section> */}
-
         <section className={styles["oneMachineStyle__section"]}>
           <h3>Anskaffning</h3>
 
