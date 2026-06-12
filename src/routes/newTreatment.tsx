@@ -2,8 +2,9 @@ import styles from "./newTreatment.module.scss";
 import { useEffect } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
-import { Client, Treatment, Machine, TreatmentBlock } from "../types";
+import { Client, Treatment, Machine, TreatmentBlock, TreatmentParametersType } from "../types";
 import { useState } from "react";
+import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -41,6 +42,8 @@ const NewTreatment = () => {
       price: 0,
       discount: 0,
       notes: "",
+
+      treatmentParameters: {},
     },
   ]);
   const [sessionDate, setSessionDAte] = useState(
@@ -79,6 +82,22 @@ const NewTreatment = () => {
 
     updatedBlocks[index].machineIds = machineIds;
 
+    const selectedMachines = machines.filter((machine) =>
+      machineIds.includes(machine._id),
+    );
+
+    const requiresParameters = selectedMachines.some(
+      (machine) => machine.requiresTreatmentParameters,
+    );
+
+    if (requiresParameters && !updatedBlocks[index].treatmentParameters) {
+      updatedBlocks[index].treatmentParameters = {};
+    }
+
+    if (!requiresParameters) {
+      updatedBlocks[index].treatmentParameters = undefined;
+    }
+
     setTreatmentBlocks(updatedBlocks);
   };
 
@@ -95,6 +114,14 @@ const NewTreatment = () => {
     0,
   );
 
+   const handleParameters = (index: number, params: TreatmentParametersType) => {
+    const updatedBlocks = [...treatmentBlocks];
+
+    updatedBlocks[index]. treatmentParameters = params;
+
+    setTreatmentBlocks(updatedBlocks);
+  };
+
   const addTreatmentBlock = () => {
     setTreatmentBlocks([
       ...treatmentBlocks,
@@ -105,6 +132,8 @@ const NewTreatment = () => {
         price: 0,
         discount: 0,
         notes: "",
+
+        treatmentParameters: {},
       },
     ]);
 
@@ -225,6 +254,15 @@ const NewTreatment = () => {
                 ))}
               </select>
             </div>
+            {block.treatmentParameters && (
+              <TreatmentParameters
+                value={block}
+                machines={machines}
+                onUpdate={(params) =>
+                  handleParameters(index, params)
+                }
+              />
+            )}
             <div>
               <label>Behandlingsanteckningar:</label>
               <textarea

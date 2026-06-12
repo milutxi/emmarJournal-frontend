@@ -85,4 +85,19 @@ export interface TreatmentBlock {
   price: number;
   discount: number;
   notes: string;
+
+  treatmentParameters?: TreatmentParametersType;
 }
+
+export interface TreatmentParametersType {
+  wavelength?: string;
+  pulseMode?: string;
+  energyDensity?: number;
+  pulseEnergy?: number;
+  spotSize?: number;
+  frequency?: number;
+  pulseDuration?: number;
+  coolingUsed?: boolean;
+  tpComment?: string;
+}
+
