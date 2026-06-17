@@ -98,6 +98,8 @@
   cursor: pointer;
   font-weight: 600;
   transition: 0.2s;
+  width: 50%;
+  margin: auto;
 }
 
 .addButton:hover {
@@ -111,6 +113,9 @@
   padding: $indent__s $indent__m;
   color: $color-body-display;
   cursor: pointer;
+  margin-top:$indent__m ;
+
+
   transition: 0.2s ease;
 }
 
@@ -120,4 +125,18 @@
   color: white;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.saveButton {
+  background: transparent;
+  border: 2px solid $color-goldenrod;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: $color-goldenrod;
+  color: white;
+  font-weight: 600;
 }

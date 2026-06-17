@@ -2,7 +2,13 @@ import styles from "./newTreatmentSession.module.scss";
 import { useEffect } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
-import { Client, Treatment, Machine, TreatmentBlock, TreatmentParametersType } from "../types";
+import {
+  Client,
+  Treatment,
+  Machine,
+  TreatmentBlock,
+  TreatmentParametersType,
+} from "../types";
 import { useState } from "react";
 import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
 
@@ -114,10 +120,10 @@ const NewTreatmentSession = () => {
     0,
   );
 
-   const handleParameters = (index: number, params: TreatmentParametersType) => {
+  const handleParameters = (index: number, params: TreatmentParametersType) => {
     const updatedBlocks = [...treatmentBlocks];
 
-    updatedBlocks[index]. treatmentParameters = params;
+    updatedBlocks[index].treatmentParameters = params;
 
     setTreatmentBlocks(updatedBlocks);
   };
@@ -258,9 +264,7 @@ const NewTreatmentSession = () => {
               <TreatmentParameters
                 value={block}
                 machines={machines}
-                onUpdate={(params) =>
-                  handleParameters(index, params)
-                }
+                onUpdate={(params) => handleParameters(index, params)}
               />
             )}
             <div>
@@ -280,6 +284,14 @@ const NewTreatmentSession = () => {
           onClick={addTreatmentBlock}
         >
           + Add Behandling
+        </button>
+
+        <button
+          className={styles.saveButton}
+          type="button"
+          // onClick={saveSession}
+        >
+          SPARA SESSION
         </button>
 
         {/* Medicine History */}
