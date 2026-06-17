@@ -92,11 +92,11 @@ export interface TreatmentBlock {
 export interface TreatmentParametersType {
   wavelength?: string;
   pulseMode?: string;
-  energyDensity?: number;
-  pulseEnergy?: number;
-  spotSize?: number;
-  frequency?: number;
-  pulseDuration?: number;
+  energyDensity?: string;
+  pulseEnergy?: string;
+  spotSize?: string;
+  frequency?: string;
+  pulseDuration?: string;
   coolingUsed?: boolean;
   tpComment?: string;
 }
