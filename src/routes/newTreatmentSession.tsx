@@ -1,4 +1,4 @@
-import styles from "./newTreatment.module.scss";
+import styles from "./newTreatmentSession.module.scss";
 import { useEffect } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
@@ -27,7 +27,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   };
 };
 
-const NewTreatment = () => {
+const NewTreatmentSession = () => {
   const { client, treatments, machines } = useLoaderData() as {
     client: Client;
     treatments: Treatment[];
@@ -338,4 +338,4 @@ const NewTreatment = () => {
   );
 };
 
-export default NewTreatment;
+export default NewTreatmentSession;
