@@ -148,7 +148,7 @@ const NewTreatmentSession = () => {
       },
     ]);
 
-    console.log(treatmentSessions);
+    // console.log(treatmentSessions);
   };
 
   const removeTreatmentSession = (index: number) => {
@@ -171,17 +171,28 @@ const NewTreatmentSession = () => {
       treatments: treatmentSessions,
     };
 
-    console.log(payload);
+    //console.log(payload);
+   
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/createJournal/", 
+      {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    },
+  );
 
-    // await fetch("/journal", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
+  if(!response.ok) {
+    throw new Error("Could not save journal");
+  }
+  
+  const data = await response.json();
+  console.log(data);
 
-  };
+};
+
 
   const treatmentCount = treatmentSessions.length;
 
@@ -196,7 +207,7 @@ const NewTreatmentSession = () => {
   );
 
   useEffect(() => {
-    console.log(treatmentSessions);
+    //console.log(treatmentSessions);
   }, [treatmentSessions]);
 
   return (
