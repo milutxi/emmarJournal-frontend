@@ -172,27 +172,27 @@ const NewTreatmentSession = () => {
     };
 
     //console.log(payload);
-   
+
     const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/createJournal/", 
+      import.meta.env.VITE_BACKEND_URL + "/createJournal/",
       {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    },
-  );
+    );
 
-  if(!response.ok) {
-    throw new Error("Could not save journal");
-  }
-  
-  const data = await response.json();
-  console.log(data);
+    const data = await response.json();
 
-};
+    if (!response.ok) {
+      console.error(data);
+      return;
+    }
 
+    console.log(data);
+  };
 
   const treatmentCount = treatmentSessions.length;
 
