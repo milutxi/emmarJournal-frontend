@@ -116,8 +116,6 @@
 
 // export default ClientModal;
 
-
-
 import { Client } from "../../types";
 import styles from "./clientModal.module.scss";
 
@@ -135,7 +133,6 @@ const ClientModal = ({ onClose, initialData }: Props) => {
     try {
       console.log("submit fired");
 
-      
       const formData = new FormData(e.currentTarget);
 
       const id = formData.get("id");
@@ -147,17 +144,16 @@ const ClientModal = ({ onClose, initialData }: Props) => {
         email: formData.get("email"),
         dateOfBirth: formData.get("dateOfBirth"),
       };
-      
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-console.log("API URL:", baseUrl);
+      const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-const url = id
-  ? `${baseUrl}/clients/${id}`
-  : `${baseUrl}/clients`;
+      console.log("API URL:", baseUrl);
 
-      const response = await fetch(url,
-       // import.meta.env.VITE_BACKEND_URL + (id ? `/clients/${id}` : "/clients"),
+      const url = id ? `${baseUrl}/clients/${id}` : `${baseUrl}/clients`;
+
+      const response = await fetch(
+        url,
+        // import.meta.env.VITE_BACKEND_URL + (id ? `/clients/${id}` : "/clients"),
         {
           method: id ? "PUT" : "POST",
           headers: {
@@ -246,4 +242,3 @@ const url = id
 };
 
 export default ClientModal;
-

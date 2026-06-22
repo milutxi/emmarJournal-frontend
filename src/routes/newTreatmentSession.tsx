@@ -6,7 +6,7 @@ import {
   Client,
   Treatment,
   Machine,
-  TreatmentBlock,
+  TreatmentSession,
   TreatmentParametersType,
 } from "../types";
 import { useState } from "react";
@@ -40,7 +40,9 @@ const NewTreatmentSession = () => {
     machines: Machine[];
   };
 
-  const [treatmentBlocks, setTreatmentBlocks] = useState<TreatmentBlock[]>([
+  const [treatmentSessions, setTreatmentSessions] = useState<
+    TreatmentSession[]
+  >([
     {
       treatmentId: "",
       machineIds: [],
@@ -48,7 +50,7 @@ const NewTreatmentSession = () => {
       price: 0,
       discount: 0,
       notes: "",
-
+      totalPrice: 0,
       treatmentParameters: {},
     },
   ]);
@@ -56,24 +58,26 @@ const NewTreatmentSession = () => {
     new Date().toISOString().split("T")[0],
   );
 
-  const grandTotal = treatmentBlocks.reduce(
-    (sum, block) => sum + (block.price - block.discount),
+  const grandTotal = treatmentSessions.reduce(
+    (sum, session) => sum + session.totalPrice,
     0,
   );
 
   const handleTreatmentChange = (index: number, treatmentId: string) => {
-    const updatedBlocks = [...treatmentBlocks];
+    const updatedSessions = [...treatmentSessions];
 
     const treatment = treatments.find((t) => t._id === treatmentId);
 
-    updatedBlocks[index].treatmentId = treatmentId;
+    updatedSessions[index].treatmentId = treatmentId;
 
     if (treatment) {
-      updatedBlocks[index].price = treatment.tprice;
-      updatedBlocks[index].duration = treatment.tduration;
+      updatedSessions[index].price = treatment.tprice;
+      updatedSessions[index].duration = treatment.tduration;
+      updatedSessions[index].totalPrice =
+        treatment.tprice - updatedSessions[index].discount;
     }
 
-    setTreatmentBlocks(updatedBlocks);
+    setTreatmentSessions(updatedSessions);
   };
 
   const handleMachineChange = (
@@ -84,9 +88,9 @@ const NewTreatmentSession = () => {
       e.target.selectedOptions,
       (option) => option.value,
     );
-    const updatedBlocks = [...treatmentBlocks];
+    const updatedSessions = [...treatmentSessions];
 
-    updatedBlocks[index].machineIds = machineIds;
+    updatedSessions[index].machineIds = machineIds;
 
     const selectedMachines = machines.filter((machine) =>
       machineIds.includes(machine._id),
@@ -96,41 +100,42 @@ const NewTreatmentSession = () => {
       (machine) => machine.requiresTreatmentParameters,
     );
 
-    if (requiresParameters && !updatedBlocks[index].treatmentParameters) {
-      updatedBlocks[index].treatmentParameters = {};
+    if (requiresParameters && !updatedSessions[index].treatmentParameters) {
+      updatedSessions[index].treatmentParameters = {};
     }
 
     if (!requiresParameters) {
-      updatedBlocks[index].treatmentParameters = undefined;
+      updatedSessions[index].treatmentParameters = undefined;
     }
 
-    setTreatmentBlocks(updatedBlocks);
+    setTreatmentSessions(updatedSessions);
   };
 
   const handleDiscountChange = (index: number, value: number) => {
-    const updatedBlocks = [...treatmentBlocks];
+    const updatedSessions = [...treatmentSessions];
 
-    updatedBlocks[index].discount = value;
+    updatedSessions[index].discount = value;
+    updatedSessions[index].totalPrice = updatedSessions[index].price - value;
 
-    setTreatmentBlocks(updatedBlocks);
+    setTreatmentSessions(updatedSessions);
   };
 
-  const totalDuration = treatmentBlocks.reduce(
-    (sum, block) => sum + block.duration,
+  const totalDuration = treatmentSessions.reduce(
+    (sum, session) => sum + session.duration,
     0,
   );
 
   const handleParameters = (index: number, params: TreatmentParametersType) => {
-    const updatedBlocks = [...treatmentBlocks];
+    const updatedSessions = [...treatmentSessions];
 
-    updatedBlocks[index].treatmentParameters = params;
+    updatedSessions[index].treatmentParameters = params;
 
-    setTreatmentBlocks(updatedBlocks);
+    setTreatmentSessions(updatedSessions);
   };
 
-  const addTreatmentBlock = () => {
-    setTreatmentBlocks([
-      ...treatmentBlocks,
+  const addTreatmentSession = () => {
+    setTreatmentSessions([
+      ...treatmentSessions,
       {
         treatmentId: "",
         machineIds: [],
@@ -138,39 +143,61 @@ const NewTreatmentSession = () => {
         price: 0,
         discount: 0,
         notes: "",
-
+        totalPrice: 0,
         treatmentParameters: {},
       },
     ]);
 
-    console.log(treatmentBlocks);
+    console.log(treatmentSessions);
   };
 
-  const removeTreatmentBlock = (index: number) => {
-    if (treatmentBlocks.length === 1) return;
+  const removeTreatmentSession = (index: number) => {
+    if (treatmentSessions.length === 1) return;
 
-    setTreatmentBlocks(treatmentBlocks.filter((_, i) => i !== index));
+    setTreatmentSessions(treatmentSessions.filter((_, i) => i !== index));
   };
 
   const handleNotesChange = (index: number, value: string) => {
-    const updatedBlocks = [...treatmentBlocks];
-    updatedBlocks[index].notes = value;
+    const updatedSessions = [...treatmentSessions];
+    updatedSessions[index].notes = value;
 
-    setTreatmentBlocks(updatedBlocks);
+    setTreatmentSessions(updatedSessions);
   };
 
-  const treatmentCount = treatmentBlocks.length;
+  const handleSaveSession = async () => {
+    const payload = {
+      clientId: client._id,
+      jDate: sessionDate,
+      treatments: treatmentSessions,
+    };
 
-  const totalDiscount = treatmentBlocks.reduce(
-    (sum, block) => sum + block.discount,
+    console.log(payload);
+
+    // await fetch("/journal", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(payload),
+    // });
+
+  };
+
+  const treatmentCount = treatmentSessions.length;
+
+  const totalDiscount = treatmentSessions.reduce(
+    (sum, session) => sum + session.discount,
     0,
   );
 
-  const subtotal = treatmentBlocks.reduce((sum, block) => sum + block.price, 0);
+  const subtotal = treatmentSessions.reduce(
+    (sum, session) => sum + session.price,
+    0,
+  );
 
   useEffect(() => {
-    console.log(treatmentBlocks);
-  }, [treatmentBlocks]);
+    console.log(treatmentSessions);
+  }, [treatmentSessions]);
 
   return (
     <div className={styles.newTreatmentStyle}>
@@ -192,15 +219,15 @@ const NewTreatmentSession = () => {
             onChange={(e) => setSessionDAte(e.target.value)}
           />
         </div>
-        {treatmentBlocks.map((block, index) => (
+        {treatmentSessions.map((session, index) => (
           <div key={index} className={styles.treatmentCard}>
             <div className={styles.treatmentCard__header}>
               <h3>Behandling: {index + 1}</h3>
-              {treatmentBlocks.length > 1 && (
+              {treatmentSessions.length > 1 && (
                 <button
                   className={styles.removeButton}
                   type="button"
-                  onClick={() => removeTreatmentBlock(index)}
+                  onClick={() => removeTreatmentSession(index)}
                 >
                   Ta bort Behandling
                 </button>
@@ -208,7 +235,7 @@ const NewTreatmentSession = () => {
             </div>
             <div>
               <select
-                value={block.treatmentId}
+                value={session.treatmentId}
                 onChange={(e) => handleTreatmentChange(index, e.target.value)}
               >
                 <option value="">Välj behandling</option>
@@ -220,17 +247,17 @@ const NewTreatmentSession = () => {
               </select>
             </div>
 
-            <p>Tid: {block.duration}min</p>
+            <p>Tid: {session.duration}min</p>
             <div className={styles.priceSection}>
               <div>
                 <label>Price:</label>
-                <input type="number" value={block.price} readOnly />
+                <input type="number" value={session.price} readOnly />
               </div>
               <div>
                 <label>Discount:</label>
                 <input
                   type="number"
-                  value={block.discount}
+                  value={session.discount}
                   onChange={(e) =>
                     handleDiscountChange(index, Number(e.target.value))
                   }
@@ -238,18 +265,14 @@ const NewTreatmentSession = () => {
               </div>
               <div>
                 <label>Total:</label>
-                <input
-                  type="number"
-                  value={block.price - block.discount}
-                  readOnly
-                />
+                <input type="number" value={session.totalPrice} readOnly />
               </div>
             </div>
             <div>
               <label> MASKIN </label>
               <select
                 multiple
-                value={block.machineIds}
+                value={session.machineIds}
                 onChange={(e) => handleMachineChange(index, e)}
               >
                 <option value="">Välj Maskin</option>
@@ -260,9 +283,9 @@ const NewTreatmentSession = () => {
                 ))}
               </select>
             </div>
-            {block.treatmentParameters && (
+            {session.treatmentParameters && (
               <TreatmentParameters
-                value={block}
+                value={session}
                 machines={machines}
                 onUpdate={(params) => handleParameters(index, params)}
               />
@@ -270,7 +293,7 @@ const NewTreatmentSession = () => {
             <div>
               <label>Behandlingsanteckningar:</label>
               <textarea
-                value={block.notes}
+                value={session.notes}
                 onChange={(e) => handleNotesChange(index, e.target.value)}
                 rows={4}
                 placeholder="Behandling antekningar"
@@ -281,7 +304,7 @@ const NewTreatmentSession = () => {
         <button
           className={styles.addButton}
           type="button"
-          onClick={addTreatmentBlock}
+          onClick={addTreatmentSession}
         >
           + Add Behandling
         </button>
@@ -289,7 +312,7 @@ const NewTreatmentSession = () => {
         <button
           className={styles.saveButton}
           type="button"
-          // onClick={saveSession}
+          onClick={handleSaveSession}
         >
           SPARA SESSION
         </button>
@@ -316,9 +339,9 @@ const NewTreatmentSession = () => {
           </p>
 
           <ul>
-            {treatmentBlocks.map((block, index) => {
+            {treatmentSessions.map((session, index) => {
               const treatment = treatments.find(
-                (t) => t._id === block.treatmentId,
+                (t) => t._id === session.treatmentId,
               );
 
               return (

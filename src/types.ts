@@ -78,15 +78,15 @@ export interface Journal {
   signedAt: string;
 }
 
-export interface TreatmentBlock {
+export interface TreatmentSession {
   treatmentId: string;
   machineIds: string[];
+  treatmentParameters?: TreatmentParametersType;
   duration: number;
   price: number;
   discount: number;
+  totalPrice: number;
   notes: string;
-
-  treatmentParameters?: TreatmentParametersType;
 }
 
 export interface TreatmentParametersType {
