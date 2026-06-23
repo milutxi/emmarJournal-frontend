@@ -101,3 +101,40 @@ export interface TreatmentParametersType {
   tpComment?: string;
 }
 
+export interface MedicalHistory {
+  pregnant?: boolean;
+  breastfeeding?: boolean;
+  diabetic?: boolean;
+  skinInfection?: boolean;
+  autoimmuneDisease?: boolean;
+  epilepsy?: boolean;
+  pacemaker?: boolean;
+  cancer?: boolean;
+  hepatitis?: boolean;
+  tattoos?: boolean;
+  permanentFillers?: boolean;
+  hypersensitiveSkin?: boolean;
+  skinDiseases?: boolean;
+  heartProblems?: boolean;
+  venerealDiseases?: boolean;
+  hormonalChanges?: boolean;
+  medication?: boolean;
+  medicationDetails?: string;
+  omega3?: boolean;
+  allergies?: boolean;
+  allergyDetails?: string;
+  anesthesiaReaction?: boolean;
+  anesthesiaReactionDetails?: string;
+  anaphylaxis?: boolean;
+  anaphylaxisDetails?: string;
+  bloodThinners?: boolean;
+  bloodThinnerDetails?: string;
+  hypertrophicScarring?: boolean;
+  hypertrophicScarringDetails?: string;
+  otherConditions?: string;
+  mhnotes?: string;
+  consentAccepted?: boolean;
+  signedAt?: string;
+  signatureImage?: string;
+}
+
