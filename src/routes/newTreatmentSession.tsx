@@ -11,6 +11,7 @@ import {
 } from "../types";
 import { useState } from "react";
 import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
+import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -62,6 +63,8 @@ const NewTreatmentSession = () => {
     (sum, session) => sum + session.totalPrice,
     0,
   );
+
+  const [showMedicalHistory, setShowMedicalHistory] = useState(false);
 
   const handleTreatmentChange = (index: number, treatmentId: string) => {
     const updatedSessions = [...treatmentSessions];
@@ -379,6 +382,17 @@ const NewTreatmentSession = () => {
             <strong>Total:</strong> {grandTotal} kr
           </p>
         </div>
+        <div>
+          <button onClick={() => setShowMedicalHistory(true)}>
+            Medicinsk Hälsodeklaration
+          </button>
+        </div>
+        {showMedicalHistory && (
+          <MedicalHistoryModal
+            isOpen={showMedicalHistory}
+            onClose={() => setShowMedicalHistory(false)}
+          />
+        )}
       </div>
     </div>
   );
