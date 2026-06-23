@@ -40,7 +40,12 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
       fields: [
         { key: "heartProblems", label: "Hjärtproblem" },
         { key: "pacemaker", label: "Pacemaker" },
-        { key: "bloodThinners", label: "Blodförtunnande medicin" },
+        {
+          key: "bloodThinners",
+          label: "Blodförtunnande medicin",
+          detailKey: "bloodThinnerDetails",
+          detailPlaceholder: "Beskriv blodförtunnande behandling",
+        },
         { key: "omega3", label: "Omega 3" },
       ],
     },
@@ -57,52 +62,77 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
       fields: [
         { key: "tattoos", label: "Tatueringar" },
         { key: "permanentFillers", label: "Permanenta fillers" },
-        { key: "hypertrophicScarring", label: "Hypertrofisk ärrbildning" },
+        {
+          key: "hypertrophicScarring",
+          label: "Hypertrofisk ärrbildning",
+          detailKey: "hypertrophicScarringDetails",
+          detailPlaceholder: "Beskriv hypertrofisk ärrbildning",
+        },
       ],
     },
     {
       title: "Läkemedel & Reaktioner",
       fields: [
-        { key: "medication", label: "Äter receptbelagd medicin" },
-        { key: "allergies", label: "Allergier" },
-        { key: "anaphylaxis", label: "Anafylaktisk chock" },
-        { key: "anesthesiaReaction", label: "Biverkningar av lokalbedövning" },
+        {
+          key: "medication",
+          label: "Äter receptbelagd medicin",
+          detailKey: "medicationDetails",
+          detailPlaceholder: "Beskriv medicinering",
+        },
+        {
+          key: "allergies",
+          label: "Allergier",
+          detailKey: "allergyDetails",
+          detailPlaceholder: "Beskriv allergier",
+        },
+        {
+          key: "anaphylaxis",
+          label: "Anafylaktisk chock",
+          detailKey: "anaphylaxisDetails",
+          detailPlaceholder: "Beskriv anafylaxi",
+        },
+        {
+          key: "anesthesiaReaction",
+          label: "Biverkningar av lokalbedövning",
+          detailKey: "anesthesiaReactionDetails",
+          detailPlaceholder: "Beskriv reaktion på anestesi",
+        },
       ],
     },
   ];
 
-  const detailFields = [
-    {
-      booleanKey: "medication",
-      detailKey: "medicationDetails",
-      label: "Beskriv medicinering",
-    },
-    {
-      booleanKey: "allergies",
-      detailKey: "allergyDetails",
-      label: "Beskriv allergier",
-    },
-    {
-      booleanKey: "anesthesiaReaction",
-      detailKey: "anesthesiaReactionDetails",
-      label: "Beskriv reaktion på anestesi",
-    },
-    {
-      booleanKey: "anaphylaxis",
-      detailKey: "anaphylaxisDetails",
-      label: "Beskriv anafylaxi",
-    },
-    {
-      booleanKey: "bloodThinners",
-      detailKey: "bloodThinnerDetails",
-      label: "Beskriv blodförtunnande behandling",
-    },
-    {
-      booleanKey: "hypertrophicScarring",
-      detailKey: "hypertrophicScarringDetails",
-      label: "Beskriv hypertrofisk ärrbildning",
-    },
-  ];
+  // const detailFields = [
+  //   {
+  //     booleanKey: "medication",
+  //     detailKey: "medicationDetails",
+  //     label: "Beskriv medicinering",
+  //   },
+  //   {
+  //     booleanKey: "allergies",
+  //     detailKey: "allergyDetails",
+  //     label: "Beskriv allergier",
+  //   },
+  //   {
+  //     booleanKey: "anesthesiaReaction",
+  //     detailKey: "anesthesiaReactionDetails",
+  //     label: "Beskriv reaktion på anestesi",
+  //   },
+  //   {
+  //     booleanKey: "anaphylaxis",
+  //     detailKey: "anaphylaxisDetails",
+  //     label: "Beskriv anafylaxi",
+  //   },
+  //   {
+  //     booleanKey: "bloodThinners",
+  //     detailKey: "bloodThinnerDetails",
+  //     label: "Beskriv blodförtunnande behandling",
+  //   },
+  //   {
+  //     booleanKey: "hypertrophicScarring",
+  //     detailKey: "hypertrophicScarringDetails",
+  //     label: "Beskriv hypertrofisk ärrbildning",
+  //   },
+  // ];
 
   const textFields = [
     {
@@ -128,29 +158,53 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
               <h3>{group.title}</h3>
 
               {group.fields.map((field) => (
-                <label key={field.key} className={styles.checkboxLabel}>
-                  <input
-                    type="checkbox"
-                    checked={
-                      (medicalHistory[
-                        field.key as keyof MedicalHistoryType
-                      ] as boolean) ?? false
-                    }
-                    onChange={(e) =>
-                      setMedicalHistory({
-                        ...medicalHistory,
-                        [field.key]: e.target.checked,
-                      })
-                    }
-                  />
-                  {field.label}
-                </label>
+                <div key={field.key} className={styles.field}>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={
+                        (medicalHistory[
+                          field.key as keyof MedicalHistoryType
+                        ] as boolean) ?? false
+                      }
+                      onChange={(e) =>
+                        setMedicalHistory({
+                          ...medicalHistory,
+                          [field.key]: e.target.checked,
+                        })
+                      }
+                    />
+
+                    {field.label}
+                  </label>
+
+                  {field.detailKey &&
+                    medicalHistory[field.key as keyof MedicalHistoryType] && (
+                      <div className={styles.detailField}>
+                        <input
+                          type="text"
+                          placeholder={field.detailPlaceholder}
+                          value={
+                            (medicalHistory[
+                              field.detailKey as keyof MedicalHistoryType
+                            ] as string) ?? ""
+                          }
+                          onChange={(e) =>
+                            setMedicalHistory({
+                              ...medicalHistory,
+                              [field.detailKey]: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    )}
+                </div>
               ))}
             </div>
           ))}
         </div>
         <div className={styles.detailSection}>
-          {detailFields.map((field) => {
+          {/* {detailFields.map((field) => {
             const show =
               medicalHistory[field.booleanKey as keyof MedicalHistoryType];
             if (!show) return null;
@@ -173,7 +227,7 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
                 />
               </div>
             );
-          })}
+          })} */}
         </div>
         <div className={styles.textSection}>
           {textFields.map((field) => (

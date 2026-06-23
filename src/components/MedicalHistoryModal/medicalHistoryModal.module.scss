@@ -82,12 +82,42 @@
   }
 }
 
-.detailSection {
-  display: flex;
-  flex-direction: column;
-  gap: $indent__base;
+// .detailSection {
+//   display: flex;
+//   flex-direction: column;
+//   gap: $indent__base;
 
-  margin-bottom: $indent__l;
+//   margin-bottom: $indent__l;
+// }
+
+.detailField {
+  // margin-left: $indent__m;
+  // margin-top: $indent__s;
+  // margin-bottom: $indent__base;
+
+  input {
+    width: 100%;
+
+    padding: $indent__s;
+    border: 1px solid $color-dark-outline;
+    border-radius: 6px;
+
+    font-family: $font-montserrat;
+    //font-size: $font-size__base;
+
+    background-color: white;
+
+    &:focus {
+      outline: none;
+      border-color: $color-goldenrod;
+      box-shadow: 0 0 0 2px rgba(210, 170, 55, 0.15);
+    }
+
+    &::placeholder {
+      color: $color-body-display;
+      font-style: italic;
+    }
+  }
 }
 
 .textSection {
