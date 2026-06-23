@@ -101,7 +101,7 @@ export interface TreatmentParametersType {
   tpComment?: string;
 }
 
-export interface MedicalHistory {
+export interface MedicalHistoryType {
   pregnant?: boolean;
   breastfeeding?: boolean;
   diabetic?: boolean;
@@ -131,6 +131,8 @@ export interface MedicalHistory {
   bloodThinnerDetails?: string;
   hypertrophicScarring?: boolean;
   hypertrophicScarringDetails?: string;
+
+  
   otherConditions?: string;
   mhnotes?: string;
   consentAccepted?: boolean;
