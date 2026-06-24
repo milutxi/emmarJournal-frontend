@@ -382,17 +382,25 @@ const NewTreatmentSession = () => {
             <strong>Total:</strong> {grandTotal} kr
           </p>
         </div>
-        <div>
-          <button onClick={() => setShowMedicalHistory(true)}>
-            Medicinsk Hälsodeklaration
-          </button>
-        </div>
+
         {showMedicalHistory && (
           <MedicalHistoryModal
             isOpen={showMedicalHistory}
             onClose={() => setShowMedicalHistory(false)}
           />
         )}
+        <button
+          className={styles.medicalHistoryButton}
+          onClick={() => setShowMedicalHistory(true)}
+        >
+          MEDICINSK HÄLSODEKLARATION
+        </button>
+        <button
+          className={styles.medicalHistoryButton}
+          // onClick={() => setConsentForm(true)}
+        >
+          CONSENT FORM
+        </button>
       </div>
     </div>
   );

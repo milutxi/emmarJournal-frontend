@@ -70,14 +70,53 @@
   min-height: 120px;
 }
 
+.newTreatmentStyle__right {
+  position: sticky;
+  top: $indent__m;
+  align-self: start;
+}
+
 .sessionSummary {
   background-color: white;
   border-left: 4px solid $color-goldenrod;
   border-radius: 12px;
   padding: $indent__m;
-  position: sticky;
   top: $indent__m;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.medicalHistoryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 18px;
+
+  background: $color-goldenrod;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  width: 100%;
+  margin-top: $indent__base;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    transform: scale(1.02);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    transform: scale(1.02);
+  }
 }
 
 .sessionSummary h2 {
@@ -113,8 +152,7 @@
   padding: $indent__s $indent__m;
   color: $color-body-display;
   cursor: pointer;
-  margin-top:$indent__m ;
-
+  margin-top: $indent__m;
 
   transition: 0.2s ease;
 }
