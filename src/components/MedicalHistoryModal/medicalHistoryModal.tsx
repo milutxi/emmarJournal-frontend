@@ -148,63 +148,66 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
-          X
-        </button>
-        <h2 className={styles.title}>Medicinsk Hälsodeklaration</h2>
-        <div className={styles.booleanSection}>
-          {booleanGroups.map((group) => (
-            <div key={group.title} className={styles.group}>
-              <h3>{group.title}</h3>
-
-              {group.fields.map((field) => (
-                <div key={field.key} className={styles.field}>
-                  <label className={styles.checkboxLabel}>
-                    <input
-                      type="checkbox"
-                      checked={
-                        (medicalHistory[
-                          field.key as keyof MedicalHistoryType
-                        ] as boolean) ?? false
-                      }
-                      onChange={(e) =>
-                        setMedicalHistory({
-                          ...medicalHistory,
-                          [field.key]: e.target.checked,
-                        })
-                      }
-                    />
-
-                    {field.label}
-                  </label>
-
-                  {field.detailKey &&
-                    medicalHistory[field.key as keyof MedicalHistoryType] && (
-                      <div className={styles.detailField}>
-                        <input
-                          type="text"
-                          placeholder={field.detailPlaceholder}
-                          value={
-                            (medicalHistory[
-                              field.detailKey as keyof MedicalHistoryType
-                            ] as string) ?? ""
-                          }
-                          onChange={(e) =>
-                            setMedicalHistory({
-                              ...medicalHistory,
-                              [field.detailKey]: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    )}
-                </div>
-              ))}
-            </div>
-          ))}
+        <div className={styles.modalHeader}>
+          <button className={styles.closeButton} onClick={onClose}>
+            X
+          </button>
+          <h2 className={styles.title}>Medicinsk Hälsodeklaration</h2>
         </div>
-        <div className={styles.detailSection}>
-          {/* {detailFields.map((field) => {
+        <div className={styles.modalBody}>
+          <div className={styles.booleanSection}>
+            {booleanGroups.map((group) => (
+              <div key={group.title} className={styles.group}>
+                <h3>{group.title}</h3>
+
+                {group.fields.map((field) => (
+                  <div key={field.key} className={styles.field}>
+                    <label className={styles.checkboxLabel}>
+                      <input
+                        type="checkbox"
+                        checked={
+                          (medicalHistory[
+                            field.key as keyof MedicalHistoryType
+                          ] as boolean) ?? false
+                        }
+                        onChange={(e) =>
+                          setMedicalHistory({
+                            ...medicalHistory,
+                            [field.key]: e.target.checked,
+                          })
+                        }
+                      />
+
+                      {field.label}
+                    </label>
+
+                    {field.detailKey &&
+                      medicalHistory[field.key as keyof MedicalHistoryType] && (
+                        <div className={styles.detailField}>
+                          <textarea
+                            placeholder={field.detailPlaceholder}
+                            value={
+                              (medicalHistory[
+                                field.detailKey as keyof MedicalHistoryType
+                              ] as string) ?? ""
+                            }
+                            onChange={(e) =>
+                              setMedicalHistory({
+                                ...medicalHistory,
+                                [field.detailKey]: e.target.value,
+                              })
+                            }
+                            rows={2}
+                          />
+                        </div>
+                      )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className={styles.detailSection}>
+            {/* {detailFields.map((field) => {
             const show =
               medicalHistory[field.booleanKey as keyof MedicalHistoryType];
             if (!show) return null;
@@ -228,32 +231,33 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
               </div>
             );
           })} */}
-        </div>
-        <div className={styles.textSection}>
-          {textFields.map((field) => (
-            <div key={field.key}>
-              <label>{field.label}</label>
-              <input
-                type="text"
-                value={
-                  (medicalHistory[
-                    field.key as keyof MedicalHistoryType
-                  ] as string) ?? ""
-                }
-                onChange={(e) =>
-                  setMedicalHistory({
-                    ...medicalHistory,
-                    [field.key]: e.target.value,
-                  })
-                }
-              />
-            </div>
-          ))}
-        </div>
+          </div>
+          <div className={styles.textSection}>
+            {textFields.map((field) => (
+              <div key={field.key}>
+                <label>{field.label}</label>
+                <input
+                  type="text"
+                  value={
+                    (medicalHistory[
+                      field.key as keyof MedicalHistoryType
+                    ] as string) ?? ""
+                  }
+                  onChange={(e) =>
+                    setMedicalHistory({
+                      ...medicalHistory,
+                      [field.key]: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            ))}
+          </div>
 
-        <div className={styles.buttonSection}>
-          <button>Spara</button>
-          <button onClick={onClose}>Avbryt</button>
+          <div className={styles.buttonSection}>
+            <button>Spara</button>
+            <button onClick={onClose}>Avbryt</button>
+          </div>
         </div>
       </div>
     </div>

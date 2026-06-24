@@ -1,5 +1,3 @@
-
-
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
@@ -19,7 +17,9 @@
 .modal {
   width: 80%;
   max-width: 1100px;
-  
+
+  max-height: 90vh;
+
   background-color: $color-bg;
   border-radius: 12px;
 
@@ -28,7 +28,8 @@
   overflow-y: auto;
 
   position: relative;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .closeButton {
@@ -62,7 +63,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: $indent__l;
- 
+
   @include responsive-mobile {
     grid-template-columns: 1fr;
   }
@@ -95,22 +96,19 @@
   // margin-top: $indent__s;
   // margin-bottom: $indent__base;
 
-  input {
+  textarea {
     width: 100%;
-
+    min-height: 60px;
+    resize: vertical;
     padding: $indent__s;
     border: 1px solid $color-dark-outline;
     border-radius: 6px;
-
     font-family: $font-montserrat;
-    //font-size: $font-size__base;
-
     background-color: white;
 
     &:focus {
       outline: none;
       border-color: $color-goldenrod;
-      box-shadow: 0 0 0 2px rgba(210, 170, 55, 0.15);
     }
 
     &::placeholder {
@@ -124,7 +122,6 @@
   display: flex;
   flex-direction: column;
   gap: $indent__base;
-
   margin-bottom: $indent__l;
 }
 
@@ -132,4 +129,15 @@
   display: flex;
   justify-content: flex-end;
   gap: $indent__base;
+}
+
+.modalHeader{
+  padding: $indent__s;
+border-bottom: 1px solid $color-dark-outline;
+
+  flex-shrink: 0;
+}
+.modalBody {
+  overflow-y: auto;
+  padding: $indent__l;
 }
