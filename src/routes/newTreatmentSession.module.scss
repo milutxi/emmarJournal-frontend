@@ -88,9 +88,9 @@
 .medicalHistoryButton {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
-
+  gap: 8px;
   border: none;
   border-radius: 10px;
 
@@ -177,4 +177,16 @@
   background-color: $color-goldenrod;
   color: white;
   font-weight: 600;
+}
+
+.statusDone {
+  color: green;
+}
+
+.statusWarning {
+  color: red;
+}
+
+.iconWrapper {
+font-size: 25px;
 }

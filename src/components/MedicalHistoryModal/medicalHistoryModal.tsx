@@ -1,17 +1,21 @@
 import styles from "./medicalHistoryModal.module.scss";
 
-import { useState } from "react";
+//import { useState } from "react";
 import { MedicalHistoryType } from "../../types";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+
+  medicalHistory: MedicalHistoryType;
+  setMedicalHistory: React.Dispatch<React.SetStateAction<MedicalHistoryType>>;
+  setMedicalHistoryCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
-  const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
-    pregnant: false,
-  });
+const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHistory, setMedicalHistoryCompleted }: Props) => {
+  // const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
+  //   pregnant: false,
+  // });
 
   if (!isOpen) return null;
 
@@ -145,6 +149,11 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
     },
   ];
 
+  const handleSaveMedicalHistory = () => {
+    setMedicalHistoryCompleted(true);
+    onClose();
+  }
+
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
@@ -257,7 +266,7 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
             <button className={styles.cancelButton} onClick={onClose}>
               Avbryt
             </button>
-            <button className={styles.saveButton}>Spara</button>
+            <button className={styles.saveButton} onClick={handleSaveMedicalHistory}>Spara</button>
           </div>
         </div>
       </div>

@@ -8,10 +8,13 @@ import {
   Machine,
   TreatmentSession,
   TreatmentParametersType,
+  MedicalHistoryType,
 } from "../types";
 import { useState } from "react";
 import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
+import { GrStatusWarning } from "react-icons/gr";
+import { MdOutlineDoneOutline } from "react-icons/md";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -65,6 +68,24 @@ const NewTreatmentSession = () => {
   );
 
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
+
+  // when the state lives in the parent the modal gets localStorage.
+  const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
+    pregnant: false,
+  });
+
+  //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
+const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
+  const consentFormCompleted = false;
+
+  const getStatusIcon = (completed: boolean) => {
+    const className = completed ? styles.statusDone : styles.statusWarning;
+    return (
+      <span className={className}>
+        {completed ? <MdOutlineDoneOutline /> : <GrStatusWarning />}
+      </span>
+    );
+  };
 
   const handleTreatmentChange = (index: number, treatmentId: string) => {
     const updatedSessions = [...treatmentSessions];
@@ -387,19 +408,28 @@ const NewTreatmentSession = () => {
           <MedicalHistoryModal
             isOpen={showMedicalHistory}
             onClose={() => setShowMedicalHistory(false)}
+            medicalHistory={medicalHistory}
+            setMedicalHistory={setMedicalHistory}
+            setMedicalHistoryCompleted={setMedicalHistoryCompleted}
           />
         )}
         <button
           className={styles.medicalHistoryButton}
           onClick={() => setShowMedicalHistory(true)}
         >
-          MEDICINSK HÄLSODEKLARATION
+          <span className={styles.iconWrapper}>
+            {getStatusIcon(medicalHistoryCompleted)}
+          </span>
+          <span className={styles.buttonText}>MEDICINSK HÄLSODEKLARATION</span>
         </button>
         <button
           className={styles.medicalHistoryButton}
-          // onClick={() => setConsentForm(true)}
+          //onClick={() => setConsentForm(true)}
         >
-          CONSENT FORM
+          <span className={styles.iconWrapper}>
+            {getStatusIcon(consentFormCompleted)}
+          </span>
+          <span className={styles.buttonText}>SAMTYCKESFORMULÄR</span>
         </button>
       </div>
     </div>
