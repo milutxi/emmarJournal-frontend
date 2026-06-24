@@ -118,22 +118,103 @@
   }
 }
 
+// .textSection {
+//   display: flex;
+//   flex-direction: column;
+//   gap: $indent__base;
+//   margin-bottom: $indent__l;
+// }
+
 .textSection {
   display: flex;
   flex-direction: column;
-  gap: $indent__base;
-  margin-bottom: $indent__l;
+  gap: $indent__m;
+  margin-top: $indent__l;
+
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid $color-dark-outline;
+    border-radius: 8px;
+    background-color: white;
+    font-family: $font-montserrat;
+    font-size: $font-size__base;
+    margin-top: $indent__s;
+    padding: $indent__base;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: $color-goldenrod;
+      box-shadow: 0 0 0 2px rgba(210, 170, 55, 0.15);
+    }
+  }
+
+  label {
+    font-weight: 600;
+    color: $color-body-display;
+    margin-bottom: $indent__s;
+  }
 }
 
+// .buttonSection {
+//   display: flex;
+//   justify-content: flex-end;
+//   gap: $indent__base;
+// }
+
 .buttonSection {
+  margin-top: $indent__m;
+
   display: flex;
   justify-content: flex-end;
   gap: $indent__base;
+
+  //border-top: 1px solid $color-dark-outline;
+  padding-top: $indent__s;
 }
 
-.modalHeader{
+.saveButton {
+  background-color: $color-goldenrod;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: $indent__s $indent__m;
+
+  font-family: $font-montserrat;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.cancelButton {
+  background: transparent;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+
+  padding: $indent__s $indent__m;
+
+  font-family: $font-montserrat;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d7d7d7;
+  }
+}
+
+.modalHeader {
   padding: $indent__s;
-border-bottom: 1px solid $color-dark-outline;
+  border-bottom: 1px solid $color-dark-outline;
 
   flex-shrink: 0;
 }

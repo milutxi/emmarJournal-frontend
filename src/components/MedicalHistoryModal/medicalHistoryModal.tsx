@@ -236,8 +236,7 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
             {textFields.map((field) => (
               <div key={field.key}>
                 <label>{field.label}</label>
-                <input
-                  type="text"
+                <textarea
                   value={
                     (medicalHistory[
                       field.key as keyof MedicalHistoryType
@@ -255,8 +254,10 @@ const MedicalHistoryModal = ({ onClose, isOpen }: Props) => {
           </div>
 
           <div className={styles.buttonSection}>
-            <button>Spara</button>
-            <button onClick={onClose}>Avbryt</button>
+            <button className={styles.cancelButton} onClick={onClose}>
+              Avbryt
+            </button>
+            <button className={styles.saveButton}>Spara</button>
           </div>
         </div>
       </div>
