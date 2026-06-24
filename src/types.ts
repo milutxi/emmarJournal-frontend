@@ -140,3 +140,11 @@ export interface MedicalHistoryType {
   signatureImage?: string;
 }
 
+export interface ConsentFormType {
+  treatmentIds: string[];
+  consentText: string;
+  accepted: boolean;
+  signatureImage: string;
+  signedAt: string;
+}
+
