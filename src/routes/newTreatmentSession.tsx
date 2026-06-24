@@ -9,12 +9,14 @@ import {
   TreatmentSession,
   TreatmentParametersType,
   MedicalHistoryType,
+  ConsentFormType,
 } from "../types";
 import { useState } from "react";
 import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 import { GrStatusWarning } from "react-icons/gr";
 import { MdOutlineDoneOutline } from "react-icons/md";
+import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -76,7 +78,17 @@ const NewTreatmentSession = () => {
 
   //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
 const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
-  const consentFormCompleted = false;
+
+  //const consentFormCompleted = false;
+const [consentForm, setConsentForm] = useState<ConsentFormType>({
+  treatmentIds: [],
+  consentText: "",
+  accepted: false,
+  signatureImage: "",
+});
+
+  const [showConsentForm, setShowConsentForm] = useState(false);
+  const [consentFormCompleted, setConsentFormCompleted] = useState(false);
 
   const getStatusIcon = (completed: boolean) => {
     const className = completed ? styles.statusDone : styles.statusWarning;
@@ -413,6 +425,16 @@ const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
             setMedicalHistoryCompleted={setMedicalHistoryCompleted}
           />
         )}
+        {showConsentForm && (
+          <ConsentFormModal 
+            isOpen={showConsentForm}
+            onClose={() => setShowConsentForm(false)}
+            consentForm={consentForm}
+            setConsentForm={setConsentForm}
+            setConsentFormCompleted={setConsentFormCompleted}
+          />
+        )
+        }
         <button
           className={styles.medicalHistoryButton}
           onClick={() => setShowMedicalHistory(true)}
@@ -424,7 +446,7 @@ const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
         </button>
         <button
           className={styles.medicalHistoryButton}
-          //onClick={() => setConsentForm(true)}
+          onClick={() => setShowConsentForm(true)}
         >
           <span className={styles.iconWrapper}>
             {getStatusIcon(consentFormCompleted)}
