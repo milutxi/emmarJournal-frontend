@@ -1,6 +1,14 @@
 import styles from "./consentFormModal.module.scss";
 
-import { ConsentFormType } from "../../types";
+import {
+  Client,
+  ConsentFormType,
+  Treatment,
+  TreatmentSession,
+} from "../../types";
+
+import SignatureCanvas from "react-signature-canvas";
+import { useRef } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -8,6 +16,10 @@ type Props = {
   consentForm: ConsentFormType;
   setConsentForm: React.Dispatch<React.SetStateAction<ConsentFormType>>;
   setConsentFormCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  sessionDate: string;
+  client: Client;
+  treatmentSessions: TreatmentSession[];
+  treatments: Treatment[];
 };
 const ConsentFormModal = ({
   isOpen,
@@ -15,12 +27,43 @@ const ConsentFormModal = ({
   consentForm,
   setConsentForm,
   setConsentFormCompleted,
+
+  sessionDate,
+  client,
+  treatmentSessions,
+  treatments,
 }: Props) => {
+  const signatureRef = useRef<SignatureCanvas>(null);
+
   if (!isOpen) return null;
 
   const handleSaveConsentForm = () => {
-    if(!consentForm.accepted) return;
-    
+    if (!consentForm.accepted) {
+      alert("Du måste acceptera samtycket.");
+      return;
+    }
+
+    //const signature = signatureRef.current;
+
+    let signatureImage = consentForm.signatureImage;
+
+    if (!signatureImage) {
+      const signature = signatureRef.current;
+
+      if (!signature || signature.isEmpty()) {
+        alert("Signatur saknas.");
+        return;
+      }
+
+      signatureImage = signature.toDataURL();
+    }
+
+    setConsentForm({
+      ...consentForm,
+      signatureImage,
+      signedAt: new Date().toISOString(),
+    });
+
     setConsentFormCompleted(true);
     onClose();
   };
@@ -34,19 +77,104 @@ const ConsentFormModal = ({
           </button>
           <h2 className={styles.title}>Samtyckesformulär</h2>
         </div>
-        <div className={styles.modalBody}>
-          <input
-            type="checkbox"
-            checked={consentForm.accepted}
-            onChange={(e) =>
-              setConsentForm({
-                ...consentForm,
-                accepted: e.target.checked,
-              })
-            }
-          />
 
-          <label>Jag har läst och förstått informationen</label>
+        <div className={styles.modalBody}>
+          <div className={styles.documentHeader}>
+            <p>
+              <strong>Datum:</strong> {sessionDate}
+            </p>
+
+            <p>
+              <strong>Kund:</strong> {client.name} {client.lastName}
+            </p>
+          </div>
+
+          <div className={styles.treatmentSection}>
+            <h4>Behandlingar</h4>
+
+            <ul>
+              {treatmentSessions.map((session) => {
+                const treatment = treatments.find(
+                  (t) => t._id === session.treatmentId,
+                );
+
+                return <li key={session.treatmentId}>{treatment?.tname}</li>;
+              })}
+            </ul>
+          </div>
+
+          <div className={styles.consentText}>
+            <p>
+              Jag har fått information om den planerade behandlingen, dess
+              syfte, möjliga risker, biverkningar och rekommenderad eftervård.
+            </p>
+            <p>
+              Jag har haft möjlighet att ställa frågor och har fått svar som jag
+              förstår.
+            </p>
+
+            <div className={styles.acceptSection}>
+              <input
+                type="checkbox"
+                checked={consentForm.accepted}
+                onChange={(e) =>
+                  setConsentForm({
+                    ...consentForm,
+                    accepted: e.target.checked,
+                  })
+                }
+              />
+              <label>
+                Jag samtycker till att ovanstående behandlingar utförs.
+              </label>
+            </div>
+          </div>
+
+          <div className={styles.signatureSection}>
+            <label>Klientens signatur</label>
+            <div className={styles.signatureWrapper}>
+              {consentForm.signatureImage ? (
+                <div className={styles.signaturePreview}>
+                  <img src={consentForm.signatureImage} alt="Signatur" />
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConsentForm({
+                        ...consentForm,
+                        signatureImage: "",
+                        signedAt: undefined,
+                      });
+
+                      signatureRef.current?.clear();
+                    }}
+                  >
+                    Ny signatur
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <SignatureCanvas
+                    ref={signatureRef}
+                    penColor="black"
+                    canvasProps={{
+                      className: styles.signatureCanvas,
+                      width: 500,
+                      height: 200,
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => signatureRef.current?.clear()}
+                  >
+                    Rensa signatur
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
           <div className={styles.buttonSection}>
             <button className={styles.cancelButton} onClick={onClose}>
               Avbryt

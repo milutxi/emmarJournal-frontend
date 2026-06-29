@@ -145,6 +145,6 @@ export interface ConsentFormType {
   consentText: string;
   accepted: boolean;
   signatureImage: string;
-  signedAt: string;
+  signedAt?: string;
 }
 

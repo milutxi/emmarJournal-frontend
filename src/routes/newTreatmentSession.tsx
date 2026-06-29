@@ -77,15 +77,15 @@ const NewTreatmentSession = () => {
   });
 
   //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
-const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
+  const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
 
   //const consentFormCompleted = false;
-const [consentForm, setConsentForm] = useState<ConsentFormType>({
-  treatmentIds: [],
-  consentText: "",
-  accepted: false,
-  signatureImage: "",
-});
+  const [consentForm, setConsentForm] = useState<ConsentFormType>({
+    treatmentIds: [],
+    consentText: "",
+    accepted: false,
+    signatureImage: "",
+  });
 
   const [showConsentForm, setShowConsentForm] = useState(false);
   const [consentFormCompleted, setConsentFormCompleted] = useState(false);
@@ -426,15 +426,18 @@ const [consentForm, setConsentForm] = useState<ConsentFormType>({
           />
         )}
         {showConsentForm && (
-          <ConsentFormModal 
+          <ConsentFormModal
             isOpen={showConsentForm}
             onClose={() => setShowConsentForm(false)}
             consentForm={consentForm}
             setConsentForm={setConsentForm}
             setConsentFormCompleted={setConsentFormCompleted}
+            sessionDate={sessionDate}
+            client={client}
+            treatmentSessions={treatmentSessions}
+            treatments={treatments}
           />
-        )
-        }
+        )}
         <button
           className={styles.medicalHistoryButton}
           onClick={() => setShowMedicalHistory(true)}

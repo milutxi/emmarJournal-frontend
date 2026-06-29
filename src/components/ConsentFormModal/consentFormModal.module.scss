@@ -1,114 +1,473 @@
+// @use "../../styles/variables" as *;
+// @use "../../styles/mixins" as *;
+
+// .overlay {
+//   position: fixed;
+//   inset: 0;
+
+//   background: rgba(0, 0, 0, 0.45);
+
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+//   z-index: 1000;
+// }
+
+// .modal {
+//   width: 80%;
+//   max-width: 1100px;
+
+//   max-height: 90vh;
+
+//   background-color: $color-bg;
+//   border-radius: 12px;
+
+//   padding: $indent__l;
+
+//   overflow-y: auto;
+
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .closeButton {
+//   position: absolute;
+
+//   top: $indent__base;
+//   right: $indent__base;
+
+//   background: transparent;
+//   border: none;
+
+//   font-size: $font-size__m;
+//   cursor: pointer;
+
+//   color: $color-text;
+// }
+
+// .title {
+//   margin-bottom: $indent__m;
+//   color: $color-text;
+// }
+
+
+// .buttonSection {
+//   margin-top: $indent__m;
+
+//   display: flex;
+//   justify-content: flex-end;
+//   gap: $indent__base;
+
+//   //border-top: 1px solid $color-dark-outline;
+//   padding-top: $indent__s;
+// }
+
+// .saveButton {
+//   background-color: $color-goldenrod;
+//   color: white;
+
+//   border: none;
+//   border-radius: 8px;
+
+//   padding: $indent__s $indent__m;
+
+//   font-family: $font-montserrat;
+//   font-weight: 600;
+
+//   cursor: pointer;
+
+//   transition: 0.2s ease;
+
+//   &:hover {
+//     opacity: 0.7;
+//   }
+// }
+
+// .cancelButton {
+//   background: transparent;
+
+//   border: 1px solid $color-dark-outline;
+//   border-radius: 8px;
+
+//   padding: $indent__s $indent__m;
+
+//   font-family: $font-montserrat;
+
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: #d7d7d7;
+//   }
+// }
+
+// .modalHeader {
+//   padding: $indent__s;
+//   border-bottom: 1px solid $color-dark-outline;
+
+//   flex-shrink: 0;
+// }
+// .modalBody {
+//   overflow-y: auto;
+//   padding: $indent__l;
+// }
+
+// .signatureSection {
+//   margin-top: $indent__xl;
+
+//   label {
+//     display: block;
+//     margin-bottom: $indent__s;
+//     font-weight: 600;
+//   }
+// }
+
+// .signatureCanvas {
+//   width: 100%;
+//   max-width: 500px;
+//   height: 200px;
+
+//   border: 2px solid $color-dark-outline;
+//   border-radius: 10px;
+//   background: white;
+// }
+
+// .documentHeader {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+
+//   padding-bottom: $indent__base;
+//   margin-bottom: $indent__m;
+
+//   border-bottom: 2px solid $color-dark-outline;
+
+//   p {
+//     margin: 0;
+//   }
+
+//   @include responsive-mobile {
+//     flex-direction: column;
+//     gap: $indent__s;
+//   }
+// }
+
+// .treatmentSection {
+//   margin-bottom: $indent__m;
+
+//   h4 {
+//     margin-bottom: $indent__s;
+//     color: $color-body-display;
+//   }
+
+//   ul {
+//     margin: 0;
+//     padding-left: $indent__m;
+//   }
+
+//   li {
+//     margin-bottom: 6px;
+//   }
+// }
+
+// .consentText {
+//   margin: $indent__m 0;
+//   padding: $indent__m;
+
+//   background: #fafafa;
+//   border-left: 4px solid $color-goldenrod;
+//   border-radius: 10px;
+
+//   line-height: 1.6;
+
+//   p:not(:last-child) {
+//     margin-bottom: $indent__base;
+//   }
+// }
+
+// .acceptSection {
+//   display: flex;
+//   align-items: center;
+//   gap: $indent__s;
+
+//   margin-top: $indent__m;
+
+//   input {
+//     width: 18px;
+//     height: 18px;
+//     cursor: pointer;
+//   }
+
+//   label {
+//     cursor: pointer;
+//     font-weight: 600;
+//   }
+// }
+
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
+
+/* ===========================
+   Overlay & Modal
+=========================== */
 
 .overlay {
   position: fixed;
   inset: 0;
-
-  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  z-index: 1000;
+  background: rgba(0, 0, 0, 0.45);
 }
 
 .modal {
   width: 80%;
   max-width: 1100px;
-
   max-height: 90vh;
 
-  background-color: $color-bg;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
 
-  padding: $indent__l;
+  text-align: left;
 
   overflow-y: auto;
 
+  background: $color-bg;
+  border-radius: 12px;
+  padding: $indent__l;
+
   position: relative;
-  display: flex;
-  flex-direction: column;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.modalHeader {
+  flex-shrink: 0;
+
+  padding: $indent__s;
+  border-bottom: 1px solid $color-dark-outline;
+}
+
+.title {
+  margin-bottom: $indent__m;
+  color: $color-text;
+  text-align: center;
 }
 
 .closeButton {
   position: absolute;
-
   top: $indent__base;
   right: $indent__base;
 
   background: transparent;
   border: none;
 
+  color: $color-text;
   font-size: $font-size__m;
   cursor: pointer;
-
-  color: $color-text;
 }
 
-.title {
+.modalBody {
+  padding: $indent__l;
+  overflow-y: auto;
+}
+
+/* ===========================
+   Document
+=========================== */
+
+.documentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
   margin-bottom: $indent__m;
-  color: $color-text;
+  padding-bottom: $indent__base;
+
+  border-bottom: 2px solid $color-dark-outline;
+
+  p {
+    margin: 0;
+  }
+
+  @include responsive-mobile {
+    flex-direction: column;
+    gap: $indent__s;
+  }
+}
+
+.treatmentSection {
+  margin-bottom: $indent__m;
+
+  h4 {
+    margin-bottom: $indent__s;
+    color: $color-body-display;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: $indent__m;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+}
+
+.consentText {
+  margin: $indent__m 0;
+  padding: $indent__m;
+
+  background: #fafafa;
+  border-left: 4px solid $color-goldenrod;
+  border-radius: 10px;
+  text-align: left;
+
+  line-height: 1.6;
+
+  p:not(:last-child) {
+    margin-bottom: $indent__base;
+  }
 }
 
 
-.buttonSection {
+.acceptSection {
+  display: flex;
+  align-items: center;
+  gap: $indent__s;
+
   margin-top: $indent__m;
 
+  input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+/* ===========================
+   Signature
+=========================== */
+
+.signatureSection {
+  margin-top: $indent__xl;
+
+  label {
+    display: block;
+    margin-bottom: $indent__s;
+    font-weight: 600;
+  }
+
+  // button {
+  //   margin-top: $indent__base;
+  // }
+}
+
+
+.signatureWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $indent__m;
+
+  @include responsive-mobile {
+    flex-direction: column;
+  }
+}
+
+
+.signatureCanvas {
+  width: 500px;
+  max-width: 100%;
+  height: 200px;
+
+  background: white;
+
+  border: 2px solid $color-dark-outline;
+  border-radius: 10px;
+}
+
+
+.signatureButton {
+  align-self: center;
+  white-space: nowrap;
+}
+
+.signaturePreview {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__base;
+
+  img {
+    width: 100%;
+    max-width: 500px;
+
+    border: 2px solid $color-dark-outline;
+    border-radius: 10px;
+
+    background: white;
+  }
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.buttonSection {
   display: flex;
   justify-content: flex-end;
   gap: $indent__base;
 
-  //border-top: 1px solid $color-dark-outline;
+  margin-top: $indent__m;
   padding-top: $indent__s;
 }
 
-.saveButton {
-  background-color: $color-goldenrod;
-  color: white;
-
-  border: none;
-  border-radius: 8px;
-
+.saveButton,
+.cancelButton,
+.signatureSection button,
+.signaturePreview button {
   padding: $indent__s $indent__m;
 
+  border-radius: 8px;
+  cursor: pointer;
+
   font-family: $font-montserrat;
+
+  transition: .2s ease;
+}
+
+.saveButton {
+  border: none;
+
+  background: $color-goldenrod;
+  color: white;
   font-weight: 600;
 
-  cursor: pointer;
-
-  transition: 0.2s ease;
-
   &:hover {
-    opacity: 0.7;
+    opacity: .8;
   }
 }
 
-.cancelButton {
-  background: transparent;
-
+.cancelButton,
+.signatureSection button,
+.signaturePreview button {
   border: 1px solid $color-dark-outline;
-  border-radius: 8px;
-
-  padding: $indent__s $indent__m;
-
-  font-family: $font-montserrat;
-
-  cursor: pointer;
+  background: white;
+  color: $color-body-display;
 
   &:hover {
-    background-color: #d7d7d7;
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
   }
-}
-
-.modalHeader {
-  padding: $indent__s;
-  border-bottom: 1px solid $color-dark-outline;
-
-  flex-shrink: 0;
-}
-.modalBody {
-  overflow-y: auto;
-  padding: $indent__l;
 }
