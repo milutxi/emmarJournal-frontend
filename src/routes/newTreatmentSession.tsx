@@ -448,7 +448,6 @@ const NewTreatmentSession = () => {
           <span className={styles.buttonText}>MEDICINSK HÄLSODEKLARATION</span>
         </button>
 
-        
         <button
           className={styles.medicalHistoryButton}
           onClick={() => setShowConsentForm(true)}
@@ -456,7 +455,17 @@ const NewTreatmentSession = () => {
           <span className={styles.iconWrapper}>
             {getStatusIcon(consentFormCompleted)}
           </span>
-          <span className={styles.buttonText}>SAMTYCKESFORMULÄR</span>
+
+          <span className={styles.buttonContent}>
+            <span className={styles.buttonTitle}>SAMTYCKE</span>
+
+            {consentFormCompleted && (
+              <span className={styles.buttonSubtitle}>
+                Signerat{" "}
+                {new Date(consentForm.signedAt!).toLocaleDateString("sv-SE")}
+              </span>
+            )}
+          </span>
         </button>
       </div>
     </div>

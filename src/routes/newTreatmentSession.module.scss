@@ -190,3 +190,18 @@
 .iconWrapper {
 font-size: 25px;
 }
+
+.buttonContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.buttonTitle {
+  font-weight: 600;
+}
+
+.buttonSubtitle {
+  font-size: 14px;
+  color: $color-dark-outline;
+}
