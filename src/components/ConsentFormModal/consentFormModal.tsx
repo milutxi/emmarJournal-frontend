@@ -37,7 +37,7 @@ const ConsentFormModal = ({
 
   if (!isOpen) return null;
 
-  const handleSaveConsentForm = () => {
+  const handleSaveConsentForm = async () => {
     if (!consentForm.accepted) {
       alert("Du måste acceptera samtycket.");
       return;
@@ -57,12 +57,45 @@ const ConsentFormModal = ({
 
       signatureImage = signature.toDataURL();
     }
-
-    setConsentForm({
-      ...consentForm,
+    const payload = {
+      clientId: client._id,
+      treatmentIds: treatmentSessions.map((session) => session.treatmentId),
+      consentText: `Jag har fått information om den planerade behandlingen, dess syfte, möjliga risker, 
+      biverkningar och rekommenderad eftervård.
+      Jag har haft möjlighet att ställa frågor och har fått svar som jag förstår.`,
+      accepted: consentForm.accepted,
       signatureImage,
       signedAt: new Date().toISOString(),
-    });
+    };
+    console.log("Consent payload:", payload);
+
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/consentForm",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+
+    const savedConsentForm = await response.json();
+
+    if (!response.ok) {
+      console.error(savedConsentForm);
+      alert("Kunde inte spara samtycket.");
+      return;
+    }
+
+    setConsentForm(
+      //{
+      // ...consentForm,
+      // signatureImage,
+      // signedAt: new Date().toISOString(),
+      //}
+      savedConsentForm,
+    );
 
     setConsentFormCompleted(true);
     onClose();

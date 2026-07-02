@@ -447,6 +447,8 @@ const NewTreatmentSession = () => {
           </span>
           <span className={styles.buttonText}>MEDICINSK HÄLSODEKLARATION</span>
         </button>
+
+        
         <button
           className={styles.medicalHistoryButton}
           onClick={() => setShowConsentForm(true)}
