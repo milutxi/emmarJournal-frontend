@@ -17,33 +17,43 @@ import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistor
 import { GrStatusWarning } from "react-icons/gr";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
+import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
-  const [clientResponse, treatmentsResponse, machinesResponse] =
+  const [
+    clientResponse, 
+    treatmentsResponse, 
+    machinesResponse,
+    medicalHistoryResponse,
+  ] =
     await Promise.all([
       fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id),
       fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/"),
       fetch(import.meta.env.VITE_BACKEND_URL + "/machine/"),
+      fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id),
     ]);
 
   const client = await clientResponse.json();
   const treatments = await treatmentsResponse.json();
   const machines = await machinesResponse.json();
+  const latestMedicalHistory = await medicalHistoryResponse.json();
 
   return {
     client,
     treatments,
     machines,
+    latestMedicalHistory,
   };
 };
 
 const NewTreatmentSession = () => {
-  const { client, treatments, machines } = useLoaderData() as {
+  const { client, treatments, machines, latestMedicalHistory } = useLoaderData() as {
     client: Client;
     treatments: Treatment[];
     machines: Machine[];
+    latestMedicalHistory: MedicalHistoryType | null;
   };
 
   const [treatmentSessions, setTreatmentSessions] = useState<
@@ -72,9 +82,9 @@ const NewTreatmentSession = () => {
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
 
   // when the state lives in the parent the modal gets localStorage.
-  const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
-    pregnant: false,
-  });
+  const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>(
+    latestMedicalHistory ?? emptyMedicalHistory
+);
 
   //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
   const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
@@ -245,6 +255,26 @@ const NewTreatmentSession = () => {
   useEffect(() => {
     //console.log(treatmentSessions);
   }, [treatmentSessions]);
+
+  // const handleOpenMedicalHistory = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + client._id,
+  //       {
+  //         headers: {
+  //           Accept: "application/json",
+  //         },
+  //       },
+  //     );
+
+  //     const latest = await response.json();
+  //     setMedicalHistory(latest);
+  //   } catch (error) {
+  //     console.error("Error fetching medical history:", error);
+  //   }
+
+  //   setShowMedicalHistory(true);
+  // };
 
   return (
     <div className={styles.newTreatmentStyle}>

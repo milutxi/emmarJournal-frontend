@@ -13,6 +13,9 @@ type Props = {
 };
 
 const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHistory, setMedicalHistoryCompleted }: Props) => {
+
+  // I pass the state to the parent - newTreatmenSession
+
   // const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
   //   pregnant: false,
   // });
@@ -105,39 +108,6 @@ const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHisto
     },
   ];
 
-  // const detailFields = [
-  //   {
-  //     booleanKey: "medication",
-  //     detailKey: "medicationDetails",
-  //     label: "Beskriv medicinering",
-  //   },
-  //   {
-  //     booleanKey: "allergies",
-  //     detailKey: "allergyDetails",
-  //     label: "Beskriv allergier",
-  //   },
-  //   {
-  //     booleanKey: "anesthesiaReaction",
-  //     detailKey: "anesthesiaReactionDetails",
-  //     label: "Beskriv reaktion på anestesi",
-  //   },
-  //   {
-  //     booleanKey: "anaphylaxis",
-  //     detailKey: "anaphylaxisDetails",
-  //     label: "Beskriv anafylaxi",
-  //   },
-  //   {
-  //     booleanKey: "bloodThinners",
-  //     detailKey: "bloodThinnerDetails",
-  //     label: "Beskriv blodförtunnande behandling",
-  //   },
-  //   {
-  //     booleanKey: "hypertrophicScarring",
-  //     detailKey: "hypertrophicScarringDetails",
-  //     label: "Beskriv hypertrofisk ärrbildning",
-  //   },
-  // ];
-
   const textFields = [
     {
       key: "otherConditions",
@@ -216,30 +186,6 @@ const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHisto
             ))}
           </div>
           <div className={styles.detailSection}>
-            {/* {detailFields.map((field) => {
-            const show =
-              medicalHistory[field.booleanKey as keyof MedicalHistoryType];
-            if (!show) return null;
-            return (
-              <div key={field.detailKey}>
-                <label>{field.label}</label>
-                <input
-                  type="text"
-                  value={
-                    (medicalHistory[
-                      field.detailKey as keyof MedicalHistoryType
-                    ] as string) ?? ""
-                  }
-                  onChange={(e) =>
-                    setMedicalHistory({
-                      ...medicalHistory,
-                      [field.detailKey]: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            );
-          })} */}
           </div>
           <div className={styles.textSection}>
             {textFields.map((field) => (
