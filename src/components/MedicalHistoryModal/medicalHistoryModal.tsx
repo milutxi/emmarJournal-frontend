@@ -11,7 +11,8 @@ type Props = {
 
   medicalHistory: MedicalHistoryType;
   setMedicalHistory: React.Dispatch<React.SetStateAction<MedicalHistoryType>>;
-  setMedicalHistoryCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  //setMedicalHistoryCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  onSave: (updatedMedicalHistory: MedicalHistoryType) =>Promise<void>;
 };
 
 const MedicalHistoryModal = ({
@@ -19,7 +20,8 @@ const MedicalHistoryModal = ({
   isOpen,
   medicalHistory,
   setMedicalHistory,
-  setMedicalHistoryCompleted,
+  //setMedicalHistoryCompleted,
+  onSave
 }: Props) => {
   const signatureRef = useRef<SignatureCanvas>(null);
   // I pass the state to the parent - newTreatmenSession
@@ -127,7 +129,7 @@ const MedicalHistoryModal = ({
     },
   ];
 
-  const handleSaveMedicalHistory = () => {
+  const handleSaveMedicalHistory = async () => {
     if (!medicalHistory.consentAccepted) {
       alert("Du måste bekräfta hälsodeklarationen.");
       return;
@@ -146,14 +148,17 @@ const MedicalHistoryModal = ({
       signatureImage = signature.toDataURL();
     }
 
-    setMedicalHistory({
+    const updatedMedicalHistory = {
       ...medicalHistory,
       signatureImage,
       signedAt: new Date().toISOString(),
-    });
+    };
 
-    setMedicalHistoryCompleted(true);
-    onClose();
+    await onSave(updatedMedicalHistory);
+
+    // setMedicalHistory(updatedMedicalHistory);
+    // setMedicalHistoryCompleted(true);
+    // onClose();
   };
 
   return (

@@ -23,17 +23,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
   const [
-    clientResponse, 
-    treatmentsResponse, 
+    clientResponse,
+    treatmentsResponse,
     machinesResponse,
     medicalHistoryResponse,
-  ] =
-    await Promise.all([
-      fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id),
-      fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/"),
-      fetch(import.meta.env.VITE_BACKEND_URL + "/machine/"),
-      fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id),
-    ]);
+  ] = await Promise.all([
+    fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/"),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/machine/"),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id),
+  ]);
 
   const client = await clientResponse.json();
   const treatments = await treatmentsResponse.json();
@@ -49,12 +48,13 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 const NewTreatmentSession = () => {
-  const { client, treatments, machines, latestMedicalHistory } = useLoaderData() as {
-    client: Client;
-    treatments: Treatment[];
-    machines: Machine[];
-    latestMedicalHistory: MedicalHistoryType | null;
-  };
+  const { client, treatments, machines, latestMedicalHistory } =
+    useLoaderData() as {
+      client: Client;
+      treatments: Treatment[];
+      machines: Machine[];
+      latestMedicalHistory: MedicalHistoryType | null;
+    };
 
   const [treatmentSessions, setTreatmentSessions] = useState<
     TreatmentSession[]
@@ -82,9 +82,19 @@ const NewTreatmentSession = () => {
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
 
   // when the state lives in the parent the modal gets localStorage.
+  const initialMedicalHistory: MedicalHistoryType = latestMedicalHistory
+  ? {
+      ...emptyMedicalHistory,
+      ...latestMedicalHistory,
+      consentAccepted: false,
+      signatureImage: "",
+      signedAt: undefined,
+    }
+  : emptyMedicalHistory;
+  
   const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>(
-    latestMedicalHistory ?? emptyMedicalHistory
-);
+    initialMedicalHistory
+  );
 
   //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
   const [medicalHistoryCompleted, setMedicalHistoryCompleted] = useState(false);
@@ -256,25 +266,44 @@ const NewTreatmentSession = () => {
     //console.log(treatmentSessions);
   }, [treatmentSessions]);
 
-  // const handleOpenMedicalHistory = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + client._id,
-  //       {
-  //         headers: {
-  //           Accept: "application/json",
-  //         },
-  //       },
-  //     );
+  const handleSaveMedicalHistory = async (
+    updatedMedicalHistory: MedicalHistoryType,
+  ) => {
+    try {
+      const payload = {
+        ...updatedMedicalHistory,
+        clientId: client._id,
+      };
 
-  //     const latest = await response.json();
-  //     setMedicalHistory(latest);
-  //   } catch (error) {
-  //     console.error("Error fetching medical history:", error);
-  //   }
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/medicalHistory",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
 
-  //   setShowMedicalHistory(true);
-  // };
+      const savedMedicalHistory = await response.json();
+
+      if (!response.ok) {
+        console.error("Medical history save failed:", savedMedicalHistory);
+        alert(
+          savedMedicalHistory.message || "Kunde inte spara hälsodeklarationen.",
+        );
+        return;
+      }
+
+      setMedicalHistory(savedMedicalHistory);
+      setMedicalHistoryCompleted(true);
+      setShowMedicalHistory(false);
+    } catch (error) {
+      console.error("Error saving medical history:", error);
+      alert("Kunde inte spara hälsodeklarationen.");
+    }
+  };
 
   return (
     <div className={styles.newTreatmentStyle}>
@@ -452,7 +481,8 @@ const NewTreatmentSession = () => {
             onClose={() => setShowMedicalHistory(false)}
             medicalHistory={medicalHistory}
             setMedicalHistory={setMedicalHistory}
-            setMedicalHistoryCompleted={setMedicalHistoryCompleted}
+            //setMedicalHistoryCompleted={setMedicalHistoryCompleted}
+            onSave={handleSaveMedicalHistory}
           />
         )}
         {showConsentForm && (
