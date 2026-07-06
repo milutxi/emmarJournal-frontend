@@ -1,4 +1,6 @@
 import styles from "./medicalHistoryModal.module.scss";
+import SignatureCanvas from "react-signature-canvas";
+import { useRef } from "react";
 
 //import { useState } from "react";
 import { MedicalHistoryType } from "../../types";
@@ -12,8 +14,14 @@ type Props = {
   setMedicalHistoryCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHistory, setMedicalHistoryCompleted }: Props) => {
-
+const MedicalHistoryModal = ({
+  onClose,
+  isOpen,
+  medicalHistory,
+  setMedicalHistory,
+  setMedicalHistoryCompleted,
+}: Props) => {
+  const signatureRef = useRef<SignatureCanvas>(null);
   // I pass the state to the parent - newTreatmenSession
 
   // const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>({
@@ -120,9 +128,33 @@ const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHisto
   ];
 
   const handleSaveMedicalHistory = () => {
+    if (!medicalHistory.consentAccepted) {
+      alert("Du måste bekräfta hälsodeklarationen.");
+      return;
+    }
+
+    let signatureImage = medicalHistory.signatureImage;
+
+    if (!signatureImage) {
+      const signature = signatureRef.current;
+
+      if (!signature || signature.isEmpty()) {
+        alert("Signatur saknas.");
+        return;
+      }
+
+      signatureImage = signature.toDataURL();
+    }
+
+    setMedicalHistory({
+      ...medicalHistory,
+      signatureImage,
+      signedAt: new Date().toISOString(),
+    });
+
     setMedicalHistoryCompleted(true);
     onClose();
-  }
+  };
 
   return (
     <div className={styles.overlay}>
@@ -185,8 +217,7 @@ const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHisto
               </div>
             ))}
           </div>
-          <div className={styles.detailSection}>
-          </div>
+          <div className={styles.detailSection}></div>
           <div className={styles.textSection}>
             {textFields.map((field) => (
               <div key={field.key}>
@@ -208,12 +239,75 @@ const MedicalHistoryModal = ({ onClose, isOpen,  medicalHistory, setMedicalHisto
             ))}
           </div>
 
-          <div className={styles.buttonSection}>
-            <button className={styles.cancelButton} onClick={onClose}>
-              Avbryt
-            </button>
-            <button className={styles.saveButton} onClick={handleSaveMedicalHistory}>Spara</button>
+          <div className={styles.signatureSection}>
+            <div className={styles.acceptansSection}>
+              <input
+                type="checkbox"
+                checked={medicalHistory.consentAccepted ?? false}
+                onChange={(e) =>
+                  setMedicalHistory({
+                    ...medicalHistory,
+                    consentAccepted: e.target.checked,
+                  })
+                }
+              />
+              <label>Jag bekräftar att uppgifterna är korrekta.</label>
+            </div>
+            <label>Kundens underskrift</label>
+            <div className={styles.signatureWrapper}>
+              {medicalHistory.signatureImage ? (
+                <div className={styles.signaturePreview}>
+                  <img src={medicalHistory.signatureImage} alt="Signatur" />
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMedicalHistory({
+                        ...medicalHistory,
+                        signatureImage: "",
+                        signedAt: undefined,
+                      });
+
+                      signatureRef.current?.clear();
+                    }}
+                  >
+                    Ny underskrift
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <SignatureCanvas
+                    ref={signatureRef}
+                    penColor="black"
+                    canvasProps={{
+                      className: styles.signatureCanvas,
+                      width: 500,
+                      height: 200,
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => signatureRef.current?.clear()}
+                  >
+                    Rensa underskrift
+                  </button>
+                </>
+              )}
+            </div>
           </div>
+        </div>
+
+        <div className={styles.buttonSection}>
+          <button className={styles.cancelButton} onClick={onClose}>
+            Avbryt
+          </button>
+          <button
+            className={styles.saveButton}
+            onClick={handleSaveMedicalHistory}
+          >
+            Spara
+          </button>
         </div>
       </div>
     </div>

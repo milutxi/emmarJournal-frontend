@@ -164,7 +164,7 @@ const ConsentFormModal = ({
           </div>
 
           <div className={styles.signatureSection}>
-            <label>Klientens signatur</label>
+            <label>Kundens underskrift</label>
             <div className={styles.signatureWrapper}>
               {consentForm.signatureImage ? (
                 <div className={styles.signaturePreview}>
@@ -182,7 +182,7 @@ const ConsentFormModal = ({
                       signatureRef.current?.clear();
                     }}
                   >
-                    Ny signatur
+                    Ny underskrift
                   </button>
                 </div>
               ) : (
@@ -201,7 +201,7 @@ const ConsentFormModal = ({
                     type="button"
                     onClick={() => signatureRef.current?.clear()}
                   >
-                    Rensa signatur
+                    Rensa underskrift
                   </button>
                 </>
               )}
