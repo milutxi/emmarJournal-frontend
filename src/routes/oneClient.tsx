@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Client, Journal } from "../types";
@@ -43,12 +44,44 @@ const getTreatmentName = (
   return treatment.tname || "Behandling";
 };
 
+const getJournalTreatmentNames = (journal: Journal) => {
+  return journal.treatments
+    .map((session) => getTreatmentName(session.treatmentId))
+    .join(", ");
+};
+
+const getMedicalHistory = (journal: Journal) => {
+  if (typeof journal.medicalHistoryId === "string") {
+    return null;
+  }
+
+  return journal.medicalHistoryId;
+};
+
+const getConsentForm = (journal: Journal) => {
+  if (typeof journal.consentFormId === "string") {
+    return null;
+  }
+
+  return journal.consentFormId;
+};
+
 const OneClient = () => {
   const { client, journals } = useLoaderData() as {
     client: Client;
     journals: Journal[];
   };
   const navigate = useNavigate();
+
+  const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
+
+const [selectedMedicalHistory, setSelectedMedicalHistory] = useState<
+  Exclude<Journal["medicalHistoryId"], string> | null
+>(null);
+
+const [selectedConsentForm, setSelectedConsentForm] = useState<
+  Exclude<Journal["consentFormId"], string> | null
+>(null);
 
   return (
     <div className={styles.oneClientStyle}>
@@ -111,37 +144,137 @@ const OneClient = () => {
     <span>Coming soon — appointments, notes, treatments...</span>
   </div>
 ) : (
-  <div className={styles.oneClientStyle__journalList}>
+   <ul className={styles.oneClientStyle__journalList}>
     {journals.map((journal) => (
-      <article key={journal._id} className={styles.oneClientStyle__journalCard}>
-        <div className={styles.oneClientStyle__journalHeader}>
-          <h3>Behandlingssession</h3>
-          <span>{formatDate(journal.jDate)}</span>
-        </div>
+      <li key={journal._id} className={styles.oneClientStyle__journalRow}>
+        <button
+          type="button"
+          className={styles.oneClientStyle__sessionButton}
+          onClick={() => {
+            setSelectedJournal(journal);
+            setSelectedMedicalHistory(null);
+            setSelectedConsentForm(null);
+          }}
+        >
+          <span className={styles.oneClientStyle__journalDate}>
+            {formatDate(journal.jDate)}
+          </span>
 
-        <div className={styles.oneClientStyle__journalTreatments}>
-          {journal.treatments.map((session, index) => (
-            <div
-              key={`${journal._id}-${index}`}
-              className={styles.oneClientStyle__journalTreatment}
-            >
-              <p>
-                <strong>{getTreatmentName(session.treatmentId)}</strong>
-              </p>
+          <span className={styles.oneClientStyle__journalTreatmentName}>
+            {getJournalTreatmentNames(journal)}
+          </span>
+        </button>
 
-              <p>
-                Tid: {session.duration} min · Pris: {session.totalPrice} kr
-              </p>
+        <button
+          type="button"
+          className={styles.oneClientStyle__documentButton}
+          onClick={() => {
+            const medicalHistory = getMedicalHistory(journal);
 
-              {session.notes && <p>Anteckning: {session.notes}</p>}
-            </div>
-          ))}
-        </div>
-      </article>
+            if (!medicalHistory) {
+              alert("Hälsodeklarationen kunde inte visas.");
+              return;
+            }
+
+            setSelectedMedicalHistory(medicalHistory);
+            setSelectedJournal(null);
+            setSelectedConsentForm(null);
+          }}
+        >
+          Hälsodeklaration
+        </button>
+
+        <button
+          type="button"
+          className={styles.oneClientStyle__documentButton}
+          onClick={() => {
+            const consentForm = getConsentForm(journal);
+
+            if (!consentForm) {
+              alert("Samtycket kunde inte visas.");
+              return;
+            }
+
+            setSelectedConsentForm(consentForm);
+            setSelectedJournal(null);
+            setSelectedMedicalHistory(null);
+          }}
+        >
+          Samtycke
+        </button>
+      </li>
+    ))}
+  </ul>
+  
+)}
+{selectedJournal && (
+  <div className={styles.oneClientStyle__viewer}>
+    <h3>Behandling {formatDate(selectedJournal.jDate)}</h3>
+
+    {selectedJournal.treatments.map((session, index) => (
+      <div key={`${selectedJournal._id}-${index}`}>
+        <p>
+          <strong>{getTreatmentName(session.treatmentId)}</strong>
+        </p>
+        <p>Tid: {session.duration} min</p>
+        <p>Pris: {session.price} kr</p>
+        <p>Rabatt: {session.discount ?? 0} kr</p>
+        <p>Total: {session.totalPrice} kr</p>
+        {session.notes && <p>Anteckning: {session.notes}</p>}
+      </div>
     ))}
   </div>
 )}
 
+{selectedMedicalHistory && (
+  <div className={styles.oneClientStyle__viewer}>
+    <h3>Hälsodeklaration</h3>
+
+    {"version" in selectedMedicalHistory && selectedMedicalHistory.version && (
+      <p>Version {selectedMedicalHistory.version}</p>
+    )}
+
+    {selectedMedicalHistory.signedAt && (
+      <p>Signerad {formatDate(selectedMedicalHistory.signedAt)}</p>
+    )}
+
+    {selectedMedicalHistory.allergies && (
+      <p>Allergier: {selectedMedicalHistory.allergyDetails || "Ja"}</p>
+    )}
+
+    {selectedMedicalHistory.medication && (
+      <p>Medicinering: {selectedMedicalHistory.medicationDetails || "Ja"}</p>
+    )}
+
+    {selectedMedicalHistory.otherConditions && (
+      <p>Övrigt: {selectedMedicalHistory.otherConditions}</p>
+    )}
+
+    {selectedMedicalHistory.mhnotes && (
+      <p>Anteckningar: {selectedMedicalHistory.mhnotes}</p>
+    )}
+  </div>
+)}
+
+{selectedConsentForm && (
+  <div className={styles.oneClientStyle__viewer}>
+    <h3>Samtycke</h3>
+
+    {selectedConsentForm.signedAt && (
+      <p>Signerat {formatDate(selectedConsentForm.signedAt)}</p>
+    )}
+
+    <p>{selectedConsentForm.consentText}</p>
+
+    {selectedConsentForm.signatureImage && (
+      <img
+        className={styles.oneClientStyle__signatureImage}
+        src={selectedConsentForm.signatureImage}
+        alt="Kundens underskrift"
+      />
+    )}
+  </div>
+)}
 
 
       </div>
