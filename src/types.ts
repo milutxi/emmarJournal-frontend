@@ -74,8 +74,17 @@ export interface Journal {
     }
   >;
 
-  medicalHistoryId: string;
-  consentFormId: string;
+  medicalHistoryId:
+    | string
+    | (MedicalHistoryType & {
+        _id: string;
+        version?: number;
+        isLatest?: boolean;
+        signedAt?: string;
+        signatureImage?: string;
+      });
+
+  consentFormId: string | ConsentFormType;
 
   jDate: string;
 
@@ -152,7 +161,6 @@ export interface MedicalHistoryType {
   hypertrophicScarring?: boolean;
   hypertrophicScarringDetails?: string;
 
-  
   otherConditions?: string;
   mhnotes?: string;
   consentAccepted?: boolean;
@@ -168,4 +176,3 @@ export interface ConsentFormType {
   signatureImage: string;
   signedAt?: string;
 }
-
