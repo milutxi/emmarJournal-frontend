@@ -221,6 +221,21 @@ const NewTreatmentSession = () => {
   };
 
   const handleSaveSession = async () => {
+
+    const medicalHistoryId = (
+      medicalHistory as MedicalHistoryType & { _id?: string}
+    )._id;
+
+    if(!medicalHistoryId) {
+      alert("Du måste spara hälsodeklarationen först.");
+      return;
+    }
+
+    if(!consentForm._id) {
+      alert("Du måste spara samtycket först");
+      return;
+    }
+
     const journalTreatments = treatmentSessions.map((session) => ({
       treatmentId: session.treatmentId,
       machineIds: session.machineIds,
@@ -235,6 +250,8 @@ const NewTreatmentSession = () => {
       clientId: client._id,
       jDate: sessionDate,
       treatments: journalTreatments,
+      medicalHistoryId,
+      consentFormId: consentForm._id,
     };
 
 

@@ -141,6 +141,7 @@ export interface MedicalHistoryType {
 }
 
 export interface ConsentFormType {
+  _id?: string;
   treatmentIds: string[];
   consentText: string;
   accepted: boolean;
