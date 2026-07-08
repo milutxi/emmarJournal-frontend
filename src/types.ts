@@ -66,16 +66,36 @@ export interface Treatment {
 export interface Journal {
   _id: string;
   clientId: string;
-  treatmentIds: string[];
-  machineIds: string[];
+
+  treatments: Array<
+    Omit<TreatmentSession, "treatmentId" | "treatmentParameters"> & {
+      treatmentId: string | Treatment;
+      treatmentParametersId?: string;
+    }
+  >;
+
+  medicalHistoryId: string;
+  consentFormId: string;
+
   jDate: string;
-  price: number;
-  discount?: number;
-  totalPrice: number;
-  notes?: string;
+
+  area?: string;
+  fitzpatrickType?: number;
+
   medicalHistoryReviewed: boolean;
   consentConfirmed: boolean;
-  signedAt: string;
+
+  changesReported?: boolean;
+  changesDescription?: string;
+
+  beforePhotos?: string[];
+  afterPhotos?: string[];
+
+  performedBy?: string;
+  signedAt?: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TreatmentSession {
