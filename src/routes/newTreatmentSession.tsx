@@ -19,6 +19,7 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 
+import { useNavigate } from "react-router-dom";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -110,6 +111,10 @@ const NewTreatmentSession = () => {
 
   const [showConsentForm, setShowConsentForm] = useState(false);
   const [consentFormCompleted, setConsentFormCompleted] = useState(false);
+
+  const navigate = useNavigate();
+  const [isSavingSession, setIsSavingSession] = useState(false);
+  const [sessionSaved, setSessionSaved] = useState(false);
 
   const getStatusIcon = (completed: boolean) => {
     const className = completed ? styles.statusDone : styles.statusWarning;
@@ -222,6 +227,11 @@ const NewTreatmentSession = () => {
   };
 
   const handleSaveSession = async () => {
+    if (sessionSaved) {
+      alert("Behandlingssessionen är redan sparad.");
+      return;
+    }
+
     const medicalHistoryId = (
       medicalHistory as MedicalHistoryType & { _id?: string }
     )._id;
@@ -256,6 +266,8 @@ const NewTreatmentSession = () => {
 
     //console.log("Journal payload:", payload);
     try {
+      setIsSavingSession(true);
+
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/createJournal/",
         {
@@ -276,11 +288,16 @@ const NewTreatmentSession = () => {
       }
 
       console.log("Saved journal:", savedJournal);
-      alert("Behandlingssessionen sparades.");
 
+      setSessionSaved(true);
+
+      alert("Behandlingssessionen sparades.");
+      navigate(-1);
     } catch (error) {
       console.error("Error saving journal:", error);
       alert("Kunde inte spara behandlingssessionen.");
+    } finally {
+      setIsSavingSession(false);
     }
   };
 
@@ -453,8 +470,13 @@ const NewTreatmentSession = () => {
           className={styles.saveButton}
           type="button"
           onClick={handleSaveSession}
+          disabled={isSavingSession || sessionSaved}
         >
-          SPARA SESSION
+          {isSavingSession
+            ? "Sparar..."
+            : sessionSaved
+              ? "Sparad"
+              : "Spara behandlingssession"}
         </button>
 
         {/* Medicine History */}
