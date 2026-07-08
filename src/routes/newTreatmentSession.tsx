@@ -19,6 +19,7 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
@@ -221,17 +222,16 @@ const NewTreatmentSession = () => {
   };
 
   const handleSaveSession = async () => {
-
     const medicalHistoryId = (
-      medicalHistory as MedicalHistoryType & { _id?: string}
+      medicalHistory as MedicalHistoryType & { _id?: string }
     )._id;
 
-    if(!medicalHistoryId) {
+    if (!medicalHistoryId) {
       alert("Du måste spara hälsodeklarationen först.");
       return;
     }
 
-    if(!consentForm._id) {
+    if (!consentForm._id) {
       alert("Du måste spara samtycket först");
       return;
     }
@@ -254,28 +254,34 @@ const NewTreatmentSession = () => {
       consentFormId: consentForm._id,
     };
 
-
-    console.log("Journal payload:", payload);
-
-    const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/createJournal/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    //console.log("Journal payload:", payload);
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/createJournal/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload),
-      },
-    );
+      );
 
-    const data = await response.json();
+      const savedJournal = await response.json();
 
-    if (!response.ok) {
-      console.error(data);
-      return;
+      if (!response.ok) {
+        console.error("Journal save failed:", savedJournal);
+        alert(savedJournal.message || "Kunde inte spara behandlingssessionen.");
+        return;
+      }
+
+      console.log("Saved journal:", savedJournal);
+      alert("Behandlingssessionen sparades.");
+
+    } catch (error) {
+      console.error("Error saving journal:", error);
+      alert("Kunde inte spara behandlingssessionen.");
     }
-
-    console.log(data);
   };
 
   const treatmentCount = treatmentSessions.length;
