@@ -83,17 +83,17 @@ const NewTreatmentSession = () => {
 
   // when the state lives in the parent the modal gets localStorage.
   const initialMedicalHistory: MedicalHistoryType = latestMedicalHistory
-  ? {
-      ...emptyMedicalHistory,
-      ...latestMedicalHistory,
-      consentAccepted: false,
-      signatureImage: "",
-      signedAt: undefined,
-    }
-  : emptyMedicalHistory;
-  
+    ? {
+        ...emptyMedicalHistory,
+        ...latestMedicalHistory,
+        consentAccepted: false,
+        signatureImage: "",
+        signedAt: undefined,
+      }
+    : emptyMedicalHistory;
+
   const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>(
-    initialMedicalHistory
+    initialMedicalHistory,
   );
 
   //const medicalHistoryCompleted = Object.keys(medicalHistory).length > 1;
@@ -221,13 +221,24 @@ const NewTreatmentSession = () => {
   };
 
   const handleSaveSession = async () => {
+    const journalTreatments = treatmentSessions.map((session) => ({
+      treatmentId: session.treatmentId,
+      machineIds: session.machineIds,
+      duration: session.duration,
+      price: session.price,
+      discount: session.discount,
+      totalPrice: session.totalPrice,
+      notes: session.notes,
+    }));
+
     const payload = {
       clientId: client._id,
       jDate: sessionDate,
-      treatments: treatmentSessions,
+      treatments: journalTreatments,
     };
 
-    //console.log(payload);
+
+    console.log("Journal payload:", payload);
 
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/createJournal/",
