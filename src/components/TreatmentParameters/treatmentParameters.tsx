@@ -1,8 +1,8 @@
-import { Machine, TreatmentBlock, TreatmentParametersType } from "../../types";
+import { Machine, TreatmentSession, TreatmentParametersType } from "../../types";
 //import styles from "./treatmentParameters.module.scss";
 
 type Props = {
-  value: TreatmentBlock;
+  value: TreatmentSession;
   machines: Machine[];
   onUpdate: (settings: TreatmentParametersType) => void;
 };
