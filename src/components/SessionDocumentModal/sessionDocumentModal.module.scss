@@ -1,0 +1,153 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $indent__l;
+}
+
+.modal {
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: $color-bg;
+  color: $color-text;
+  border: 1px solid $color-dark-outline;
+  padding: $indent__l;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  align-items: flex-start;
+  border-bottom: 1px solid $color-dark-outline;
+  padding-bottom: $indent__m;
+  margin-bottom: $indent__l;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.kicker {
+  margin: 0 0 $indent__s;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: $color-goldenrod;
+}
+
+.date {
+  margin: $indent__s 0 0;
+  color: $color-text;
+  opacity: 0.75;
+}
+
+.closeButton {
+  border: 1px solid $color-dark-outline;
+  background: transparent;
+  color: $color-text;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__l;
+}
+
+.section {
+  border-bottom: 1px solid $color-dark-outline;
+  padding-bottom: $indent__l;
+
+  h3 {
+    margin: 0 0 $indent__m;
+    color: $color-goldenrod;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.treatment {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  & + & {
+    margin-top: $indent__m;
+    padding-top: $indent__m;
+    border-top: 1px solid $color-dark-outline;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: $indent__m;
+  align-items: baseline;
+
+  span {
+    color: $color-text;
+    opacity: 0.7;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.notes {
+  margin-top: $indent__s;
+
+  span {
+    display: block;
+    margin-bottom: $indent__s;
+    color: $color-text;
+    opacity: 0.7;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.signatureBlock {
+  margin-top: $indent__m;
+
+  span {
+    display: block;
+    margin-bottom: $indent__s;
+    color: $color-text;
+    opacity: 0.7;
+  }
+
+  img {
+    max-width: 260px;
+    background: white;
+    border: 1px solid $color-dark-outline;
+    padding: $indent__s;
+  }
+}
+
+.emptyText {
+  margin: 0;
+  color: $color-text;
+  opacity: 0.7;
+}

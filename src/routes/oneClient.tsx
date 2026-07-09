@@ -3,6 +3,7 @@ import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Client, Journal } from "../types";
 import styles from "./oneClient.module.scss";
+import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -83,6 +84,9 @@ const [selectedConsentForm, setSelectedConsentForm] = useState<
   Exclude<Journal["consentFormId"], string> | null
 >(null);
 
+const [sessionDocumentJournal, setSessionDocumentJournal] =
+  useState<Journal | null>(null);
+
   return (
     <div className={styles.oneClientStyle}>
       {/* LEFT SIDE */}
@@ -150,11 +154,13 @@ const [selectedConsentForm, setSelectedConsentForm] = useState<
         <button
           type="button"
           className={styles.oneClientStyle__sessionButton}
-          onClick={() => {
-            setSelectedJournal(journal);
-            setSelectedMedicalHistory(null);
-            setSelectedConsentForm(null);
-          }}
+          onClick={() => setSessionDocumentJournal(journal)
+          //   {
+          //   setSelectedJournal(journal);
+          //   setSelectedMedicalHistory(null);
+          //   setSelectedConsentForm(null);
+          // }
+          }
         >
           <span className={styles.oneClientStyle__journalDate}>
             {formatDate(journal.jDate)}
@@ -278,6 +284,12 @@ const [selectedConsentForm, setSelectedConsentForm] = useState<
 
 
       </div>
+      <SessionDocumentModal
+  isOpen={!!sessionDocumentJournal}
+  onClose={() => setSessionDocumentJournal(null)}
+  journal={sessionDocumentJournal}
+  clientName={`${client.name} ${client.lastName}`}
+/>
     </div>
   );
 };
