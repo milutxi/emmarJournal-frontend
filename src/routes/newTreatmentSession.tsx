@@ -116,6 +116,10 @@ const NewTreatmentSession = () => {
   const [isSavingSession, setIsSavingSession] = useState(false);
   const [sessionSaved, setSessionSaved] = useState(false);
 
+  const [savedMedicalHistoryId, setSavedMedicalHistoryId] = useState<
+    string | null
+  >(null);
+
   const getStatusIcon = (completed: boolean) => {
     const className = completed ? styles.statusDone : styles.statusWarning;
     return (
@@ -232,11 +236,7 @@ const NewTreatmentSession = () => {
       return;
     }
 
-    const medicalHistoryId = (
-      medicalHistory as MedicalHistoryType & { _id?: string }
-    )._id;
-
-    if (!medicalHistoryId) {
+    if (!savedMedicalHistoryId) {
       alert("Du måste spara hälsodeklarationen först.");
       return;
     }
@@ -260,7 +260,7 @@ const NewTreatmentSession = () => {
       clientId: client._id,
       jDate: sessionDate,
       treatments: journalTreatments,
-      medicalHistoryId,
+      medicalHistoryId: savedMedicalHistoryId,
       consentFormId: consentForm._id,
     };
 
@@ -348,6 +348,7 @@ const NewTreatmentSession = () => {
       }
 
       setMedicalHistory(savedMedicalHistory);
+      setSavedMedicalHistoryId(savedMedicalHistory._id);
       setMedicalHistoryCompleted(true);
       setShowMedicalHistory(false);
     } catch (error) {
