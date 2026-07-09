@@ -249,6 +249,7 @@ const NewTreatmentSession = () => {
     const journalTreatments = treatmentSessions.map((session) => ({
       treatmentId: session.treatmentId,
       machineIds: session.machineIds,
+      treatmentParameters: session.treatmentParameters,
       duration: session.duration,
       price: session.price,
       discount: session.discount,
