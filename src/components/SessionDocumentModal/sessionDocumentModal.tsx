@@ -9,7 +9,7 @@ type Props = {
 };
 
 const formatDate = (date?: string) => {
-  if(!date) return "-";
+  if (!date) return "-";
 
   const parsed = new Date(date);
   if (isNaN(parsed.getTime())) return date;
@@ -25,6 +25,26 @@ const getTreatmentName = (
   }
 
   return treatment.tname || "Behandling";
+};
+
+const getMachineName = (
+  machine: Journal["treatments"][number]["machineIds"][number],
+) => {
+  if (typeof machine === "string") {
+    return machine;
+  }
+
+  return machine.mName || "Maskin";
+};
+
+const getTreatmentParameters = (
+  parameters: Journal["treatments"][number]["treatmentParametersId"],
+) => {
+  if (!parameters || typeof parameters === "string") {
+    return null;
+  }
+
+  return parameters;
 };
 
 const getMedicalHistory = (journal: Journal) => {
@@ -44,19 +64,18 @@ const getConsentForm = (journal: Journal) => {
 };
 
 const SessionDocumentModal = ({
-    isOpen,
-    onClose,
-    journal, 
-    clientName,
-  }: Props) => {
+  isOpen,
+  onClose,
+  journal,
+  clientName,
+}: Props) => {
+  if (!isOpen || !journal) return null;
 
-    if (!isOpen || !journal) return null;
-
-    const medicalHistory = getMedicalHistory(journal);
+  const medicalHistory = getMedicalHistory(journal);
   const consentForm = getConsentForm(journal);
 
   return (
-<div className={styles.modalOverlay}>
+    <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
           <div>
@@ -65,7 +84,11 @@ const SessionDocumentModal = ({
             <p className={styles.date}>{formatDate(journal.jDate)}</p>
           </div>
 
-          <button type="button" className={styles.closeButton} onClick={onClose}>
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={onClose}
+          >
             Stäng
           </button>
         </div>
@@ -75,41 +98,133 @@ const SessionDocumentModal = ({
           <section className={styles.section}>
             <h3>Session</h3>
 
-            {journal.treatments.map((session, index) => (
-              <div key={`${journal._id}-${index}`} className={styles.treatment}>
-                <div className={styles.row}>
-                  <span>Behandling</span>
-                  <strong>{getTreatmentName(session.treatmentId)}</strong>
-                </div>
+            {journal.treatments.map((session, index) => {
+              const treatmentParameters = getTreatmentParameters(
+                session.treatmentParametersId,
+              );
 
-                <div className={styles.row}>
-                  <span>Tid</span>
-                  <strong>{session.duration} min</strong>
-                </div>
-
-                <div className={styles.row}>
-                  <span>Pris</span>
-                  <strong>{session.price} kr</strong>
-                </div>
-
-                <div className={styles.row}>
-                  <span>Rabatt</span>
-                  <strong>{session.discount ?? 0} kr</strong>
-                </div>
-
-                <div className={styles.row}>
-                  <span>Total</span>
-                  <strong>{session.totalPrice} kr</strong>
-                </div>
-
-                {session.notes && (
-                  <div className={styles.notes}>
-                    <span>Anteckning</span>
-                    <p>{session.notes}</p>
+              return (
+                <div
+                  key={`${journal._id}-${index}`}
+                  className={styles.treatment}
+                >
+                  <div className={styles.row}>
+                    <span>Behandling</span>
+                    <strong>{getTreatmentName(session.treatmentId)}</strong>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {session.machineIds.length > 0 && (
+                    <div className={styles.notes}>
+                      <span>Maskiner</span>
+                      <p>
+                        {session.machineIds
+                          .map((machine) => getMachineName(machine))
+                          .join(", ")}
+                      </p>
+                    </div>
+                  )}
+
+                  {treatmentParameters && (
+                    <div className={styles.parameterBlock}>
+                      <span>Laserparametrar</span>
+
+                      <div className={styles.parameterGrid}>
+                        {treatmentParameters.wavelength && (
+                          <p>
+                            <strong>Våglängd:</strong>{" "}
+                            {treatmentParameters.wavelength}
+                          </p>
+                        )}
+
+                        {treatmentParameters.pulseMode && (
+                          <p>
+                            <strong>Pulsläge:</strong>{" "}
+                            {treatmentParameters.pulseMode}
+                          </p>
+                        )}
+
+                        {treatmentParameters.energyDensity && (
+                          <p>
+                            <strong>Energitäthet:</strong>{" "}
+                            {treatmentParameters.energyDensity}
+                          </p>
+                        )}
+
+                        {treatmentParameters.pulseEnergy && (
+                          <p>
+                            <strong>Pulsenergi:</strong>{" "}
+                            {treatmentParameters.pulseEnergy}
+                          </p>
+                        )}
+
+                        {treatmentParameters.spotSize && (
+                          <p>
+                            <strong>Spotstorlek:</strong>{" "}
+                            {treatmentParameters.spotSize}
+                          </p>
+                        )}
+
+                        {treatmentParameters.frequency && (
+                          <p>
+                            <strong>Frekvens:</strong>{" "}
+                            {treatmentParameters.frequency}
+                          </p>
+                        )}
+
+                        {treatmentParameters.pulseDuration && (
+                          <p>
+                            <strong>Pulslängd:</strong>{" "}
+                            {treatmentParameters.pulseDuration}
+                          </p>
+                        )}
+
+                        {typeof treatmentParameters.coolingUsed ===
+                          "boolean" && (
+                          <p>
+                            <strong>Kylning:</strong>{" "}
+                            {treatmentParameters.coolingUsed ? "Ja" : "Nej"}
+                          </p>
+                        )}
+
+                        {treatmentParameters.tpComment && (
+                          <p>
+                            <strong>Kommentar:</strong>{" "}
+                            {treatmentParameters.tpComment}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={styles.row}>
+                    <span>Tid</span>
+                    <strong>{session.duration} min</strong>
+                  </div>
+
+                  <div className={styles.row}>
+                    <span>Pris</span>
+                    <strong>{session.price} kr</strong>
+                  </div>
+
+                  <div className={styles.row}>
+                    <span>Rabatt</span>
+                    <strong>{session.discount ?? 0} kr</strong>
+                  </div>
+
+                  <div className={styles.row}>
+                    <span>Total</span>
+                    <strong>{session.totalPrice} kr</strong>
+                  </div>
+
+                  {session.notes && (
+                    <div className={styles.notes}>
+                      <span>Anteckning</span>
+                      <p>{session.notes}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </section>
 
           {/* MEDICAL HISTORY */}
@@ -117,7 +232,9 @@ const SessionDocumentModal = ({
             <h3>Hälsodeklaration</h3>
 
             {!medicalHistory ? (
-              <p className={styles.emptyText}>Hälsodeklarationen kunde inte visas.</p>
+              <p className={styles.emptyText}>
+                Hälsodeklarationen kunde inte visas.
+              </p>
             ) : (
               <>
                 {"version" in medicalHistory && medicalHistory.version && (
@@ -170,7 +287,9 @@ const SessionDocumentModal = ({
                 {medicalHistory.bloodThinners && (
                   <div className={styles.row}>
                     <span>Blodförtunnande</span>
-                    <strong>{medicalHistory.bloodThinnerDetails || "Ja"}</strong>
+                    <strong>
+                      {medicalHistory.bloodThinnerDetails || "Ja"}
+                    </strong>
                   </div>
                 )}
 
