@@ -184,6 +184,170 @@
 
 
 
+.sessionPanel {
+  padding: $indent__l;
+  border: 1px solid $color-dark-outline;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sessionHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  align-items: flex-start;
+  margin-bottom: $indent__l;
+  padding-bottom: $indent__m;
+  border-bottom: 1px solid $color-dark-outline;
+
+  h3 {
+    margin: 0;
+    color: $color-text;
+  }
+}
+
+.sessionDate {
+  border: 1px solid $color-dark-outline;
+  padding: $indent__s $indent__m;
+  font-size: 0.85rem;
+  color: $color-text;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.sessionTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.sessionTableHeader {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
+  gap: $indent__m;
+  padding-bottom: $indent__s;
+  border-bottom: 1px solid $color-dark-outline;
+  color: $color-goldenrod;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  span:not(:first-child) {
+    text-align: right;
+  }
+}
+
+// .sessionRow {
+//   display: grid;
+//   grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
+//   gap: $indent__m;
+//   padding: $indent__m 0;
+//   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+//   align-items: start;
+// }
+
+.sessionItem {
+  padding: $indent__m 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sessionSummaryRow {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
+  gap: $indent__m;
+  align-items: center;
+}
+
+.sessionTreatmentName {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sessionDetailsBlock {
+  margin-top: $indent__m;
+  padding: $indent__m;
+  border: 1px solid $color-dark-outline;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.sessionDetails {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.sessionTreatmentName {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sessionInfoBlock {
+  span {
+    display: block;
+    margin-bottom: 2px;
+    color: $color-text;
+    opacity: 0.7;
+    font-size: 0.8rem;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.45;
+  }
+}
+
+.sessionParameterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $indent__s $indent__m;
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.sessionNumber,
+.sessionNumberStrong {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.sessionNumber {
+  opacity: 0.85;
+}
+
+.sessionNumberStrong {
+  font-weight: 600;
+}
+
+.sessionTotalRow {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
+  gap: $indent__m;
+  padding-top: $indent__m;
+  margin-top: $indent__s;
+  color: $color-text;
+  font-weight: 600;
+
+  div:not(:first-child),
+  strong {
+    text-align: right;
+    white-space: nowrap;
+  }
+}
+
+.sessionTotalLabel {
+  color: $color-goldenrod;
+}
+
+
+
+
+
 .medicalHistoryPanel {
   padding: $indent__l;
   border: 1px solid $color-dark-outline;

@@ -80,6 +80,26 @@ const SessionDocumentModal = ({
   const medicalHistory = getMedicalHistory(journal);
   const consentForm = getConsentForm(journal);
 
+  const totalDuration = journal.treatments.reduce(
+  (sum, session) => sum + (session.duration ?? 0),
+  0,
+);
+
+const totalPrice = journal.treatments.reduce(
+  (sum, session) => sum + (session.price ?? 0),
+  0,
+);
+
+const totalDiscount = journal.treatments.reduce(
+  (sum, session) => sum + (session.discount ?? 0),
+  0,
+);
+
+const grandTotal = journal.treatments.reduce(
+  (sum, session) => sum + (session.totalPrice ?? 0),
+  0,
+);
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
@@ -101,7 +121,7 @@ const SessionDocumentModal = ({
 
         <div className={styles.content}>
           {/* SESSION */}
-          <section className={styles.section}>
+          {/* <section className={styles.section}>
             <h3>Session</h3>
 
             {journal.treatments.map((session, index) => {
@@ -190,7 +210,111 @@ const SessionDocumentModal = ({
                 </div>
               );
             })}
-          </section>
+
+          </section> */}
+
+          {/* SESSION */}
+<section className={styles.sessionPanel}>
+  <div className={styles.sessionHeader}>
+    <div>
+      <p className={styles.sectionKicker}>Journal</p>
+      <h3>Session</h3>
+    </div>
+
+    <span className={styles.sessionDate}>{formatDate(journal.jDate)}</span>
+  </div>
+
+  <div className={styles.sessionTable}>
+    <div className={styles.sessionTableHeader}>
+      <span>Behandling</span>
+      <span>Tid</span>
+      <span>Pris</span>
+      <span>Rabatt</span>
+      <span>Total</span>
+    </div>
+
+    {journal.treatments.map((session, index) => {
+      const treatmentParameters = getTreatmentParameters(
+        session.treatmentParametersId,
+      );
+
+      return (
+         <div key={`${journal._id}-${index}`} className={styles.sessionItem}>
+    <div className={styles.sessionSummaryRow}>
+      <div className={styles.sessionTreatmentName}>
+        {getTreatmentName(session.treatmentId)}
+      </div>
+
+      <div className={styles.sessionNumber}>{session.duration} min</div>
+      <div className={styles.sessionNumber}>{session.price} kr</div>
+      <div className={styles.sessionNumber}>{session.discount ?? 0} kr</div>
+      <div className={styles.sessionNumberStrong}>{session.totalPrice} kr</div>
+    </div>
+
+    {(session.machineIds.length > 0 || treatmentParameters || session.notes) && (
+      <div className={styles.sessionDetailsBlock}>
+        {session.machineIds.length > 0 && (
+          <div className={styles.sessionInfoBlock}>
+            <span>Maskiner</span>
+            <p>
+              {session.machineIds
+                .map((machine) => getMachineName(machine))
+                .join(", ")}
+            </p>
+          </div>
+        )}
+
+        {treatmentParameters && (
+          <div className={styles.sessionInfoBlock}>
+            <span>Laserparametrar</span>
+
+            <div className={styles.sessionParameterGrid}>
+              {treatmentParameterFields.map((field) => {
+                const value = treatmentParameters[field.key];
+
+                if (field.type === "boolean") {
+                  return (
+                    <p key={String(field.key)}>
+                      <strong>{field.label}:</strong> {value ? "Ja" : "Nej"}
+                    </p>
+                  );
+                }
+
+                if (typeof value !== "string" || !value.trim()) {
+                  return null;
+                }
+
+                return (
+                  <p key={String(field.key)}>
+                    <strong>{field.label}:</strong> {value}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {session.notes && (
+          <div className={styles.sessionInfoBlock}>
+            <span>Anteckning</span>
+            <p>{session.notes}</p>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+      );
+    })}
+
+    <div className={styles.sessionTotalRow}>
+      <div className={styles.sessionTotalLabel}>Totalt Session</div>
+      <div>{totalDuration} min</div>
+      <div>{totalPrice} kr</div>
+      <div>{totalDiscount} kr</div>
+      <strong>{grandTotal} kr</strong>
+    </div>
+  </div>
+</section>
 
           {/* MEDICAL HISTORY */}
 
