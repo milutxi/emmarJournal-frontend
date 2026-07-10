@@ -5,6 +5,7 @@ import {
   medicalHistoryBooleanGroups,
   medicalHistoryTextFields,
 } from "../../config/medicalHistoryFields";
+import { treatmentParameterFields } from "../../config/treatmentParameterFields";
 
 type Props = {
   isOpen: boolean;
@@ -129,7 +130,7 @@ const SessionDocumentModal = ({
                     </div>
                   )}
 
-                  {treatmentParameters && (
+                  {/* {treatmentParameters && (
                     <div className={styles.parameterBlock}>
                       <span>Laserparametrar</span>
 
@@ -199,7 +200,39 @@ const SessionDocumentModal = ({
                         )}
                       </div>
                     </div>
-                  )}
+                  )} */}
+
+                  {treatmentParameters && (
+  <div className={styles.parameterBlock}>
+    <span>Laserparametrar</span>
+
+    <div className={styles.parameterGrid}>
+      {treatmentParameterFields.map((field) => {
+        const value = treatmentParameters[field.key];
+
+        if (field.type === "boolean") {
+          return (
+            <p key={String(field.key)}>
+              <strong>{field.label}:</strong>{" "}
+              {value ? "Ja" : "Nej"}
+            </p>
+          );
+        }
+
+        if (typeof value !== "string" || !value.trim()) {
+          return null;
+        }
+
+        return (
+          <p key={String(field.key)}>
+            <strong>{field.label}:</strong> {value}
+          </p>
+        );
+      })}
+    </div>
+  </div>
+)}
+
 
                   <div className={styles.row}>
                     <span>Tid</span>
