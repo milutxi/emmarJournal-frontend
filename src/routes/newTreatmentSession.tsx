@@ -293,7 +293,7 @@ const NewTreatmentSession = () => {
       setSessionSaved(true);
 
       alert("Behandlingssessionen sparades.");
-      navigate(-1);
+      navigate(`/app/clients/${client._id}`);
     } catch (error) {
       console.error("Error saving journal:", error);
       alert("Kunde inte spara behandlingssessionen.");
