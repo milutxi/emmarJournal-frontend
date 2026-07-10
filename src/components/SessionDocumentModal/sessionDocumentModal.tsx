@@ -1,6 +1,11 @@
 import { Journal } from "../../types";
 import styles from "./sessionDocumentModal.module.scss";
 
+import {
+  medicalHistoryBooleanGroups,
+  medicalHistoryTextFields,
+} from "../../config/medicalHistoryFields";
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -18,7 +23,7 @@ const formatDate = (date?: string) => {
 };
 
 const getTreatmentName = (
-  treatment: Journal["treatments"][number][treatmentId],
+  treatment: Journal["treatments"][number]["treatmentId"],
 ) => {
   if (typeof treatment === "string") {
     return "Behandling";
@@ -249,7 +254,7 @@ const SessionDocumentModal = ({
                   <strong>{formatDate(medicalHistory.signedAt)}</strong>
                 </div>
 
-                {medicalHistory.pregnant && (
+                {/* {medicalHistory.pregnant && (
                   <div className={styles.row}>
                     <span>Gravid</span>
                     <strong>Ja</strong>
@@ -306,6 +311,58 @@ const SessionDocumentModal = ({
                     <p>{medicalHistory.mhnotes}</p>
                   </div>
                 )}
+
+                {medicalHistory.signatureImage && (
+                  <div className={styles.signatureBlock}>
+                    <span>Kundens underskrift</span>
+                    <img
+                      src={medicalHistory.signatureImage}
+                      alt="Kundens underskrift"
+                    />
+                  </div>
+                )} */}
+                {medicalHistoryBooleanGroups.map((group) => (
+                  <div key={group.title} className={styles.medicalHistoryGroup}>
+                    <h4>{group.title}</h4>
+
+                    {group.fields.map((field) => {
+                      const value = medicalHistory[field.key];
+                      const detailKey = field.detailKey;
+                      const detailValue = detailKey
+                        ? medicalHistory[detailKey]
+                        : undefined;
+
+                      const detailText =
+                        typeof detailValue === "string" && detailValue.trim()
+                          ? detailValue
+                          : "";
+
+                      return (
+                        <div key={String(field.key)} className={styles.row}>
+                          <span>{field.label}</span>
+                          <strong>
+                            {value ? "Ja" : "Nej"}
+                            {value && detailText ? ` — ${detailText}` : ""}
+                          </strong>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+                {medicalHistoryTextFields.map((field) => {
+                  const value = medicalHistory[field.key];
+
+                  if (typeof value !== "string" || !value.trim()) {
+                    return null;
+                  }
+
+                  return (
+                    <div key={String(field.key)} className={styles.notes}>
+                      <span>{field.label}</span>
+                      <p>{value}</p>
+                    </div>
+                  );
+                })}
 
                 {medicalHistory.signatureImage && (
                   <div className={styles.signatureBlock}>
