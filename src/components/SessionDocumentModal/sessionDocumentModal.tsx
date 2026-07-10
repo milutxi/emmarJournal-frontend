@@ -130,109 +130,36 @@ const SessionDocumentModal = ({
                     </div>
                   )}
 
-                  {/* {treatmentParameters && (
+                  {treatmentParameters && (
                     <div className={styles.parameterBlock}>
                       <span>Laserparametrar</span>
 
                       <div className={styles.parameterGrid}>
-                        {treatmentParameters.wavelength && (
-                          <p>
-                            <strong>Våglängd:</strong>{" "}
-                            {treatmentParameters.wavelength}
-                          </p>
-                        )}
+                        {treatmentParameterFields.map((field) => {
+                          const value = treatmentParameters[field.key];
 
-                        {treatmentParameters.pulseMode && (
-                          <p>
-                            <strong>Pulsläge:</strong>{" "}
-                            {treatmentParameters.pulseMode}
-                          </p>
-                        )}
+                          if (field.type === "boolean") {
+                            return (
+                              <p key={String(field.key)}>
+                                <strong>{field.label}:</strong>{" "}
+                                {value ? "Ja" : "Nej"}
+                              </p>
+                            );
+                          }
 
-                        {treatmentParameters.energyDensity && (
-                          <p>
-                            <strong>Energitäthet:</strong>{" "}
-                            {treatmentParameters.energyDensity}
-                          </p>
-                        )}
+                          if (typeof value !== "string" || !value.trim()) {
+                            return null;
+                          }
 
-                        {treatmentParameters.pulseEnergy && (
-                          <p>
-                            <strong>Pulsenergi:</strong>{" "}
-                            {treatmentParameters.pulseEnergy}
-                          </p>
-                        )}
-
-                        {treatmentParameters.spotSize && (
-                          <p>
-                            <strong>Spotstorlek:</strong>{" "}
-                            {treatmentParameters.spotSize}
-                          </p>
-                        )}
-
-                        {treatmentParameters.frequency && (
-                          <p>
-                            <strong>Frekvens:</strong>{" "}
-                            {treatmentParameters.frequency}
-                          </p>
-                        )}
-
-                        {treatmentParameters.pulseDuration && (
-                          <p>
-                            <strong>Pulslängd:</strong>{" "}
-                            {treatmentParameters.pulseDuration}
-                          </p>
-                        )}
-
-                        {typeof treatmentParameters.coolingUsed ===
-                          "boolean" && (
-                          <p>
-                            <strong>Kylning:</strong>{" "}
-                            {treatmentParameters.coolingUsed ? "Ja" : "Nej"}
-                          </p>
-                        )}
-
-                        {treatmentParameters.tpComment && (
-                          <p>
-                            <strong>Kommentar:</strong>{" "}
-                            {treatmentParameters.tpComment}
-                          </p>
-                        )}
+                          return (
+                            <p key={String(field.key)}>
+                              <strong>{field.label}:</strong> {value}
+                            </p>
+                          );
+                        })}
                       </div>
                     </div>
-                  )} */}
-
-                  {treatmentParameters && (
-  <div className={styles.parameterBlock}>
-    <span>Laserparametrar</span>
-
-    <div className={styles.parameterGrid}>
-      {treatmentParameterFields.map((field) => {
-        const value = treatmentParameters[field.key];
-
-        if (field.type === "boolean") {
-          return (
-            <p key={String(field.key)}>
-              <strong>{field.label}:</strong>{" "}
-              {value ? "Ja" : "Nej"}
-            </p>
-          );
-        }
-
-        if (typeof value !== "string" || !value.trim()) {
-          return null;
-        }
-
-        return (
-          <p key={String(field.key)}>
-            <strong>{field.label}:</strong> {value}
-          </p>
-        );
-      })}
-    </div>
-  </div>
-)}
-
+                  )}
 
                   <div className={styles.row}>
                     <span>Tid</span>
@@ -267,8 +194,21 @@ const SessionDocumentModal = ({
 
           {/* MEDICAL HISTORY */}
 
-          {/* <section className={styles.section}>
-            <h3>Hälsodeklaration</h3>
+          <section className={styles.medicalHistoryPanel}>
+            <div className={styles.medicalHistoryHeader}>
+              <div>
+                <p className={styles.sectionKicker}>Dokument</p>
+                <h3>Hälsodeklaration</h3>
+              </div>
+
+              {medicalHistory &&
+                "version" in medicalHistory &&
+                medicalHistory.version && (
+                  <span className={styles.versionBadge}>
+                    Version {medicalHistory.version}
+                  </span>
+                )}
+            </div>
 
             {!medicalHistory ? (
               <p className={styles.emptyText}>
@@ -276,253 +216,130 @@ const SessionDocumentModal = ({
               </p>
             ) : (
               <>
-                {"version" in medicalHistory && medicalHistory.version && (
-                  <div className={styles.row}>
-                    <span>Version</span>
-                    <strong>{medicalHistory.version}</strong>
-                  </div>
-                )}
+                <div className={styles.medicalHistoryGroups}>
+                  {medicalHistoryBooleanGroups.map((group) => (
+                    <div
+                      key={group.title}
+                      className={styles.medicalHistoryGroup}
+                    >
+                      <h4>{group.title}</h4>
 
-                <div className={styles.row}>
-                  <span>Signerad</span>
-                  <strong>{formatDate(medicalHistory.signedAt)}</strong>
-                </div>
-                {medicalHistoryBooleanGroups.map((group) => (
-                  <div key={group.title} className={styles.medicalHistoryGroup}>
-                    <h4>{group.title}</h4>
+                      <div className={styles.medicalHistoryItems}>
+                        {group.fields.map((field) => {
+                          const value = medicalHistory[field.key];
+                          const detailKey = field.detailKey;
+                          const detailValue = detailKey
+                            ? medicalHistory[detailKey]
+                            : undefined;
 
-                    {group.fields.map((field) => {
-                      const value = medicalHistory[field.key];
-                      const detailKey = field.detailKey;
-                      const detailValue = detailKey
-                        ? medicalHistory[detailKey]
-                        : undefined;
+                          const detailText =
+                            typeof detailValue === "string" &&
+                            detailValue.trim()
+                              ? detailValue
+                              : "";
 
-                      const detailText =
-                        typeof detailValue === "string" && detailValue.trim()
-                          ? detailValue
-                          : "";
+                          return (
+                            <div
+                              key={String(field.key)}
+                              className={[
+                                styles.medicalHistoryItem,
+                                value
+                                  ? styles.medicalHistoryItemPositive
+                                  : styles.medicalHistoryItemNegative,
+                              ].join(" ")}
+                            >
+                              <span>{field.label}</span>
 
-                      return (
-                        <div key={String(field.key)} className={styles.row}>
-                          <span>{field.label}</span>
-                          <strong>
-                            {value ? "Ja" : "Nej"}
-                            {value && detailText ? ` — ${detailText}` : ""}
-                          </strong>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-                {medicalHistoryTextFields.map((field) => {
-                  const value = medicalHistory[field.key];
-
-                  if (typeof value !== "string" || !value.trim()) {
-                    return null;
-                  }
-
-                  return (
-                    <div key={String(field.key)} className={styles.notes}>
-                      <span>{field.label}</span>
-                      <p>{value}</p>
+                              <strong>
+                                {value ? "Ja" : "Nej"}
+                                {value && detailText ? ` — ${detailText}` : ""}
+                              </strong>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+
+                <div className={styles.medicalHistoryTextFields}>
+                  {medicalHistoryTextFields.map((field) => {
+                    const value = medicalHistory[field.key];
+
+                    if (typeof value !== "string" || !value.trim()) {
+                      return null;
+                    }
+
+                    return (
+                      <div
+                        key={String(field.key)}
+                        className={styles.medicalHistoryTextBlock}
+                      >
+                        <span>{field.label}</span>
+                        <p>{value}</p>
+                      </div>
+                    );
+                  })}
+                </div>
 
                 {medicalHistory.signatureImage && (
-                  <div className={styles.signatureBlock}>
-                    <span>Kundens underskrift</span>
-                    <img
-                      src={medicalHistory.signatureImage}
-                      alt="Kundens underskrift"
-                    />
+                  <div className={styles.medicalHistorySignature}>
+                    <div className={styles.signatureImageBox}>
+                      <img
+                        src={medicalHistory.signatureImage}
+                        alt="Kundens underskrift"
+                      />
+                    </div>
+
+                    <div className={styles.signatureInfo}>
+                      <span>Signerad av</span>
+                      <strong>{clientName}</strong>
+                      <p>{formatDate(medicalHistory.signedAt)}</p>
+                    </div>
                   </div>
                 )}
               </>
             )}
-          </section> */}
-          <section className={styles.medicalHistoryPanel}>
-  <div className={styles.medicalHistoryHeader}>
-    <div>
-      <p className={styles.sectionKicker}>Dokument</p>
-      <h3>Hälsodeklaration</h3>
-    </div>
-
-    {medicalHistory && "version" in medicalHistory && medicalHistory.version && (
-      <span className={styles.versionBadge}>
-        Version {medicalHistory.version}
-      </span>
-    )}
-  </div>
-
-  {!medicalHistory ? (
-    <p className={styles.emptyText}>Hälsodeklarationen kunde inte visas.</p>
-  ) : (
-    <>
-    
-
-      <div className={styles.medicalHistoryGroups}>
-        {medicalHistoryBooleanGroups.map((group) => (
-          <div key={group.title} className={styles.medicalHistoryGroup}>
-            <h4>{group.title}</h4>
-
-            <div className={styles.medicalHistoryItems}>
-              {group.fields.map((field) => {
-                const value = medicalHistory[field.key];
-                const detailKey = field.detailKey;
-                const detailValue = detailKey
-                  ? medicalHistory[detailKey]
-                  : undefined;
-
-                const detailText =
-                  typeof detailValue === "string" && detailValue.trim()
-                    ? detailValue
-                    : "";
-
-                return (
-                  <div
-                    key={String(field.key)}
-                    className={[
-                      styles.medicalHistoryItem,
-                      value
-                        ? styles.medicalHistoryItemPositive
-                        : styles.medicalHistoryItemNegative,
-                    ].join(" ")}
-                  >
-                    <span>{field.label}</span>
-
-                    <strong>
-                      {value ? "Ja" : "Nej"}
-                      {value && detailText ? ` — ${detailText}` : ""}
-                    </strong>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.medicalHistoryTextFields}>
-        {medicalHistoryTextFields.map((field) => {
-          const value = medicalHistory[field.key];
-
-          if (typeof value !== "string" || !value.trim()) {
-            return null;
-          }
-
-          return (
-            <div key={String(field.key)} className={styles.medicalHistoryTextBlock}>
-              <span>{field.label}</span>
-              <p>{value}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* {medicalHistory.signatureImage && (
-        <div className={styles.medicalHistorySignature}>
-          <span>Kundens underskrift</span>
-          <img
-            src={medicalHistory.signatureImage}
-            alt="Kundens underskrift"
-          />
-        </div>
-      )}
-
-      <div className={styles.medicalHistoryMeta}>
-        <span>Signerad</span>
-        <strong>{formatDate(medicalHistory.signedAt)}</strong>
-      </div> */}
-      {medicalHistory.signatureImage && (
-  <div className={styles.medicalHistorySignature}>
-    <div className={styles.signatureImageBox}>
-      <img
-        src={medicalHistory.signatureImage}
-        alt="Kundens underskrift"
-      />
-    </div>
-
-    <div className={styles.signatureInfo}>
-      <span>Signerad av</span>
-      <strong>{clientName}</strong>
-      <p>{formatDate(medicalHistory.signedAt)}</p>
-    </div>
-  </div>
-)}
-    </>
-  )}
-
-</section>
+          </section>
 
           {/* CONSENT FORM */}
-          {/* <section className={styles.section}>
-            <h3>Samtycke</h3>
+
+          <section className={styles.consentPanel}>
+            <div className={styles.consentHeader}>
+              <div>
+                <p className={styles.sectionKicker}>Dokument</p>
+                <h3>Samtycke</h3>
+              </div>
+            </div>
 
             {!consentForm ? (
               <p className={styles.emptyText}>Samtycket kunde inte visas.</p>
             ) : (
               <>
-                <div className={styles.row}>
-                  <span>Signerat</span>
-                  <strong>{formatDate(consentForm.signedAt)}</strong>
-                </div>
-
-                <div className={styles.notes}>
+                <div className={styles.consentTextBlock}>
                   <span>Samtyckestext</span>
                   <p>{consentForm.consentText}</p>
                 </div>
 
                 {consentForm.signatureImage && (
-                  <div className={styles.signatureBlock}>
-                    <span>Kundens underskrift</span>
-                    <img
-                      src={consentForm.signatureImage}
-                      alt="Kundens underskrift"
-                    />
+                  <div className={styles.consentSignature}>
+                    <div className={styles.signatureImageBox}>
+                      <img
+                        src={consentForm.signatureImage}
+                        alt="Kundens underskrift"
+                      />
+                    </div>
+
+                    <div className={styles.signatureInfo}>
+                      <span>Signerad av</span>
+                      <strong>{clientName}</strong>
+                      <p>{formatDate(consentForm.signedAt)}</p>
+                    </div>
                   </div>
                 )}
               </>
             )}
-          </section> */}
-
-          <section className={styles.consentPanel}>
-  <div className={styles.consentHeader}>
-    <div>
-      <p className={styles.sectionKicker}>Dokument</p>
-      <h3>Samtycke</h3>
-    </div>
-  </div>
-
-  {!consentForm ? (
-    <p className={styles.emptyText}>Samtycket kunde inte visas.</p>
-  ) : (
-    <>
-      <div className={styles.consentTextBlock}>
-        <span>Samtyckestext</span>
-        <p>{consentForm.consentText}</p>
-      </div>
-
-      {consentForm.signatureImage && (
-        <div className={styles.consentSignature}>
-          <div className={styles.signatureImageBox}>
-            <img
-              src={consentForm.signatureImage}
-              alt="Kundens underskrift"
-            />
-          </div>
-
-          <div className={styles.signatureInfo}>
-            <span>Signerad av</span>
-            <strong>{clientName}</strong>
-            <p>{formatDate(consentForm.signedAt)}</p>
-          </div>
-        </div>
-      )}
-    </>
-  )}
-</section>
+          </section>
         </div>
       </div>
     </div>
