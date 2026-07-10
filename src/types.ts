@@ -68,9 +68,13 @@ export interface Journal {
   clientId: string;
 
   treatments: Array<
-    Omit<TreatmentSession, "treatmentId" | "treatmentParameters"> & {
+    Omit<
+    TreatmentSession, 
+    "treatmentId" | "machineIds" | "treatmentParameters"
+    > & {
       treatmentId: string | Treatment;
-      treatmentParametersId?: string;
+      machineIds: Array<string | Machine>;
+      treatmentParametersId?: string | (TreatmentParametersType & { _id: string });
     }
   >;
 
