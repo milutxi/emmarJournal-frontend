@@ -177,3 +177,233 @@
     font-weight: 600;
   }
 }
+
+
+
+
+
+
+
+.medicalHistoryPanel {
+  padding: $indent__l;
+  border: 1px solid $color-dark-outline;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.medicalHistoryHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  align-items: flex-start;
+  margin-bottom: $indent__l;
+  padding-bottom: $indent__m;
+  border-bottom: 1px solid $color-dark-outline;
+
+  h3 {
+    margin: 0;
+    color: $color-text;
+  }
+}
+
+.sectionKicker {
+  margin: 0 0 $indent__s;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: $color-goldenrod;
+}
+
+.versionBadge {
+  border: 1px solid $color-goldenrod;
+  color: $color-goldenrod;
+  padding: $indent__s $indent__m;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.medicalHistoryMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  padding: $indent__s 0;
+  margin-bottom: $indent__m;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+  span {
+    opacity: 0.7;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.medicalHistoryGroups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $indent__l;
+}
+
+.medicalHistoryGroup {
+  h4 {
+    margin: 0 0 $indent__m;
+    color: $color-text;
+    opacity: 0.85;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+}
+
+.medicalHistoryItems {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.medicalHistoryItem {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  align-items: center;
+  padding: $indent__s $indent__m;
+  border: 1px solid $color-dark-outline;
+  min-height: 42px;
+
+  span {
+    opacity: 0.85;
+  }
+
+  strong {
+    text-align: right;
+    font-weight: 600;
+  }
+}
+
+.medicalHistoryItemPositive {
+  border-color: $color-goldenrod;
+}
+
+.medicalHistoryItemNegative {
+  opacity: 0.65;
+}
+
+.medicalHistoryTextFields {
+  margin-top: $indent__l;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.medicalHistoryTextBlock {
+  border: 1px solid $color-dark-outline;
+  padding: $indent__m;
+  text-align: left;
+
+  span {
+    display: block;
+    margin-bottom: $indent__s;
+    color: $color-goldenrod;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+.medicalHistorySignature {
+  margin-top: $indent__l;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $indent__m;
+ // border-top: 1px solid $color-dark-outline;
+  padding-top: $indent__m;
+}
+
+.signatureImageBox {
+  img {
+    display: block;
+    max-width: 260px;
+    background: white;
+    border: 1px solid $color-dark-outline;
+    padding: $indent__s;
+  }
+}
+
+.signatureInfo {
+  text-align: left;
+
+  span {
+    display: block;
+    margin-bottom: 2px;
+    color: $color-goldenrod;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  strong {
+    display: block;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 2px 0 0;
+    color: $color-text;
+    opacity: 0.75;
+  }
+}
+
+
+
+
+.consentPanel {
+  padding: $indent__l;
+  border: 1px solid $color-dark-outline;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.consentHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: $indent__m;
+  align-items: flex-start;
+  margin-bottom: $indent__l;
+  padding-bottom: $indent__m;
+  border-bottom: 1px solid $color-dark-outline;
+
+  h3 {
+    margin: 0;
+    color: $color-text;
+  }
+}
+
+.consentTextBlock {
+  border: 1px solid $color-dark-outline;
+  padding: $indent__m;
+  text-align: left;
+
+  span {
+    display: block;
+    margin-bottom: $indent__s;
+    color: $color-goldenrod;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.consentSignature {
+  margin-top: $indent__l;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $indent__m;
+  padding-top: $indent__m;
+}

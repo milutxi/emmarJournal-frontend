@@ -233,7 +233,8 @@ const SessionDocumentModal = ({
           </section>
 
           {/* MEDICAL HISTORY */}
-          <section className={styles.section}>
+
+          {/* <section className={styles.section}>
             <h3>Hälsodeklaration</h3>
 
             {!medicalHistory ? (
@@ -307,10 +308,123 @@ const SessionDocumentModal = ({
                 )}
               </>
             )}
-          </section>
+          </section> */}
+          <section className={styles.medicalHistoryPanel}>
+  <div className={styles.medicalHistoryHeader}>
+    <div>
+      <p className={styles.sectionKicker}>Dokument</p>
+      <h3>Hälsodeklaration</h3>
+    </div>
+
+    {medicalHistory && "version" in medicalHistory && medicalHistory.version && (
+      <span className={styles.versionBadge}>
+        Version {medicalHistory.version}
+      </span>
+    )}
+  </div>
+
+  {!medicalHistory ? (
+    <p className={styles.emptyText}>Hälsodeklarationen kunde inte visas.</p>
+  ) : (
+    <>
+    
+
+      <div className={styles.medicalHistoryGroups}>
+        {medicalHistoryBooleanGroups.map((group) => (
+          <div key={group.title} className={styles.medicalHistoryGroup}>
+            <h4>{group.title}</h4>
+
+            <div className={styles.medicalHistoryItems}>
+              {group.fields.map((field) => {
+                const value = medicalHistory[field.key];
+                const detailKey = field.detailKey;
+                const detailValue = detailKey
+                  ? medicalHistory[detailKey]
+                  : undefined;
+
+                const detailText =
+                  typeof detailValue === "string" && detailValue.trim()
+                    ? detailValue
+                    : "";
+
+                return (
+                  <div
+                    key={String(field.key)}
+                    className={[
+                      styles.medicalHistoryItem,
+                      value
+                        ? styles.medicalHistoryItemPositive
+                        : styles.medicalHistoryItemNegative,
+                    ].join(" ")}
+                  >
+                    <span>{field.label}</span>
+
+                    <strong>
+                      {value ? "Ja" : "Nej"}
+                      {value && detailText ? ` — ${detailText}` : ""}
+                    </strong>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.medicalHistoryTextFields}>
+        {medicalHistoryTextFields.map((field) => {
+          const value = medicalHistory[field.key];
+
+          if (typeof value !== "string" || !value.trim()) {
+            return null;
+          }
+
+          return (
+            <div key={String(field.key)} className={styles.medicalHistoryTextBlock}>
+              <span>{field.label}</span>
+              <p>{value}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* {medicalHistory.signatureImage && (
+        <div className={styles.medicalHistorySignature}>
+          <span>Kundens underskrift</span>
+          <img
+            src={medicalHistory.signatureImage}
+            alt="Kundens underskrift"
+          />
+        </div>
+      )}
+
+      <div className={styles.medicalHistoryMeta}>
+        <span>Signerad</span>
+        <strong>{formatDate(medicalHistory.signedAt)}</strong>
+      </div> */}
+      {medicalHistory.signatureImage && (
+  <div className={styles.medicalHistorySignature}>
+    <div className={styles.signatureImageBox}>
+      <img
+        src={medicalHistory.signatureImage}
+        alt="Kundens underskrift"
+      />
+    </div>
+
+    <div className={styles.signatureInfo}>
+      <span>Signerad av</span>
+      <strong>{clientName}</strong>
+      <p>{formatDate(medicalHistory.signedAt)}</p>
+    </div>
+  </div>
+)}
+    </>
+  )}
+
+</section>
 
           {/* CONSENT FORM */}
-          <section className={styles.section}>
+          {/* <section className={styles.section}>
             <h3>Samtycke</h3>
 
             {!consentForm ? (
@@ -338,7 +452,44 @@ const SessionDocumentModal = ({
                 )}
               </>
             )}
-          </section>
+          </section> */}
+
+          <section className={styles.consentPanel}>
+  <div className={styles.consentHeader}>
+    <div>
+      <p className={styles.sectionKicker}>Dokument</p>
+      <h3>Samtycke</h3>
+    </div>
+  </div>
+
+  {!consentForm ? (
+    <p className={styles.emptyText}>Samtycket kunde inte visas.</p>
+  ) : (
+    <>
+      <div className={styles.consentTextBlock}>
+        <span>Samtyckestext</span>
+        <p>{consentForm.consentText}</p>
+      </div>
+
+      {consentForm.signatureImage && (
+        <div className={styles.consentSignature}>
+          <div className={styles.signatureImageBox}>
+            <img
+              src={consentForm.signatureImage}
+              alt="Kundens underskrift"
+            />
+          </div>
+
+          <div className={styles.signatureInfo}>
+            <span>Signerad av</span>
+            <strong>{clientName}</strong>
+            <p>{formatDate(consentForm.signedAt)}</p>
+          </div>
+        </div>
+      )}
+    </>
+  )}
+</section>
         </div>
       </div>
     </div>
