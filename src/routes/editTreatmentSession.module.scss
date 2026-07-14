@@ -1,0 +1,177 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.editTreatmentStyle {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $indent__l;
+  padding: $indent__l;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editTreatmentStyle__left {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.sessionHeader {
+  @include flexbox;
+  align-items: center;
+  background: white;
+  border: 1px solid $color-dark-outline;
+  border-radius: 12px;
+  padding: $indent__m;
+  margin-bottom: $indent__m;
+
+  @include responsive-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $indent__m;
+  }
+
+  h1 {
+    margin: 0;
+    color: $color-body-display;
+  }
+
+  p {
+    margin: 0;
+    color: $color-dark-outline;
+  }
+}
+
+.treatmentCard {
+  background-color: white;
+  border: 1px solid $color-dark-outline;
+  border-radius: 12px;
+  padding: $indent__m;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+
+  h2,
+  h3 {
+    color: $color-body-display;
+    font-size: $font-size__m;
+    margin: 0;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: $indent__s;
+    font-weight: 600;
+    color: $color-body-display;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: $indent__s;
+    border: 1px solid $color-dark-outline;
+    border-radius: 8px;
+    font-family: $font-montserrat;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+}
+
+.machineList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  p {
+    margin: 0;
+    font-weight: 600;
+    color: $color-body-display;
+  }
+
+  label {
+    flex-direction: row;
+    align-items: center;
+    font-weight: 400;
+  }
+
+  input {
+    width: auto;
+  }
+}
+
+.parameterGrid {
+  @include gridbox(180px);
+  gap: $indent__m;
+}
+
+.booleanField {
+  flex-direction: row !important;
+  align-items: center;
+  font-weight: 400 !important;
+
+  input {
+    width: auto;
+  }
+}
+
+.priceSection {
+  @include gridbox(180px);
+  gap: $indent__m;
+}
+
+.editTreatmentStyle__right {
+  position: sticky;
+  top: $indent__m;
+  align-self: start;
+}
+
+.sessionSummary {
+  background-color: white;
+  border-left: 4px solid $color-goldenrod;
+  border-radius: 12px;
+  padding: $indent__m;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    color: $color-goldenrod;
+    margin-top: 0;
+  }
+
+  p {
+    display: flex;
+    justify-content: space-between;
+    gap: $indent__m;
+  }
+
+  strong {
+    color: $color-body-display;
+  }
+}
+
+.saveButton {
+  background: transparent;
+  border: 2px solid $color-goldenrod;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+  width: 100%;
+  margin-top: $indent__m;
+  font-weight: 600;
+}
+
+.saveButton:hover {
+  background-color: $color-goldenrod;
+  color: white;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
