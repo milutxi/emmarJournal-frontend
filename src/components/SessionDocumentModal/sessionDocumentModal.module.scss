@@ -27,8 +27,8 @@
   justify-content: space-between;
   gap: $indent__m;
   align-items: flex-start;
-  border-bottom: 1px solid $color-dark-outline;
-  padding-bottom: $indent__m;
+ // border-bottom: 1px solid $color-dark-outline;
+  //padding-bottom: $indent__m;
   margin-bottom: $indent__l;
 
   h2 {
@@ -69,121 +69,6 @@
   gap: $indent__l;
 }
 
-.section {
-  border-bottom: 1px solid $color-dark-outline;
-  padding-bottom: $indent__l;
-
-  h3 {
-    margin: 0 0 $indent__m;
-    color: $color-goldenrod;
-  }
-
-  &:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-}
-
-.treatment {
-  display: flex;
-  flex-direction: column;
-  gap: $indent__s;
-
-  & + & {
-    margin-top: $indent__m;
-    padding-top: $indent__m;
-    border-top: 1px solid $color-dark-outline;
-  }
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: $indent__m;
-  align-items: baseline;
-
-  span {
-    color: $color-text;
-    opacity: 0.7;
-  }
-
-  strong {
-    font-weight: 600;
-  }
-}
-
-.notes {
-  margin-top: $indent__s;
-
-  span {
-    display: block;
-    margin-bottom: $indent__s;
-    color: $color-text;
-    opacity: 0.7;
-  }
-
-  p {
-    margin: 0;
-    line-height: 1.5;
-  }
-}
-
-.signatureBlock {
-  margin-top: $indent__m;
-
-  span {
-    display: block;
-    margin-bottom: $indent__s;
-    color: $color-text;
-    opacity: 0.7;
-  }
-
-  img {
-    max-width: 260px;
-    background: white;
-    border: 1px solid $color-dark-outline;
-    padding: $indent__s;
-  }
-}
-
-.emptyText {
-  margin: 0;
-  color: $color-text;
-  opacity: 0.7;
-}
-
-.parameterBlock {
-  margin-top: $indent__m;
-
-  > span {
-    display: block;
-    margin-bottom: $indent__s;
-    color: $color-text;
-    opacity: 0.7;
-  }
-}
-
-.parameterGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: $indent__s $indent__m;
-
-  p {
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  strong {
-    font-weight: 600;
-  }
-}
-
-
-
-
-
-
-
 .sessionPanel {
   padding: $indent__l;
   border: 1px solid $color-dark-outline;
@@ -195,9 +80,9 @@
   justify-content: space-between;
   gap: $indent__m;
   align-items: flex-start;
-  margin-bottom: $indent__l;
-  padding-bottom: $indent__m;
-  border-bottom: 1px solid $color-dark-outline;
+  //margin-bottom: $indent__l;
+ // padding-bottom: $indent__m;
+  //border-bottom: 1px solid $color-dark-outline;
 
   h3 {
     margin: 0;
@@ -230,18 +115,9 @@
   font-weight: 600;
 
   span:not(:first-child) {
-    text-align: right;
+    text-align: center;
   }
 }
-
-// .sessionRow {
-//   display: grid;
-//   grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
-//   gap: $indent__m;
-//   padding: $indent__m 0;
-//   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-//   align-items: start;
-// }
 
 .sessionItem {
   padding: $indent__m 0;
@@ -253,20 +129,25 @@
   grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
   gap: $indent__m;
   align-items: center;
+  padding-top: $indent__m;
 }
 
 .sessionTreatmentName {
   font-size: 1rem;
   font-weight: 600;
+  text-align: left;
+  padding-left: $indent__m;
 }
 
 .sessionDetailsBlock {
   margin-top: $indent__m;
   padding: $indent__m;
-  border: 1px solid $color-dark-outline;
+  //border: 1px solid $color-dark-outline;
   display: flex;
   flex-direction: column;
   gap: $indent__m;
+  background-color: beige;
+  text-align: left;
 }
 
 .sessionDetails {
@@ -310,6 +191,23 @@
   }
 }
 
+.sessionParameterComment {
+  margin-top: $indent__s;
+
+  span {
+    display: block;
+    margin-bottom: 2px;
+    color: $color-text;
+    opacity: 0.7;
+    font-size: 0.8rem;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.45;
+  }
+}
+
 .sessionNumber,
 .sessionNumberStrong {
   text-align: right;
@@ -328,7 +226,7 @@
   display: grid;
   grid-template-columns: minmax(260px, 1fr) 90px 90px 90px 100px;
   gap: $indent__m;
-  padding-top: $indent__m;
+  //padding-top: $indent__m;
   margin-top: $indent__s;
   color: $color-text;
   font-weight: 600;
@@ -345,9 +243,6 @@
 }
 
 
-
-
-
 .medicalHistoryPanel {
   padding: $indent__l;
   border: 1px solid $color-dark-outline;
@@ -360,8 +255,8 @@
   gap: $indent__m;
   align-items: flex-start;
   margin-bottom: $indent__l;
-  padding-bottom: $indent__m;
-  border-bottom: 1px solid $color-dark-outline;
+ // padding-bottom: $indent__m;
+ // border-bottom: 1px solid $color-dark-outline;
 
   h3 {
     margin: 0;
@@ -452,14 +347,14 @@
 }
 
 .medicalHistoryTextFields {
-  margin-top: $indent__l;
+ // margin-top: $indent__l;
   display: flex;
   flex-direction: column;
-  gap: $indent__m;
+ // gap: $indent__m;
 }
 
 .medicalHistoryTextBlock {
-  border: 1px solid $color-dark-outline;
+ // border: 1px solid $color-dark-outline;
   padding: $indent__m;
   text-align: left;
 
@@ -477,7 +372,7 @@
   }
 }
 .medicalHistorySignature {
-  margin-top: $indent__l;
+  //margin-top: $indent__l;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -535,8 +430,8 @@
   gap: $indent__m;
   align-items: flex-start;
   margin-bottom: $indent__l;
-  padding-bottom: $indent__m;
-  border-bottom: 1px solid $color-dark-outline;
+ // padding-bottom: $indent__m;
+  //border-bottom: 1px solid $color-dark-outline;
 
   h3 {
     margin: 0;
@@ -545,7 +440,7 @@
 }
 
 .consentTextBlock {
-  border: 1px solid $color-dark-outline;
+  //border: 1px solid $color-dark-outline;
   padding: $indent__m;
   text-align: left;
 
@@ -569,5 +464,5 @@
   justify-content: center;
   align-items: center;
   gap: $indent__m;
-  padding-top: $indent__m;
+ // padding-top: $indent__m;
 }
