@@ -169,7 +169,7 @@
 
 .oneClientStyle__journalRow {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: $indent__s;
   align-items: center;
   padding: $indent__s 0;
@@ -266,4 +266,68 @@
 .buttonText {
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+
+
+
+.oneClientStyle__journalMenuWrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.oneClientStyle__journalMenuButton {
+  border: none;
+  background: transparent;
+  color: $color-text;
+  cursor: pointer;
+  padding: $indent__s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+
+  svg {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
+  }
+}
+
+.oneClientStyle__journalMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  min-width: 180px;
+  border: 1px solid $color-dark-outline;
+  background: $color-bg;
+  display: flex;
+  flex-direction: column;
+  padding: $indent__s;
+}
+
+.oneClientStyle__journalMenu button {
+  border: none;
+  background: transparent;
+  color: $color-text;
+  text-align: left;
+  cursor: pointer;
+  padding: $indent__s $indent__m;
+
+  &:hover {
+    color: $color-goldenrod;
+  }
+}
+
+.oneClientStyle__journalMenuDelete {
+  color: #c0392b !important;
+
+  &:hover {
+    color: #e74c3c !important;
+  }
 }

@@ -7,6 +7,7 @@ import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocu
 
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { GrStatusWarning } from "react-icons/gr";
+import { HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -80,6 +81,10 @@ const OneClient = () => {
   const [sessionDocumentJournal, setSessionDocumentJournal] =
     useState<Journal | null>(null);
 
+  const [openJournalMenuId, setOpenJournalMenuId] = useState<string | null>(
+    null,
+  );
+
   const getStatusIcon = (completed: boolean) => {
     const className = completed ? styles.statusDone : styles.statusWarning;
 
@@ -89,6 +94,21 @@ const OneClient = () => {
       </span>
     );
   };
+
+  const handleEditJournal = (journal: Journal) => {
+    setOpenJournalMenuId(null);
+    alert("Redigera session kommer i nästa steg.");
+  };
+
+  // const handleDeleteJournal = (journal: Journal) => {
+  //   setOpenJournalMenuId(null);
+  //   alert("Ta bort session kommer i nästa i nästa steg.");
+  // };
+
+  // const handleDeleteJournal = (journal: Journal) => {
+  //   setOpenJournalMenuId(null);
+  //   steg.");
+  // };
 
   return (
     <div className={styles.oneClientStyle}>
@@ -213,6 +233,42 @@ const OneClient = () => {
 
                     <span className={styles.buttonText}>Samtycke</span>
                   </button>
+
+                  <div className={styles.oneClientStyle__journalMenuWrapper}>
+                    <button
+                      type="button"
+                      className={styles.oneClientStyle__journalMenuButton}
+                      aria-label="Öppna sessionsmeny"
+                      onClick={() =>
+                        setOpenJournalMenuId(
+                          openJournalMenuId === journal._id
+                            ? null
+                            : journal._id,
+                        )
+                      }
+                    >
+                      <HiOutlineEllipsisHorizontalCircle />
+                    </button>
+
+                    {openJournalMenuId === journal._id && (
+                      <div className={styles.oneClientStyle__journalMenu}>
+                        <button
+                          type="button"
+                          onClick={() => handleEditJournal(journal)}
+                        >
+                          Redigera session
+                        </button>
+
+                        <button
+                          type="button"
+                          className={styles.oneClientStyle__journalMenuDelete}
+                          onClick={() => handleDeleteJournal(journal)}
+                        >
+                          Ta bort session
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </li>
               );
             })}
