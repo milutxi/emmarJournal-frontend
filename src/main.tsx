@@ -16,7 +16,7 @@ import OneMachine, {
 import NewTreatmentSession, {
   loader as newTreatmentSessionLoader,
 } from "./routes/newTreatmentSession.tsx";
-import EditTreatmentSession from "./routes/editTreatmentSession.tsx";
+import EditTreatmentSession, {loader as editTreatmentSessionLoader} from "./routes/editTreatmentSession.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "clients/:id/journals/:journalId/edit",
+        loader: editTreatmentSessionLoader,
         element: <EditTreatmentSession />,
       },
       {
