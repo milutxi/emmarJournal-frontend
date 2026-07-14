@@ -74,17 +74,17 @@ const OneClient = () => {
   };
   const navigate = useNavigate();
 
-  const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
+  // const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
 
-  const [selectedMedicalHistory, setSelectedMedicalHistory] = useState<Exclude<
-    Journal["medicalHistoryId"],
-    string
-  > | null>(null);
+  // const [selectedMedicalHistory, setSelectedMedicalHistory] = useState<Exclude<
+  //   Journal["medicalHistoryId"],
+  //   string
+  // > | null>(null);
 
-  const [selectedConsentForm, setSelectedConsentForm] = useState<Exclude<
-    Journal["consentFormId"],
-    string
-  > | null>(null);
+  // const [selectedConsentForm, setSelectedConsentForm] = useState<Exclude<
+  //   Journal["consentFormId"],
+  //   string
+  // > | null>(null);
 
   const [sessionDocumentJournal, setSessionDocumentJournal] =
     useState<Journal | null>(null);
@@ -146,8 +146,9 @@ const OneClient = () => {
 
         {journals.length === 0 ? (
           <div className={styles.oneClientStyle__emptyState}>
-            <p>No medical records yet</p>
-            <span>Coming soon — appointments, notes, treatments...</span>
+            <p>Inga behandlingssessioner ännu</p>
+            <span>När en behandling eller konsult sparas visas den här tillsammans med eventuell
+      hälsodeklaration och samtycke.</span>
           </div>
         ) : (
           <ul className={styles.oneClientStyle__journalList}>
@@ -188,9 +189,9 @@ const OneClient = () => {
                       return;
                     }
 
-                    setSelectedMedicalHistory(medicalHistory);
-                    setSelectedJournal(null);
-                    setSelectedConsentForm(null);
+                    // setSelectedMedicalHistory(medicalHistory);
+                    // setSelectedJournal(null);
+                    // setSelectedConsentForm(null);
                   }}
                 >
                   Hälsodeklaration
@@ -207,9 +208,9 @@ const OneClient = () => {
                       return;
                     }
 
-                    setSelectedConsentForm(consentForm);
-                    setSelectedJournal(null);
-                    setSelectedMedicalHistory(null);
+                    // setSelectedConsentForm(consentForm);
+                    // setSelectedJournal(null);
+                    // setSelectedMedicalHistory(null);
                   }}
                 >
                   Samtycke
@@ -218,7 +219,7 @@ const OneClient = () => {
             ))}
           </ul>
         )}
-        {selectedJournal && (
+        {/* {selectedJournal && (
           <div className={styles.oneClientStyle__viewer}>
             <h3>Behandling {formatDate(selectedJournal.jDate)}</h3>
 
@@ -235,9 +236,9 @@ const OneClient = () => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
 
-        {selectedMedicalHistory && (
+        {/* {selectedMedicalHistory && (
           <div className={styles.oneClientStyle__viewer}>
             <h3>Hälsodeklaration</h3>
 
@@ -268,9 +269,9 @@ const OneClient = () => {
               <p>Anteckningar: {selectedMedicalHistory.mhnotes}</p>
             )}
           </div>
-        )}
+        )} */}
 
-        {selectedConsentForm && (
+        {/* {selectedConsentForm && (
           <div className={styles.oneClientStyle__viewer}>
             <h3>Samtycke</h3>
 
@@ -288,7 +289,7 @@ const OneClient = () => {
               />
             )}
           </div>
-        )}
+        )} */}
       </div>
       <SessionDocumentModal
         isOpen={!!sessionDocumentJournal}
