@@ -5,6 +5,9 @@ import { Client, Journal } from "../types";
 import styles from "./oneClient.module.scss";
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 
+import { MdOutlineDoneOutline } from "react-icons/md";
+import { GrStatusWarning } from "react-icons/gr";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
@@ -77,6 +80,16 @@ const OneClient = () => {
   const [sessionDocumentJournal, setSessionDocumentJournal] =
     useState<Journal | null>(null);
 
+  const getStatusIcon = (completed: boolean) => {
+    const className = completed ? styles.statusDone : styles.statusWarning;
+
+    return (
+      <span className={className}>
+        {completed ? <MdOutlineDoneOutline /> : <GrStatusWarning />}
+      </span>
+    );
+  };
+
   return (
     <div className={styles.oneClientStyle}>
       {/* LEFT SIDE */}
@@ -134,56 +147,75 @@ const OneClient = () => {
           </div>
         ) : (
           <ul className={styles.oneClientStyle__journalList}>
-            {journals.map((journal) => (
-              <li
-                key={journal._id}
-                className={styles.oneClientStyle__journalRow}
-              >
-                <button
-                  type="button"
-                  className={styles.oneClientStyle__sessionButton}
-                  onClick={() => setSessionDocumentJournal(journal)}
+            {journals.map((journal) => {
+              const medicalHistory = getMedicalHistory(journal);
+              const consentForm = getConsentForm(journal);
+
+              return (
+                <li
+                  key={journal._id}
+                  className={styles.oneClientStyle__journalRow}
                 >
-                  <span className={styles.oneClientStyle__journalDate}>
-                    {formatDate(journal.jDate)}
-                  </span>
+                  <button
+                    type="button"
+                    className={styles.oneClientStyle__sessionButton}
+                    onClick={() => setSessionDocumentJournal(journal)}
+                  >
+                    <span className={styles.oneClientStyle__journalDate}>
+                      {formatDate(journal.jDate)}
+                    </span>
 
-                  <span className={styles.oneClientStyle__journalTreatmentName}>
-                    {getJournalTreatmentNames(journal)}
-                  </span>
-                </button>
+                    <span
+                      className={styles.oneClientStyle__journalTreatmentName}
+                    >
+                      {getJournalTreatmentNames(journal)}
+                    </span>
+                  </button>
 
-                <button
-                  type="button"
-                  className={styles.oneClientStyle__documentButton}
-                  onClick={() => {
-                    const medicalHistory = getMedicalHistory(journal);
+                  <button
+                    type="button"
+                    className={styles.oneClientStyle__documentStatusButton}
+                    onClick={() => {
+                      if (!medicalHistory) {
+                        alert(
+                          "Ingen hälsodeklaration är kopplad till denna behandlingssession..",
+                        );
+                        return;
+                      }
+                      setSessionDocumentJournal(journal);
+                    }}
+                  >
+                    <span className={styles.iconWrapper}>
+                      {getStatusIcon(Boolean(medicalHistory))}
+                    </span>
 
-                    if (!medicalHistory) {
-                      alert("Hälsodeklarationen kunde inte visas.");
-                      return;
-                    }
-                  }}
-                >
-                  Hälsodeklaration
-                </button>
+                    <span className={styles.buttonText}>
+                      Medicinsk Hälsodeklaration
+                    </span>
+                  </button>
 
-                <button
-                  type="button"
-                  className={styles.oneClientStyle__documentButton}
-                  onClick={() => {
-                    const consentForm = getConsentForm(journal);
+                  <button
+                    type="button"
+                    className={styles.oneClientStyle__documentStatusButton}
+                    onClick={() => {
+                      if (!consentForm) {
+                        alert(
+                          "Inget samtycke är kopplat till denna behandlingssession.",
+                        );
+                        return;
+                      }
+                      setSessionDocumentJournal(journal);
+                    }}
+                  >
+                    <span className={styles.iconWrapper}>
+                      {getStatusIcon(Boolean(consentForm))}
+                    </span>
 
-                    if (!consentForm) {
-                      alert("Samtycket kunde inte visas.");
-                      return;
-                    }
-                  }}
-                >
-                  Samtycke
-                </button>
-              </li>
-            ))}
+                    <span className={styles.buttonText}>Samtycke</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

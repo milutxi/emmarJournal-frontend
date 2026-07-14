@@ -203,30 +203,67 @@
   font-weight: 600;
 }
 
-.oneClientStyle__documentButton {
+// .oneClientStyle__documentButton {
+//   border: 1px solid $color-dark-outline;
+//   background: transparent;
+//   color: $color-text;
+//   padding: $indent__s $indent__m;
+//   cursor: pointer;
+//   font-size: 0.85rem;
+// }
+
+// .oneClientStyle__documentButton:hover {
+//   border-color: $color-goldenrod;
+//   color: $color-goldenrod;
+// }
+
+// .oneClientStyle__viewer {
+//   margin-top: $indent__l;
+//   padding-top: $indent__m;
+//   border-top: 1px solid $color-dark-outline;
+// }
+
+// .oneClientStyle__signatureImage {
+//   margin-top: $indent__s;
+//   max-width: 240px;
+//   border: 1px solid $color-dark-outline;
+//   padding: $indent__s;
+//   background: white;
+// }
+
+.oneClientStyle__documentStatusButton {
   border: 1px solid $color-dark-outline;
   background: transparent;
   color: $color-text;
   padding: $indent__s $indent__m;
   cursor: pointer;
-  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: $indent__s;
+  text-align: left;
+
+  &:hover {
+    border-color: $color-goldenrod;
+  }
 }
 
-.oneClientStyle__documentButton:hover {
-  border-color: $color-goldenrod;
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusDone {
   color: $color-goldenrod;
+  display: flex;
 }
 
-.oneClientStyle__viewer {
-  margin-top: $indent__l;
-  padding-top: $indent__m;
-  border-top: 1px solid $color-dark-outline;
+.statusWarning {
+  color: #c0392b;
+  display: flex;
 }
 
-.oneClientStyle__signatureImage {
-  margin-top: $indent__s;
-  max-width: 240px;
-  border: 1px solid $color-dark-outline;
-  padding: $indent__s;
-  background: white;
+.buttonText {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
