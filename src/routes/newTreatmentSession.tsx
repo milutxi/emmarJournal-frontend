@@ -236,14 +236,36 @@ const NewTreatmentSession = () => {
       return;
     }
 
+    // if (!savedMedicalHistoryId) {
+    //   alert("Du måste spara hälsodeklarationen först.");
+    //   return;
+    // }
+
+    // if (!consentForm._id) {
+    //   alert("Du måste spara samtycket först");
+    //   return;
+    // }
+
+    const missingDocuments = [];
+
     if (!savedMedicalHistoryId) {
-      alert("Du måste spara hälsodeklarationen först.");
-      return;
+      missingDocuments.push("hälsodeklaration");
     }
 
     if (!consentForm._id) {
-      alert("Du måste spara samtycket först");
-      return;
+      missingDocuments.push("samtycke");
+    }
+
+    if (missingDocuments.length > 0) {
+      const shouldContinue = window.confirm(
+        `Följande saknas: ${missingDocuments.join(
+          " och ",
+        )}. Vill du ändå spara behandlingssessionen?`,
+      );
+
+      if (!shouldContinue) {
+        return;
+      }
     }
 
     const journalTreatments = treatmentSessions.map((session) => ({
@@ -261,8 +283,8 @@ const NewTreatmentSession = () => {
       clientId: client._id,
       jDate: sessionDate,
       treatments: journalTreatments,
-      medicalHistoryId: savedMedicalHistoryId,
-      consentFormId: consentForm._id,
+      medicalHistoryId: savedMedicalHistoryId || undefined,
+      consentFormId: consentForm._id || undefined,
     };
 
     //console.log("Journal payload:", payload);

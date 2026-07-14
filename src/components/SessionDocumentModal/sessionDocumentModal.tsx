@@ -110,7 +110,7 @@ const SessionDocumentModal = ({
           <div>
             <p className={styles.kicker}>Behandlingsjournal</p>
             <h2>{clientName}</h2>
-           {/* <p className={styles.date}>{formatDate(journal.jDate)}</p> */}
+            {/* <p className={styles.date}>{formatDate(journal.jDate)}</p> */}
           </div>
 
           <button
@@ -244,18 +244,17 @@ const SessionDocumentModal = ({
                 );
 
                 return (
-
                   <div
                     key={`${journal._id}-${index}`}
                     className={styles.sessionItem}
                   >
-                     <div className={styles.sessionTableHeader}>
-                <span>Behandling</span>
-                <span>Tid</span>
-                <span>Pris</span>
-                <span>Rabatt</span>
-                <span>Total</span>
-              </div>
+                    <div className={styles.sessionTableHeader}>
+                      <span>Behandling</span>
+                      <span>Tid</span>
+                      <span>Pris</span>
+                      <span>Rabatt</span>
+                      <span>Total</span>
+                    </div>
                     <div className={styles.sessionSummaryRow}>
                       <div className={styles.sessionTreatmentName}>
                         {getTreatmentName(session.treatmentId)}
@@ -352,7 +351,7 @@ const SessionDocumentModal = ({
                   </div>
                 );
               })}
- <div className={styles.sessionTableHeader}>
+              <div className={styles.sessionTableHeader}>
                 <span></span>
                 <span>Total Tid</span>
                 <span>Pris Session</span>
@@ -360,7 +359,6 @@ const SessionDocumentModal = ({
                 <span>Total Session</span>
               </div>
               <div className={styles.sessionTotalRow}>
-                
                 <div className={styles.sessionTotalLabel}>Totaltsumma</div>
                 <div>{totalDuration} min</div>
                 <div>{totalPrice} kr</div>
@@ -390,7 +388,7 @@ const SessionDocumentModal = ({
 
             {!medicalHistory ? (
               <p className={styles.emptyText}>
-                Hälsodeklarationen kunde inte visas.
+                Hälsodeklarationen saknas för denna session.
               </p>
             ) : (
               <>
@@ -491,7 +489,9 @@ const SessionDocumentModal = ({
             </div>
 
             {!consentForm ? (
-              <p className={styles.emptyText}>Samtycket kunde inte visas.</p>
+              <p className={styles.emptyText}>
+                Samtycket saknas för denna session.
+              </p>
             ) : (
               <>
                 <div className={styles.consentTextBlock}>
