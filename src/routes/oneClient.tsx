@@ -74,18 +74,6 @@ const OneClient = () => {
   };
   const navigate = useNavigate();
 
-  // const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
-
-  // const [selectedMedicalHistory, setSelectedMedicalHistory] = useState<Exclude<
-  //   Journal["medicalHistoryId"],
-  //   string
-  // > | null>(null);
-
-  // const [selectedConsentForm, setSelectedConsentForm] = useState<Exclude<
-  //   Journal["consentFormId"],
-  //   string
-  // > | null>(null);
-
   const [sessionDocumentJournal, setSessionDocumentJournal] =
     useState<Journal | null>(null);
 
@@ -100,11 +88,9 @@ const OneClient = () => {
               {client.lastName?.[0]?.toUpperCase()}
             </div>
           </div>
-
           <h2 className={styles.oneClientStyle__name}>
             {client.name} {client.lastName}
           </h2>
-
           <div className={styles.oneClientStyle__info}>
             <p>
               <strong>Telefon:</strong> {client.telephone}
@@ -138,17 +124,13 @@ const OneClient = () => {
           </div>
         </div>
 
-        {/* EMPTY STATE (future timeline area) */}
-        {/* <div className={styles.oneClientStyle__emptyState}>
-          <p>No medical records yet</p>
-          <span>Coming soon — appointments, notes, treatments...</span>
-        </div> */}
-
         {journals.length === 0 ? (
           <div className={styles.oneClientStyle__emptyState}>
             <p>Inga behandlingssessioner ännu</p>
-            <span>När en behandling eller konsult sparas visas den här tillsammans med eventuell
-      hälsodeklaration och samtycke.</span>
+            <span>
+              När en behandling eller konsult sparas visas den här tillsammans
+              med eventuell hälsodeklaration och samtycke.
+            </span>
           </div>
         ) : (
           <ul className={styles.oneClientStyle__journalList}>
@@ -160,14 +142,7 @@ const OneClient = () => {
                 <button
                   type="button"
                   className={styles.oneClientStyle__sessionButton}
-                  onClick={
-                    () => setSessionDocumentJournal(journal)
-                    //   {
-                    //   setSelectedJournal(journal);
-                    //   setSelectedMedicalHistory(null);
-                    //   setSelectedConsentForm(null);
-                    // }
-                  }
+                  onClick={() => setSessionDocumentJournal(journal)}
                 >
                   <span className={styles.oneClientStyle__journalDate}>
                     {formatDate(journal.jDate)}
@@ -188,10 +163,6 @@ const OneClient = () => {
                       alert("Hälsodeklarationen kunde inte visas.");
                       return;
                     }
-
-                    // setSelectedMedicalHistory(medicalHistory);
-                    // setSelectedJournal(null);
-                    // setSelectedConsentForm(null);
                   }}
                 >
                   Hälsodeklaration
@@ -207,10 +178,6 @@ const OneClient = () => {
                       alert("Samtycket kunde inte visas.");
                       return;
                     }
-
-                    // setSelectedConsentForm(consentForm);
-                    // setSelectedJournal(null);
-                    // setSelectedMedicalHistory(null);
                   }}
                 >
                   Samtycke
@@ -219,77 +186,6 @@ const OneClient = () => {
             ))}
           </ul>
         )}
-        {/* {selectedJournal && (
-          <div className={styles.oneClientStyle__viewer}>
-            <h3>Behandling {formatDate(selectedJournal.jDate)}</h3>
-
-            {selectedJournal.treatments.map((session, index) => (
-              <div key={`${selectedJournal._id}-${index}`}>
-                <p>
-                  <strong>{getTreatmentName(session.treatmentId)}</strong>
-                </p>
-                <p>Tid: {session.duration} min</p>
-                <p>Pris: {session.price} kr</p>
-                <p>Rabatt: {session.discount ?? 0} kr</p>
-                <p>Total: {session.totalPrice} kr</p>
-                {session.notes && <p>Anteckning: {session.notes}</p>}
-              </div>
-            ))}
-          </div>
-        )} */}
-
-        {/* {selectedMedicalHistory && (
-          <div className={styles.oneClientStyle__viewer}>
-            <h3>Hälsodeklaration</h3>
-
-            {"version" in selectedMedicalHistory &&
-              selectedMedicalHistory.version && (
-                <p>Version {selectedMedicalHistory.version}</p>
-              )}
-
-            {selectedMedicalHistory.signedAt && (
-              <p>Signerad {formatDate(selectedMedicalHistory.signedAt)}</p>
-            )}
-
-            {selectedMedicalHistory.allergies && (
-              <p>Allergier: {selectedMedicalHistory.allergyDetails || "Ja"}</p>
-            )}
-
-            {selectedMedicalHistory.medication && (
-              <p>
-                Medicinering: {selectedMedicalHistory.medicationDetails || "Ja"}
-              </p>
-            )}
-
-            {selectedMedicalHistory.otherConditions && (
-              <p>Övrigt: {selectedMedicalHistory.otherConditions}</p>
-            )}
-
-            {selectedMedicalHistory.mhnotes && (
-              <p>Anteckningar: {selectedMedicalHistory.mhnotes}</p>
-            )}
-          </div>
-        )} */}
-
-        {/* {selectedConsentForm && (
-          <div className={styles.oneClientStyle__viewer}>
-            <h3>Samtycke</h3>
-
-            {selectedConsentForm.signedAt && (
-              <p>Signerat {formatDate(selectedConsentForm.signedAt)}</p>
-            )}
-
-            <p>{selectedConsentForm.consentText}</p>
-
-            {selectedConsentForm.signatureImage && (
-              <img
-                className={styles.oneClientStyle__signatureImage}
-                src={selectedConsentForm.signatureImage}
-                alt="Kundens underskrift"
-              />
-            )}
-          </div>
-        )} */}
       </div>
       <SessionDocumentModal
         isOpen={!!sessionDocumentJournal}
