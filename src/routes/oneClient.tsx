@@ -97,13 +97,13 @@ const OneClient = () => {
 
   const handleEditJournal = (journal: Journal) => {
     setOpenJournalMenuId(null);
-    alert("Redigera session kommer i nästa steg.");
+    navigate(`/app/clients/${client._id}/journals/${journal._id}/edit`);
   };
 
-  // const handleDeleteJournal = (journal: Journal) => {
-  //   setOpenJournalMenuId(null);
-  //   alert("Ta bort session kommer i nästa i nästa steg.");
-  // };
+  const handleDeleteJournal = (journal: Journal) => {
+    setOpenJournalMenuId(null);
+    alert("Ta bort session är inte tillgängligt.");
+  };
 
   // const handleDeleteJournal = (journal: Journal) => {
   //   setOpenJournalMenuId(null);
