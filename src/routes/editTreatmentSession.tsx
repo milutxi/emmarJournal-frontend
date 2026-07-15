@@ -163,102 +163,462 @@ const EditTreatmentSession = () => {
     0,
   );
 
+  //   return (
+  //     <div className={styles.editTreatmentStyle}>
+  //       <div className={styles.editTreatmentStyle__left}>
+  //         <div className={styles.sessionHeader}>
+  //           <div>
+  //             <h1>Redigera Session</h1>
+  //             <h2>
+  //               {client.name} {client.lastName}
+  //             </h2>
+  //           </div>
+  //           <input
+  //             type="date"
+  //             value={sessionDate}
+  //             onChange={(event) => setSessionDate(event.target.value)}
+  //           />
+  //         </div>
+
+  //         {treatmentSessions.map((session, index) => {
+  //           return (
+  //             <div key={index} className={styles.treatmentCard}>
+  //               <h2>Behandling {index + 1}</h2>
+  //               <div className={styles.sessionTable}>
+  //                 <div className={styles.sessionTableHeader}>
+  //                   <span>Behandling</span>
+  //                   <span>Tid</span>
+  //                   <span>Pris</span>
+  //                   <span>Rabatt</span>
+  //                   <span>Total</span>
+  //                 </div>
+
+  //                 <div className={styles.sessionSummaryRow}>
+  //                   <label>
+  //                     <select
+  //                       value={session.treatmentId}
+  //                       onChange={(event) => {
+  //                         const selectedTreatment = treatments.find(
+  //                           (treatment) => treatment._id === event.target.value,
+  //                         );
+
+  //                         const price =
+  //                           selectedTreatment?.tprice ?? session.price;
+  //                         const duration =
+  //                           selectedTreatment?.tduration ?? session.duration;
+  //                         const discount = session.discount ?? 0;
+
+  //                         updateTreatmentSession(index, {
+  //                           ...session,
+  //                           treatmentId: event.target.value,
+  //                           price,
+  //                           duration,
+  //                           totalPrice: price - discount,
+  //                         });
+  //                       }}
+  //                     >
+  //                       <option value="">Välj behandling</option>
+
+  //                       {treatments.map((treatment) => (
+  //                         <option key={treatment._id} value={treatment._id}>
+  //                           {treatment.tname}
+  //                         </option>
+  //                       ))}
+  //                     </select>
+  //                   </label>
+
+  //                   <label>
+  //                     <input
+  //                       type="number"
+  //                       value={session.duration}
+  //                       onChange={(event) =>
+  //                         updateTreatmentSession(index, {
+  //                           ...session,
+  //                           duration: Number(event.target.value),
+  //                         })
+  //                       }
+  //                     />
+  //                   </label>
+
+  //                   <label>
+  //                     <input
+  //                       type="number"
+  //                       value={session.price}
+  //                       onChange={(event) => {
+  //                         const price = Number(event.target.value);
+  //                         const discount = session.discount ?? 0;
+
+  //                         updateTreatmentSession(index, {
+  //                           ...session,
+  //                           price,
+  //                           totalPrice: price - discount,
+  //                         });
+  //                       }}
+  //                     />
+  //                   </label>
+
+  //                   <label>
+  //                     <input
+  //                       type="number"
+  //                       value={session.discount}
+  //                       onChange={(event) => {
+  //                         const discount = Number(event.target.value);
+
+  //                         updateTreatmentSession(index, {
+  //                           ...session,
+  //                           discount,
+  //                           totalPrice: session.price - discount,
+  //                         });
+  //                       }}
+  //                     />
+  //                   </label>
+
+  //                   <div>
+  //                     <div className={styles.totalPreview}>
+  //                       {session.totalPrice} kr
+  //                     </div>
+  //                   </div>
+  //                 </div>
+  //               </div>
+
+  //               <div>
+  //                 <p>Maskiner</p>
+
+  //                 {machines.map((machine) => {
+  //                   const isChecked = session.machineIds.includes(machine._id);
+
+  //                   return (
+  //                     <label key={machine._id}>
+  //                       <input
+  //                         type="checkbox"
+  //                         checked={isChecked}
+  //                         onChange={(event) => {
+  //                           const machineIds = event.target.checked
+  //                             ? [...session.machineIds, machine._id]
+  //                             : session.machineIds.filter(
+  //                                 (machineId) => machineId !== machine._id,
+  //                               );
+
+  //                           updateTreatmentSession(index, {
+  //                             ...session,
+  //                             machineIds,
+  //                           });
+  //                         }}
+  //                       />
+  //                       {machine.mName}
+  //                     </label>
+  //                   );
+  //                 })}
+  //               </div>
+
+  //               <div>
+  //                 <h4 className={styles.parametrartitle}>Behandlingsparametrar</h4>
+
+  //                <div className={styles.parameterGrid}>
+  //   {treatmentParameterFields.map((field) => {
+  //     if (field.type === "boolean") {
+  //       return (
+  //         <label key={field.key} className={styles.booleanField}>
+  //           <input
+  //             type="checkbox"
+  //             checked={Boolean(session.treatmentParameters?.[field.key])}
+  //             onChange={(event) =>
+  //               updateTreatmentSession(index, {
+  //                 ...session,
+  //                 treatmentParameters: {
+  //                   ...session.treatmentParameters,
+  //                   [field.key]: event.target.checked,
+  //                 },
+  //               })
+  //             }
+  //           />
+  //           {field.label}
+  //         </label>
+  //       );
+  //     }
+
+  //     return (
+  //       <label key={field.key} className={styles.parameterField}>
+  //         {field.label}
+  //         <input
+  //           type="text"
+  //           value={(session.treatmentParameters?.[field.key] as string) ?? ""}
+  //           onChange={(event) =>
+  //             updateTreatmentSession(index, {
+  //               ...session,
+  //               treatmentParameters: {
+  //                 ...session.treatmentParameters,
+  //                 [field.key]: event.target.value,
+  //               },
+  //             })
+  //           }
+  //         />
+  //       </label>
+  //     );
+  //   })}
+  // </div>
+
+  //                 {treatmentParameterTextFields.map((field) => (
+  //                   <label key={field.key}>
+  //                     {field.label}
+  //                     <textarea
+  //                       value={
+  //                         (session.treatmentParameters?.[field.key] as string) ??
+  //                         ""
+  //                       }
+  //                       onChange={(event) =>
+  //                         updateTreatmentSession(index, {
+  //                           ...session,
+  //                           treatmentParameters: {
+  //                             ...session.treatmentParameters,
+  //                             [field.key]: event.target.value,
+  //                           },
+  //                         })
+  //                       }
+  //                     />
+  //                   </label>
+  //                 ))}
+  //               </div>
+
+  //               <label>
+  //                 Anteckningar
+  //                 <textarea
+  //                   value={session.notes}
+  //                   onChange={(event) =>
+  //                     updateTreatmentSession(index, {
+  //                       ...session,
+  //                       notes: event.target.value,
+  //                     })
+  //                   }
+  //                 />
+  //               </label>
+  //             </div>
+  //           );
+  //         })}
+  //       </div>
+
+  //       <aside className={styles.editTreatmentStyle__right}>
+  //         <div className={styles.sessionSummary}>
+  //           <h2>Sammanfattning</h2>
+
+  //           <p>
+  //             <span>Antal behandlingar</span>
+  //             <strong>{treatmentSessions.length}</strong>
+  //           </p>
+
+  //           <p>
+  //             <span>Total tid</span>
+  //             <strong>{totalDuration} min</strong>
+  //           </p>
+
+  //           <p>
+  //             <span>Total</span>
+  //             <strong>{totalPrice} kr</strong>
+  //           </p>
+  //         </div>
+  //       </aside>
+
+  //       <button
+  //         type="button"
+  //         className={styles.saveButton}
+  //         onClick={handleSaveJournal}
+  //         disabled={isSaving}
+  //       >
+  //         {isSaving ? "Sparar..." : "Spara ändringar"}
+  //       </button>
+  //     </div>
+  //   );
+  // };
+
   return (
     <div className={styles.editTreatmentStyle}>
       <div className={styles.editTreatmentStyle__left}>
         <div className={styles.sessionHeader}>
           <div>
-            <h1>Redigera session</h1>
-
-            <p>
+            <h1>Redigera Session</h1>
+            <h2>
               {client.name} {client.lastName}
-            </p>
+            </h2>
           </div>
-          <label>
-            Datum
-            <input
-              type="date"
-              value={sessionDate}
-              onChange={(event) => setSessionDate(event.target.value)}
-            />
-          </label>
-</div>
 
-          {treatmentSessions.map((session, index) => {
-            return (
-              <div key={index} className={styles.treatmentCard}>
-                <h2>Behandling {index + 1}</h2>
+          <input
+            type="date"
+            value={sessionDate}
+            onChange={(event) => setSessionDate(event.target.value)}
+          />
+        </div>
 
-                <label>
-                  Behandling
-                  <select
-                    value={session.treatmentId}
-                    onChange={(event) => {
-                      const selectedTreatment = treatments.find(
-                        (treatment) => treatment._id === event.target.value,
-                      );
+        {treatmentSessions.map((session, index) => {
+          return (
+            <div key={index} className={styles.treatmentCard}>
+              <h2>Behandling {index + 1}</h2>
 
-                      const price = selectedTreatment?.tprice ?? session.price;
-                      const duration =
-                        selectedTreatment?.tduration ?? session.duration;
-                      const discount = session.discount ?? 0;
-
-                      updateTreatmentSession(index, {
-                        ...session,
-                        treatmentId: event.target.value,
-                        price,
-                        duration,
-                        totalPrice: price - discount,
-                      });
-                    }}
-                  >
-                    <option value="">Välj behandling</option>
-
-                    {treatments.map((treatment) => (
-                      <option key={treatment._id} value={treatment._id}>
-                        {treatment.tname}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <div>
-                  <p>Maskiner</p>
-
-                  {machines.map((machine) => {
-                    const isChecked = session.machineIds.includes(machine._id);
-
-                    return (
-                      <label key={machine._id}>
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={(event) => {
-                            const machineIds = event.target.checked
-                              ? [...session.machineIds, machine._id]
-                              : session.machineIds.filter(
-                                  (machineId) => machineId !== machine._id,
-                                );
-
-                            updateTreatmentSession(index, {
-                              ...session,
-                              machineIds,
-                            });
-                          }}
-                        />
-                        {machine.mName}
-                      </label>
-                    );
-                  })}
+              <div className={styles.sessionTable}>
+                <div className={styles.sessionTableHeader}>
+                  <span>Behandling</span>
+                  <span>Tid</span>
+                  <span>Pris</span>
+                  <span>Rabatt</span>
+                  <span>Total</span>
                 </div>
 
-                <div>
-                  <h3>Behandlingsparametrar</h3>
+                <div className={styles.sessionSummaryRow}>
+                  <label>
+                    <select
+                      value={session.treatmentId}
+                      onChange={(event) => {
+                        const selectedTreatment = treatments.find(
+                          (treatment) => treatment._id === event.target.value,
+                        );
 
+                        const price =
+                          selectedTreatment?.tprice ?? session.price;
+                        const duration =
+                          selectedTreatment?.tduration ?? session.duration;
+                        const discount = session.discount ?? 0;
+
+                        updateTreatmentSession(index, {
+                          ...session,
+                          treatmentId: event.target.value,
+                          price,
+                          duration,
+                          totalPrice: price - discount,
+                        });
+                      }}
+                    >
+                      <option value="">Välj behandling</option>
+
+                      {treatments.map((treatment) => (
+                        <option key={treatment._id} value={treatment._id}>
+                          {treatment.tname}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label>
+                    <input
+                      type="number"
+                      value={session.duration}
+                      onChange={(event) =>
+                        updateTreatmentSession(index, {
+                          ...session,
+                          duration: Number(event.target.value),
+                        })
+                      }
+                    />
+                  </label>
+
+                  <label>
+                    <input
+                      type="number"
+                      value={session.price}
+                      onChange={(event) => {
+                        const price = Number(event.target.value);
+                        const discount = session.discount ?? 0;
+
+                        updateTreatmentSession(index, {
+                          ...session,
+                          price,
+                          totalPrice: price - discount,
+                        });
+                      }}
+                    />
+                  </label>
+
+                  <label>
+                    <input
+                      type="number"
+                      value={session.discount}
+                      onChange={(event) => {
+                        const discount = Number(event.target.value);
+
+                        updateTreatmentSession(index, {
+                          ...session,
+                          discount,
+                          totalPrice: session.price - discount,
+                        });
+                      }}
+                    />
+                  </label>
+
+                  <div className={styles.totalPreview}>
+                    {session.totalPrice} kr
+                  </div>
+                </div>
+              </div>
+
+              {/* <div className={styles.machineList}>
+                <p>Maskiner</p>
+
+                {machines.map((machine) => {
+                  const isChecked = session.machineIds.includes(machine._id);
+
+                  return (
+                    <label key={machine._id}>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(event) => {
+                          const machineIds = event.target.checked
+                            ? [...session.machineIds, machine._id]
+                            : session.machineIds.filter(
+                                (machineId) => machineId !== machine._id,
+                              );
+
+                          updateTreatmentSession(index, {
+                            ...session,
+                            machineIds,
+                          });
+                        }}
+                      />
+                      {machine.mName}
+                    </label>
+                  );
+                })}
+              </div> */}
+
+<div className={styles.formSection}>
+  <h4 className={styles.formSectionTitle}>Maskiner</h4>
+
+  <div className={styles.machineGrid}>
+    {machines.map((machine) => {
+      const isChecked = session.machineIds.includes(machine._id);
+
+      return (
+        <label key={machine._id} className={styles.machineOption}>
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={(event) => {
+              const machineIds = event.target.checked
+                ? [...session.machineIds, machine._id]
+                : session.machineIds.filter(
+                    (machineId) => machineId !== machine._id,
+                  );
+
+              updateTreatmentSession(index, {
+                ...session,
+                machineIds,
+              });
+            }}
+          />
+          {machine.mName}
+        </label>
+      );
+    })}
+  </div>
+</div>
+
+              <div className={styles.formSection}>
+                <h4 className={styles.formSectionTitle}>Behandlingsparametrar</h4>
+
+                <div className={styles.parameterGrid}>
                   {treatmentParameterFields.map((field) => {
                     if (field.type === "boolean") {
                       return (
-                        <label key={field.key}>
+                        <label key={field.key} className={styles.booleanField}>
+                           <span className={styles.parameterLabel}>{field.label}</span>
                           <input
                             type="checkbox"
                             checked={Boolean(
@@ -274,14 +634,14 @@ const EditTreatmentSession = () => {
                               })
                             }
                           />
-                          {field.label}
                         </label>
                       );
                     }
 
                     return (
-                      <label key={field.key}>
-                        {field.label}
+                      <label key={field.key} className={styles.parameterField}>
+                        <span className={styles.parameterLabel}>{field.label}</span>
+
                         <input
                           type="text"
                           value={
@@ -304,7 +664,10 @@ const EditTreatmentSession = () => {
                   })}
 
                   {treatmentParameterTextFields.map((field) => (
-                    <label key={field.key}>
+                    <label
+                      key={field.key}
+                      className={styles.parameterTextField}
+                    >
                       {field.label}
                       <textarea
                         value={
@@ -325,108 +688,58 @@ const EditTreatmentSession = () => {
                     </label>
                   ))}
                 </div>
-
-                <label>
-                  Tid
-                  <input
-                    type="number"
-                    value={session.duration}
-                    onChange={(event) =>
-                      updateTreatmentSession(index, {
-                        ...session,
-                        duration: Number(event.target.value),
-                      })
-                    }
-                  />
-                </label>
-
-                <label>
-                  Pris
-                  <input
-                    type="number"
-                    value={session.price}
-                    onChange={(event) => {
-                      const price = Number(event.target.value);
-                      const discount = session.discount ?? 0;
-
-                      updateTreatmentSession(index, {
-                        ...session,
-                        price,
-                        totalPrice: price - discount,
-                      });
-                    }}
-                  />
-                </label>
-
-                <label>
-                  Rabatt
-                  <input
-                    type="number"
-                    value={session.discount}
-                    onChange={(event) => {
-                      const discount = Number(event.target.value);
-
-                      updateTreatmentSession(index, {
-                        ...session,
-                        discount,
-                        totalPrice: session.price - discount,
-                      });
-                    }}
-                  />
-                </label>
-
-                <p>Total: {session.totalPrice} kr</p>
-
-                <label>
-                  Anteckningar
-                  <textarea
-                    value={session.notes}
-                    onChange={(event) =>
-                      updateTreatmentSession(index, {
-                        ...session,
-                        notes: event.target.value,
-                      })
-                    }
-                  />
-                </label>
               </div>
-            );
-          })}
-        
-        </div>
 
-        <aside className={styles.editTreatmentStyle__right}>
-          <div className={styles.sessionSummary}>
-            <h2>Sammanfattning</h2>
-
-            <p>
-              <span>Antal behandlingar</span>
-              <strong>{treatmentSessions.length}</strong>
-            </p>
-
-            <p>
-              <span>Total tid</span>
-              <strong>{totalDuration} min</strong>
-            </p>
-
-            <p>
-              <span>Total</span>
-              <strong>{totalPrice} kr</strong>
-            </p>
-
+              <label>
+                Anteckningar
+                <textarea
+                  value={session.notes}
+                  onChange={(event) =>
+                    updateTreatmentSession(index, {
+                      ...session,
+                      notes: event.target.value,
+                    })
+                  }
+                />
+              </label>
             </div>
-            </aside>
-       
-            <button
-              type="button"
-              className={styles.saveButton}
-              onClick={handleSaveJournal}
-              disabled={isSaving}
-            >
-              {isSaving ? "Sparar..." : "Spara ändringar"}
-            </button>
-        
-      
+          );
+        })}
+
+
+          <button
+            type="button"
+            className={styles.saveButton}
+            onClick={handleSaveJournal}
+            disabled={isSaving}
+          >
+            {isSaving ? "Sparar..." : "Spara ändringar"}
+          </button>
+
+
+      </div>
+
+      <aside className={styles.editTreatmentStyle__right}>
+        <div className={styles.sessionSummary}>
+          <h2>Sammanfattning</h2>
+
+          <p>
+            <span>Antal behandlingar</span>
+            <strong>{treatmentSessions.length}</strong>
+          </p>
+
+          <p>
+            <span>Total tid</span>
+            <strong>{totalDuration} min</strong>
+          </p>
+
+          <p>
+            <span>Total</span>
+            <strong>{totalPrice} kr</strong>
+          </p>
+
+        </div>
+      </aside>
     </div>
   );
 };

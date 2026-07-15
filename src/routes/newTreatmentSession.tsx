@@ -363,25 +363,22 @@ const NewTreatmentSession = () => {
       <div className={styles.newTreatmentStyle__left}>
         <div className={styles.sessionHeader}>
           <div>
-            <h1>Ny behandling Session</h1>
+            <h1>Ny Behandling Session</h1>
             <h2>
               {client.name} {client.lastName}
             </h2>
           </div>
-        </div>
-
-        <div>
-          <label>Behandlingsdatum</label>
           <input
             type="date"
             value={sessionDate}
             onChange={(e) => setSessionDAte(e.target.value)}
           />
         </div>
+
         {treatmentSessions.map((session, index) => (
           <div key={index} className={styles.treatmentCard}>
             <div className={styles.treatmentCard__header}>
-              <h3>Behandling: {index + 1}</h3>
+              <h2>Behandling: {index + 1}</h2>
               {treatmentSessions.length > 1 && (
                 <button
                   className={styles.removeButton}
@@ -406,8 +403,11 @@ const NewTreatmentSession = () => {
               </select>
             </div>
 
-            <p>Tid: {session.duration}min</p>
             <div className={styles.priceSection}>
+              <div>
+                <label>Tid:</label>
+                {session.duration}min
+              </div>
               <div>
                 <label>Price:</label>
                 <input type="number" value={session.price} readOnly />
