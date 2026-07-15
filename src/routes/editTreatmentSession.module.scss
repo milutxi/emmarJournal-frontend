@@ -38,19 +38,6 @@
     color: $color-body-display;
   }
 
-  // p {
-  //   margin: 0;
-  //   color: $color-dark-outline;
-  // }
-
-  // label {
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: $indent__s;
-  //   font-weight: 600;
-  //   color: $color-body-display;
-  // }
-
   input {
     padding: $indent__s;
     border: 1px solid $color-dark-outline;
@@ -75,14 +62,6 @@
     margin: 0;
   }
 
-  // label {
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: $indent__s;
-  //   font-weight: 600;
-  //   color: $color-body-display;
-  // }
-
   input,
   select,
   textarea {
@@ -104,14 +83,6 @@
   flex-direction: column;
   gap: $indent__s;
 }
-
-// .sessionTableHeader,
-// .sessionSummaryRow {
-//   display: grid;
-//   grid-template-columns: 2fr repeat(4, 1fr);
-//   gap: $indent__s;
-//   align-items: end;
-// }
 
 .sessionTableHeader,
 .sessionSummaryRow {
@@ -149,28 +120,6 @@
   color: $color-body-display;
   background: rgba(0, 0, 0, 0.02);
 }
-
-// .machineList {
-//   display: flex;
-//   flex-direction: column;
-//   gap: $indent__s;
-
-//   p {
-//     margin: 0;
-//     font-weight: 600;
-//     color: $color-body-display;
-//   }
-
-//   label {
-//     flex-direction: row;
-//     align-items: center;
-//     font-weight: 400;
-//   }
-
-//   input {
-//     width: auto;
-//   }
-// }
 
 .formSection {
   display: flex;
@@ -210,7 +159,6 @@
   }
 }
 
-
 .parametrartitle {
   text-align: left;
   color: $color-goldenrod;
@@ -219,7 +167,6 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding-bottom: $indent__m;
-
 }
 
 .parameterGrid {
@@ -231,27 +178,6 @@
     grid-template-columns: 1fr;
   }
 }
-
-// .parameterField {
-//   display: flex;
-//   flex-direction: column;
-//   gap: $indent__s;
-//   font-weight: 600;
-//   color: $color-body-display;
-// }
-
-// .booleanField {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   gap: $indent__s;
-//   font-weight: 600;
-//   color: $color-body-display;
-
-//   input {
-//     width: auto;
-//   }
-// }
 
 .parameterField,
 .booleanField {
