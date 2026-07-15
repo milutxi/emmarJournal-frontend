@@ -33,6 +33,17 @@
     gap: $indent__m;
   }
 
+  .sessionHeaderLink {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover h1,
+    &:hover h2 {
+      color: $color-goldenrod;
+    }
+  }
+
   h1 {
     margin: 0;
     color: $color-body-display;

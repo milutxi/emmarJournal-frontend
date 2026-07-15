@@ -2,6 +2,7 @@ import styles from "./editTreatmentSession.module.scss";
 
 import { useState } from "react";
 import {
+  Link,
   LoaderFunctionArgs,
   useLoaderData,
   useNavigate,
@@ -167,12 +168,18 @@ const EditTreatmentSession = () => {
     <div className={styles.editTreatmentStyle}>
       <div className={styles.editTreatmentStyle__left}>
         <div className={styles.sessionHeader}>
-          <div>
-            <h1>Redigera Session</h1>
-            <h2>
-              {client.name} {client.lastName}
-            </h2>
-          </div>
+          <Link
+            to={`/app/clients/${client._id}`}
+            className={styles.sessionHeaderLink}
+          >
+            <div>
+              <h1>Redigera Session</h1>
+              <h2>
+                {client.name} {client.lastName}
+              </h2>
+            </div>
+          </Link>
+
           <input
             type="date"
             value={sessionDate}
