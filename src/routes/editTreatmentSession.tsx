@@ -440,7 +440,6 @@ const EditTreatmentSession = () => {
               {client.name} {client.lastName}
             </h2>
           </div>
-
           <input
             type="date"
             value={sessionDate}

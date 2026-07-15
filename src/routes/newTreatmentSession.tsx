@@ -230,6 +230,25 @@ const NewTreatmentSession = () => {
     setTreatmentSessions(updatedSessions);
   };
 
+  const handleMachineCheckboxChange = (
+    index: number,
+    machineId: string,
+    checked: boolean,
+  ) => {
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) => {
+        if (sessionIndex !== index) return session;
+
+        return {
+          ...session,
+          machineIds: checked
+            ? [...session.machineIds, machineId]
+            : session.machineIds.filter((id) => id !== machineId),
+        };
+      }),
+    );
+  };
+
   const handleSaveSession = async () => {
     if (sessionSaved) {
       alert("Behandlingssessionen är redan sparad.");
@@ -389,59 +408,74 @@ const NewTreatmentSession = () => {
                 </button>
               )}
             </div>
-            <div>
-              <select
-                value={session.treatmentId}
-                onChange={(e) => handleTreatmentChange(index, e.target.value)}
-              >
-                <option value="">Välj behandling</option>
-                {treatments.map((treatment) => (
-                  <option key={treatment._id} value={treatment._id}>
-                    {treatment.tname}{" "}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            <div className={styles.priceSection}>
-              <div>
-                <label>Tid:</label>
-                {session.duration}min
-              </div>
-              <div>
-                <label>Price:</label>
-                <input type="number" value={session.price} readOnly />
-              </div>
-              <div>
-                <label>Discount:</label>
-                <input
-                  type="number"
-                  value={session.discount}
-                  onChange={(e) =>
-                    handleDiscountChange(index, Number(e.target.value))
-                  }
-                />
-              </div>
-              <div>
-                <label>Total:</label>
-                <input type="number" value={session.totalPrice} readOnly />
-              </div>
-            </div>
-            <div>
-              <label> MASKIN </label>
-              <select
-                multiple
-                value={session.machineIds}
-                onChange={(e) => handleMachineChange(index, e)}
-              >
-                <option value="">Välj Maskin</option>
-                {machines.map((machine) => (
-                  <option key={machine._id} value={machine._id}>
-                    {machine.mName}{" "}
-                  </option>
-                ))}
-              </select>
-            </div>
+<div className={styles.sessionTable}>
+  <div className={styles.sessionTableHeader}>
+    <span>Behandling</span>
+    <span>Tid</span>
+    <span>Pris</span>
+    <span>Rabatt</span>
+    <span>Total</span>
+  </div>
+
+  <div className={styles.sessionSummaryRow}>
+    <label>
+      <select
+        value={session.treatmentId}
+        onChange={(e) => handleTreatmentChange(index, e.target.value)}
+      >
+        <option value="">Välj behandling</option>
+
+        {treatments.map((treatment) => (
+          <option key={treatment._id} value={treatment._id}>
+            {treatment.tname}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <input type="number" value={session.duration} readOnly />
+
+    <input type="number" value={session.price} readOnly />
+
+    <input
+      type="number"
+      value={session.discount}
+      onChange={(e) => handleDiscountChange(index, Number(e.target.value))}
+    />
+
+    <div className={styles.totalPreview}>{session.totalPrice} kr</div>
+  </div>
+</div>
+
+<div className={styles.formSection}>
+  <h4 className={styles.formSectionTitle}>Maskiner</h4>
+
+  <div className={styles.machineGrid}>
+    {machines.map((machine) => {
+      const isChecked = session.machineIds.includes(machine._id);
+
+      return (
+        <label key={machine._id} className={styles.machineOption}>
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={(e) =>
+              handleMachineCheckboxChange(
+                index,
+                machine._id,
+                e.target.checked,
+              )
+            }
+          />
+          {machine.mName}
+        </label>
+      );
+    })}
+  </div>
+</div>
+
+
             {session.treatmentParameters && (
               <TreatmentParameters
                 value={session}
@@ -480,8 +514,6 @@ const NewTreatmentSession = () => {
               ? "Sparad"
               : "Spara behandlingssession"}
         </button>
-
-        {/* Medicine History */}
       </div>
 
       {/* summary on the right side */}
