@@ -146,37 +146,6 @@ const NewTreatmentSession = () => {
     setTreatmentSessions(updatedSessions);
   };
 
-  const handleMachineChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const machineIds = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value,
-    );
-    const updatedSessions = [...treatmentSessions];
-
-    updatedSessions[index].machineIds = machineIds;
-
-    const selectedMachines = machines.filter((machine) =>
-      machineIds.includes(machine._id),
-    );
-
-    const requiresParameters = selectedMachines.some(
-      (machine) => machine.requiresTreatmentParameters,
-    );
-
-    if (requiresParameters && !updatedSessions[index].treatmentParameters) {
-      updatedSessions[index].treatmentParameters = {};
-    }
-
-    if (!requiresParameters) {
-      updatedSessions[index].treatmentParameters = undefined;
-    }
-
-    setTreatmentSessions(updatedSessions);
-  };
-
   const handleDiscountChange = (index: number, value: number) => {
     const updatedSessions = [...treatmentSessions];
 
@@ -231,23 +200,36 @@ const NewTreatmentSession = () => {
   };
 
   const handleMachineCheckboxChange = (
-    index: number,
-    machineId: string,
-    checked: boolean,
-  ) => {
-    setTreatmentSessions((currentSessions) =>
-      currentSessions.map((session, sessionIndex) => {
-        if (sessionIndex !== index) return session;
+  index: number,
+  machineId: string,
+  checked: boolean,
+) => {
+  setTreatmentSessions((currentSessions) =>
+    currentSessions.map((session, sessionIndex) => {
+      if (sessionIndex !== index) return session;
 
-        return {
-          ...session,
-          machineIds: checked
-            ? [...session.machineIds, machineId]
-            : session.machineIds.filter((id) => id !== machineId),
-        };
-      }),
-    );
-  };
+      const machineIds = checked
+        ? [...session.machineIds, machineId]
+        : session.machineIds.filter((id) => id !== machineId);
+
+      const selectedMachines = machines.filter((machine) =>
+        machineIds.includes(machine._id),
+      );
+
+      const requiresParameters = selectedMachines.some(
+        (machine) => machine.requiresTreatmentParameters,
+      );
+
+      return {
+        ...session,
+        machineIds,
+        treatmentParameters: requiresParameters
+          ? session.treatmentParameters || {}
+          : undefined,
+      };
+    }),
+  );
+};
 
   const handleSaveSession = async () => {
     if (sessionSaved) {
