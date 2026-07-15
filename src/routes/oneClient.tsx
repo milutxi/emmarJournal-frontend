@@ -100,10 +100,12 @@ const OneClient = () => {
     navigate(`/app/clients/${client._id}/journals/${journal._id}/edit`);
   };
 
-  const handleDeleteJournal = (journal: Journal) => {
-    setOpenJournalMenuId(null);
-    alert("Ta bort session är inte tillgängligt.");
-  };
+  // NOT NEED TO DELETE ANYTHING RIGHT NOW ----
+
+  // const handleDeleteJournal = (journal: Journal) => {
+  //   setOpenJournalMenuId(null);
+  //   alert("Ta bort session är inte tillgängligt.");
+  // };
 
   // const handleDeleteJournal = (journal: Journal) => {
   //   setOpenJournalMenuId(null);
@@ -259,13 +261,13 @@ const OneClient = () => {
                           Redigera session
                         </button>
 
-                        <button
+                        {/* <button
                           type="button"
                           className={styles.oneClientStyle__journalMenuDelete}
                           onClick={() => handleDeleteJournal(journal)}
                         >
                           Ta bort session
-                        </button>
+                        </button> */}
                       </div>
                     )}
                   </div>
