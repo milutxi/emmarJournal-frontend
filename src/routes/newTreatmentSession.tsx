@@ -132,7 +132,7 @@ const NewTreatmentSession = () => {
   const hasCheckedDraft = useRef(false);
   const initialSessionDateRef = useRef(sessionDate);
 
-  const hasTreatmentSessionContent = (sessions: treatmentSession[]) => {
+  const hasTreatmentSessionContent = (sessions: TreatmentSession[]) => {
     return sessions.some((session) => {
       const hasTreatment = Boolean(session.treatmentId);
       const hasMachines = session.machineIds.length > 0;
