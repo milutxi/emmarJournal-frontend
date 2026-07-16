@@ -1,6 +1,6 @@
 import styles from "./newTreatmentSession.module.scss";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import {
@@ -12,7 +12,6 @@ import {
   MedicalHistoryType,
   ConsentFormType,
 } from "../types";
-import { useState } from "react";
 import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 import { GrStatusWarning } from "react-icons/gr";
@@ -21,6 +20,12 @@ import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 
 import { useNavigate } from "react-router-dom";
+
+type NewTreatmentSessionDraft = {
+  sessionDate: string;
+  treatmentSessions: TreatmentSession[];
+  savedAt: string;
+};
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -58,6 +63,8 @@ const NewTreatmentSession = () => {
       machines: Machine[];
       latestMedicalHistory: MedicalHistoryType | null;
     };
+
+  const draftKey = `newTreatmentSessionDraft:${client._id}`;
 
   const [treatmentSessions, setTreatmentSessions] = useState<
     TreatmentSession[]
@@ -120,6 +127,89 @@ const NewTreatmentSession = () => {
   const [savedMedicalHistoryId, setSavedMedicalHistoryId] = useState<
     string | null
   >(null);
+
+  const [draftReady, setDraftReady] = useState(false);
+  const hasCheckedDraft = useRef(false);
+  const initialSessionDateRef = useRef(sessionDate);
+
+  const hasTreatmentSessionContent = (sessions: treatmentSession[]) => {
+    return sessions.some((session) => {
+      const hasTreatment = Boolean(session.treatmentId);
+      const hasMachines = session.machineIds.length > 0;
+      const hasNotes = session.notes.trim().length > 0;
+      const hasDiscount = session.discount > 0;
+
+      const hasParameters =
+        session.treatmentParameters &&
+        Object.values(session.treatmentParameters).some((value) => {
+          if (typeof value === "boolean") return value === true;
+          if (typeof value === "string") return value.trim().length > 0;
+          return Boolean(value);
+        });
+
+      return (
+        hasTreatment ||
+        hasMachines ||
+        hasNotes ||
+        hasDiscount ||
+        Boolean(hasParameters)
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (hasCheckedDraft.current) return;
+
+    hasCheckedDraft.current = true;
+    const savedDraft = localStorage.getItem(draftKey);
+
+    if (!savedDraft) {
+      setDraftReady(true);
+      return;
+    }
+    const shouldRestore = window.confirm(
+      "Det finns ett sparat utkast för denna behandlingssession. Vill du fortsätta där du slutade?",
+    );
+
+    if (!shouldRestore) {
+      localStorage.removeItem(draftKey);
+      setDraftReady(true);
+      return;
+    }
+
+    try {
+      const parsedDraft = JSON.parse(savedDraft) as NewTreatmentSessionDraft;
+
+      setSessionDAte(parsedDraft.sessionDate);
+      setTreatmentSessions(parsedDraft.treatmentSessions);
+    } catch (error) {
+      console.error("Could not restore treatment session draft:", error);
+      localStorage.removeItem(draftKey);
+    }
+
+    setDraftReady(true);
+  }, [draftKey]);
+
+  useEffect(() => {
+    if (!draftReady) return;
+
+    const hasChangedDate = sessionDate !== initialSessionDateRef.current;
+    const hasContent =
+      hasChangedDate || hasTreatmentSessionContent(treatmentSessions);
+
+    if (!hasContent) {
+      localStorage.removeItem(draftKey);
+      return;
+    }
+
+    const draft: NewTreatmentSessionDraft = {
+      sessionDate,
+      treatmentSessions,
+      savedAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [draftKey, draftReady, sessionDate, treatmentSessions]);
 
   const getStatusIcon = (completed: boolean) => {
     const className = completed ? styles.statusDone : styles.statusWarning;
@@ -316,7 +406,9 @@ const NewTreatmentSession = () => {
 
       setSessionSaved(true);
 
+      localStorage.removeItem(draftKey);
       alert("Behandlingssessionen sparades.");
+
       navigate(`/app/clients/${client._id}`);
     } catch (error) {
       console.error("Error saving journal:", error);
