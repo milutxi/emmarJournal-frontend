@@ -282,3 +282,32 @@
     grid-template-columns: 1fr;
   }
 }
+.documentActions {
+  margin-top: $indent__m;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.documentButton {
+  background: $color-goldenrod;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.documentStatus {
+  border: 1px solid $color-goldenrod;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  color: $color-goldenrod;
+  font-weight: 600;
+}

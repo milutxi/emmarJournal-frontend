@@ -1,6 +1,6 @@
 import styles from "./editTreatmentSession.module.scss";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Link,
   LoaderFunctionArgs,
@@ -13,11 +13,18 @@ import {
   Machine,
   Treatment,
   TreatmentSession,
+  ConsentFormType,
+  MedicalHistoryType,
 } from "../types";
 import {
   treatmentParameterFields,
   treatmentParameterTextFields,
 } from "../config/treatmentParameterFields";
+
+import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
+import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
+import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
 
@@ -78,12 +85,12 @@ const getTreatmentParametersForEdit = (
 };
 
 const EditTreatmentSession = () => {
-  const { client, treatments, machines, journal } = useLoaderData() as {
+  const { client, treatments, machines, journal, latestMedicalHistory } = useLoaderData() as {
     client: Client;
     treatments: Treatment[];
     machines: Machine[];
     journal: Journal;
-    latestMedicalHistory: unknown;
+    latestMedicalHistory: MedicalHistoryType | null;
   };
 
   const navigate = useNavigate();
@@ -109,6 +116,139 @@ const EditTreatmentSession = () => {
   const [sessionDate, setSessionDate] = useState(
     journal.jDate ? journal.jDate.slice(0, 10) : "",
   );
+
+  const [showMedicalHistory, setShowMedicalHistory] = useState(false);
+  const [showConsentForm, setShowConsentForm] = useState(false);
+
+  const [attachedMedicalHistoryId, setAttachedMedicalHistoryId] = useState<
+    string | null
+  >(
+    journal.medicalHistoryId && typeof journal.medicalHistoryId === "object"
+      ? journal.medicalHistoryId._id ?? null
+      : typeof journal.medicalHistoryId === "string"
+        ? journal.medicalHistoryId
+        : null,
+  );
+
+  const [attachedConsentFormId, setAttachedConsentFormId] = useState<
+    string | null
+  >(
+    journal.consentFormId && typeof journal.consentFormId === "object"
+      ? journal.consentFormId._id ?? null
+      : typeof journal.consentFormId === "string"
+        ? journal.consentFormId
+        : null,
+  );
+
+  const initialMedicalHistory: MedicalHistoryType = latestMedicalHistory
+    ? {
+        ...emptyMedicalHistory,
+        ...latestMedicalHistory,
+        consentAccepted: false,
+        signatureImage: "",
+        signedAt: undefined,
+      }
+    : emptyMedicalHistory;
+
+  const [medicalHistory, setMedicalHistory] = useState<MedicalHistoryType>(
+    initialMedicalHistory,
+  );
+
+  const [consentForm, setConsentForm] = useState<ConsentFormType>({
+    treatmentIds: [],
+    consentText: "",
+    accepted: false,
+    signatureImage: "",
+  });
+
+  const [, setConsentFormCompleted] = useState(false);
+
+  const hasMedicalHistory = Boolean(attachedMedicalHistoryId);
+  const hasConsentForm = Boolean(attachedConsentFormId);
+
+  const attachDocumentToJournal = useCallback (
+     async (documents: {
+    medicalHistoryId?: string;
+    consentFormId?: string;
+  }) => {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/journals/" + journal._id,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(documents),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not attach document to journal");
+    }
+
+    return response.json();
+  },
+  [journal._id],
+);
+
+  const handleSaveMedicalHistory = async (
+    updatedMedicalHistory: MedicalHistoryType,
+  ) => {
+    try {
+      const payload = {
+        ...updatedMedicalHistory,
+        clientId: client._id,
+      };
+
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/medicalHistory",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not save medical history");
+      }
+
+      const savedMedicalHistory = await response.json();
+
+      await attachDocumentToJournal({
+        medicalHistoryId: savedMedicalHistory._id,
+      });
+
+      setMedicalHistory(savedMedicalHistory);
+      setAttachedMedicalHistoryId(savedMedicalHistory._id);
+      setShowMedicalHistory(false);
+    } catch (error) {
+      console.error("Save medical history error:", error);
+      alert("Kunde inte spara hälsodeklarationen.");
+    }
+  };
+
+  useEffect(() => {
+    if (!consentForm._id || attachedConsentFormId) return;
+const consentFormId = consentForm._id;
+    const attachConsentForm = async () => {
+      try {
+        await attachDocumentToJournal({
+          consentFormId,
+        });
+
+        setAttachedConsentFormId(consentFormId);
+        setShowConsentForm(false);
+      } catch (error) {
+        console.error("Attach consent form error:", error);
+        alert("Samtycket sparades, men kunde inte kopplas till journalen.");
+      }
+    };
+
+    attachConsentForm();
+  }, [consentForm._id, attachedConsentFormId, attachDocumentToJournal]);
 
   const updateTreatmentSession = (
     index: number,
@@ -450,7 +590,55 @@ const EditTreatmentSession = () => {
             <strong>{totalPrice} kr</strong>
           </p>
         </div>
+        <div className={styles.documentActions}>
+          {hasMedicalHistory ? (
+            <div className={styles.documentStatus}>Hälsodeklaration finns</div>
+          ) : (
+            <button
+              type="button"
+              className={styles.documentButton}
+              onClick={() => setShowMedicalHistory(true)}
+            >
+              Lägg till hälsodeklaration
+            </button>
+          )}
+
+          {hasConsentForm ? (
+            <div className={styles.documentStatus}>Samtycke finns</div>
+          ) : (
+            <button
+              type="button"
+              className={styles.documentButton}
+              onClick={() => setShowConsentForm(true)}
+            >
+              Lägg till samtycke
+            </button>
+          )}
+        </div>
       </aside>
+      {showMedicalHistory && (
+        <MedicalHistoryModal
+          isOpen={showMedicalHistory}
+          onClose={() => setShowMedicalHistory(false)}
+          medicalHistory={medicalHistory}
+          setMedicalHistory={setMedicalHistory}
+          onSave={handleSaveMedicalHistory}
+        />
+      )}
+
+      {showConsentForm && (
+        <ConsentFormModal
+          isOpen={showConsentForm}
+          onClose={() => setShowConsentForm(false)}
+          consentForm={consentForm}
+          setConsentForm={setConsentForm}
+          setConsentFormCompleted={setConsentFormCompleted}
+          sessionDate={sessionDate}
+          client={client}
+          treatmentSessions={treatmentSessions}
+          treatments={treatments}
+        />
+      )}
     </div>
   );
 };
