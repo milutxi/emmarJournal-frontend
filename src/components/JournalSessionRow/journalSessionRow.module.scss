@@ -1,0 +1,77 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.journalSessionRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: $indent__s;
+  align-items: center;
+  padding: $indent__s 0;
+  border-bottom: 1px solid $color-dark-outline;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sessionButton {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: $indent__m;
+  align-items: center;
+  text-align: left;
+  color: $color-text;
+
+  &:hover {
+    color: $color-goldenrod;
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+.sessionButtonWithClient {
+  grid-template-columns: 100px 160px 1fr;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.journalDate {
+  font-size: 0.85rem;
+  color: $color-dark-outline;
+}
+
+.clientName {
+  font-weight: 600;
+}
+
+.treatmentName {
+  font-weight: 500;
+}
+
+.documentStatusComplete,
+.documentStatusMissing {
+  border: 1px solid $color-dark-outline;
+  padding: $indent__s $indent__m;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.documentStatusComplete {
+  border-color: $color-goldenrod;
+  color: $color-goldenrod;
+}
+
+.documentStatusMissing {
+  border-style: dashed;
+  color: red;
+  opacity: 0.75;
+}
