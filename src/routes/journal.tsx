@@ -6,7 +6,7 @@ import {
 } from "../utils/jounalHelpers";
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 import JournalSessionRow from "../components/JournalSessionRow/journalSessionRow";
-
+import styles from "./journal.module.scss";
 export const loader = async () => {
   const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/journals", {
     headers: {
@@ -26,30 +26,42 @@ export const loader = async () => {
 const Journal = () => {
   const journals = useLoaderData() as JournalType[];
   const [selectedJournal, setSelectedJournal] = useState<JournalType | null> (null);
+
   return (
-    <div>
-      <h1>JOURNAL</h1>
-      <p>Antal journaler: {journals.length}</p>
-      <ul>
+  <div className={styles.journalPage}>
+    <header className={styles.journalHeader}>
+      <div>
+        <h1>Journal</h1>
+        <p>Alla behandlingssessioner</p>
+      </div>
+    </header>
+
+    {journals.length === 0 ? (
+      <div className={styles.emptyState}>
+        <p>Inga behandlingssessioner ännu</p>
+        <span>När behandlingar sparas visas de här.</span>
+      </div>
+    ) : (
+      <ul className={styles.journalList}>
         {journals.map((journal) => (
-          <JournalSessionRow 
+          <JournalSessionRow
             key={journal._id}
             journal={journal}
             showClientName
             onOpen={setSelectedJournal}
-
           />
         ))}
       </ul>
-      <SessionDocumentModal 
-        isOpen={!!selectedJournal}
-        onClose={()=> setSelectedJournal(null)}
-        journal={selectedJournal}
-        clientName={selectedJournal ? getJournalClientName(selectedJournal) : "" }
-      
-      />
-    </div>
-  );
+    )}
+
+    <SessionDocumentModal
+      isOpen={!!selectedJournal}
+      onClose={() => setSelectedJournal(null)}
+      journal={selectedJournal}
+      clientName={selectedJournal ? getJournalClientName(selectedJournal) : ""}
+    />
+  </div>
+);
 };
 
 export default Journal;
