@@ -5,7 +5,7 @@ import "./index.scss";
 import "./App.scss";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Index from "./routes/index.tsx";
-import Journal from "./routes/journal.tsx";
+import Journal, { loader as journalLoader } from "./routes/journal.tsx";
 import Treatments from "./routes/treatments.tsx";
 import Machines from "./routes/machines.tsx";
 import Clients from "./routes/clients.tsx";
@@ -29,6 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "journal",
+        loader: journalLoader,
         element: <Journal />,
       },
       {

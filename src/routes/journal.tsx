@@ -1,8 +1,12 @@
+
+
+
 const Journal = () => {
     return (
         <div>
             <h1>JOURNAL</h1>
-            <p>Page under construction</p>
+            <p>Hola 
+                Page under construction</p>
         </div>
     )
 }
