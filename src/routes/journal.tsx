@@ -56,6 +56,7 @@ const Journal = () => {
   return (
     <div>
       <h1>JOURNAL</h1>
+      <p>Antal journaler: {journals.length}</p>
       <ul>
         {journals.map((journal) => (
           <li key={journal._id}>
