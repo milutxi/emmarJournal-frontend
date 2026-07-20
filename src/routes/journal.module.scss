@@ -23,13 +23,65 @@
   }
 }
 
+.filterRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: $indent__s;
+  align-items: center;
+  margin-bottom: $indent__s;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filterInputs {
+  display: grid;
+  grid-template-columns: 100px 160px 1fr;
+  gap: $indent__m;
+  align-items: center;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+    gap: $indent__s;
+  }
+}
+
 .searchInput {
   width: 100%;
-  margin-top: $indent__m;
   padding: $indent__s;
   border: 1px solid $color-dark-outline;
   border-radius: 8px;
   font-family: $font-montserrat;
+}
+
+.filterStatusLabel {
+  padding: $indent__s $indent__m;
+  font-size: 0.85rem;
+  color: $color-dark-outline;
+  white-space: nowrap;
+
+  @include responsive-mobile {
+    display: none;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  padding: $indent__s;
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+  font-family: $font-montserrat;
+}
+
+.clearFiltersButton {
+  margin-bottom: $indent__m;
+  border: none;
+  background: transparent;
+  color: $color-goldenrod;
+  font-family: $font-montserrat;
+  cursor: pointer;
+  padding: 0;
 }
 
 .emptyState {
