@@ -1,4 +1,5 @@
 import { useLoaderData } from "react-router-dom";
+import { useState } from "react";
 import { Journal as JournalType } from "../types";
 import {
   formatJournalDate,
@@ -7,6 +8,7 @@ import {
   hasJournalConsentForm,
   hasJournalMedicalHistory,
 } from "../utils/jounalHelpers";
+import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 
 export const loader = async () => {
   const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/journals", {
@@ -26,13 +28,15 @@ export const loader = async () => {
 
 const Journal = () => {
   const journals = useLoaderData() as JournalType[];
+  const [selectedJournal, setSelectedJournal] = useState<JournalType | null> (null);
   return (
     <div>
       <h1>JOURNAL</h1>
       <p>Antal journaler: {journals.length}</p>
       <ul>
         {journals.map((journal) => (
-          <li key={journal._id}>
+          <li key={journal._id} onClick={() => setSelectedJournal(journal)}
+            >
             {formatJournalDate(journal.jDate)} — {getJournalClientName(journal)}{" "}
             — {getJournalTreatmentNames(journal)} —{" "}
             {hasJournalMedicalHistory(journal)
@@ -45,6 +49,13 @@ const Journal = () => {
           </li>
         ))}
       </ul>
+      <SessionDocumentModal 
+        isOpen={!!selectedJournal}
+        onClose={()=> setSelectedJournal(null)}
+        journal={selectedJournal}
+        clientName={selectedJournal ? getJournalClientName(selectedJournal) : "" }
+      
+      />
     </div>
   );
 };
