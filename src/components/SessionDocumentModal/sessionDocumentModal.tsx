@@ -10,6 +10,7 @@ import {
   treatmentParameterTextFields,
 } from "../../config/treatmentParameterFields";
 
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;

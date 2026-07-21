@@ -1,6 +1,6 @@
 import { Client, Journal, Treatment } from "../types";
 
-export const formatJournalDate = (date?: string) => {
+export const formatDisplayDate = (date?: string) => {
   if (!date) return "-";
 
   const parsed = new Date(date);

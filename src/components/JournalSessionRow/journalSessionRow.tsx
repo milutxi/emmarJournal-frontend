@@ -1,5 +1,5 @@
 import { Journal } from "../../types";
-import { formatJournalDate,
+import { formatDisplayDate,
   getJournalClientName,
   getJournalTreatmentNames,
   hasJournalConsentForm,
@@ -24,7 +24,7 @@ const JournalSessionRow = ({ journal, showClientName = false, onOpen,}: Props) =
         onClick={() => onOpen(journal)}
       >
         <span className={styles.journalDate}>
-          {formatJournalDate(journal.jDate)}
+          {formatDisplayDate(journal.jDate)}
         </span>
 
         {showClientName && (

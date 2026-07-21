@@ -2,6 +2,7 @@ import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
 import { Machine } from "../types";
 import styles from "./oneMachine.module.scss";
 import { useState } from "react";
+import { formatDisplayDate } from "../utils/jounalHelpers";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -16,17 +17,17 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   );
   return response.json();
 };
-const formatDate = (date: Date | string) => {
-  if (!date) return "-";
+// const formatDate = (date: Date | string) => {
+//   if (!date) return "-";
 
-  const parsedDate = new Date(date);
+//   const parsedDate = new Date(date);
 
-  if (!isNaN(parsedDate.getTime())) {
-    return new Intl.DateTimeFormat("sv-SE").format(parsedDate);
-  }
+//   if (!isNaN(parsedDate.getTime())) {
+//     return new Intl.DateTimeFormat("sv-SE").format(parsedDate);
+//   }
 
-  return "-";
-};
+//   return "-";
+// };
 
 const OneMachine = () => {
   const loadedMachine = useLoaderData() as Machine;
@@ -186,7 +187,7 @@ const OneMachine = () => {
                   }
                 />
               ) : (
-                formatDate(machine.mManufactureYear)
+                formatDisplayDate(machine.mManufactureYear)
               )}
             </p>
           </div>
@@ -377,18 +378,18 @@ const OneMachine = () => {
                   <div className={styles["oneMachineStyle__inlineInfo"]}>
                     <p>
                       <span>Startdatum:</span>{" "}
-                      {formatDate(machine.mStartLeasingDate)}
+                      {formatDisplayDate(machine.mStartLeasingDate)}
                     </p>
 
                     <p>
                       <span>Slutdatum:</span>{" "}
-                      {formatDate(machine.mFinishLeasingDate)}
+                      {formatDisplayDate(machine.mFinishLeasingDate)}
                     </p>
                   </div>
                 ) : (
                   <p>
                     <span>Inköpsdatum:</span> {/* IF NOT PURCHASE INFO */}
-                    {formatDate(machine.mPurchaseDate)}
+                    {formatDisplayDate(machine.mPurchaseDate)}
                   </p>
                 )}
               </div>
@@ -493,7 +494,7 @@ const OneMachine = () => {
                   }
                 />
               ) : (
-                formatDate(machine.mServiceLokalDate)
+                formatDisplayDate(machine.mServiceLokalDate)
               )}
             </p>
             <p>
@@ -516,7 +517,7 @@ const OneMachine = () => {
                   }
                 />
               ) : (
-                formatDate(machine.mServiceLokalNextDate)
+                formatDisplayDate(machine.mServiceLokalNextDate)
               )}
             </p>
           </div>
@@ -588,7 +589,7 @@ const OneMachine = () => {
                   }
                 />
               ) : (
-                formatDate(machine.mServiceManufactureDate)
+                formatDisplayDate(machine.mServiceManufactureDate)
               )}
             </p>
             <p>
@@ -613,7 +614,7 @@ const OneMachine = () => {
                   }
                 />
               ) : (
-                formatDate(machine.mServiceManufactureNextDate)
+                formatDisplayDate(machine.mServiceManufactureNextDate)
               )}
             </p>
           </div>
