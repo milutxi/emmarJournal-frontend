@@ -39,23 +39,23 @@ const Clients = () => {
   }, []);
 
   // Delete client
-  const deleteClient = async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this client?",
-    );
+  // const deleteClient = async (id: string) => {
+  //   const confirmed = window.confirm(
+  //     "Are you sure you want to delete this client?",
+  //   );
 
-    if (!confirmed) return;
+  //   if (!confirmed) return;
 
-    try {
-      await fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
-        method: "DELETE",
-      });
+  //   try {
+  //     await fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
+  //       method: "DELETE",
+  //     });
 
-      setClients(clients.filter((client) => client._id !== id));
-    } catch (error) {
-      console.error("Error deleting client:", error);
-    }
-  };
+  //     setClients(clients.filter((client) => client._id !== id));
+  //   } catch (error) {
+  //     console.error("Error deleting client:", error);
+  //   }
+  // };
 
   const filteredClients = clients.filter((client) => {
     const fullName = `${client.name} ${client.lastName}`.toLowerCase();
@@ -93,7 +93,7 @@ const Clients = () => {
           <ListClients
             key={client._id}
             client={client}
-            deleteClient={deleteClient}
+            // deleteClient={deleteClient}
             onEdit={setEditingClient}
           />
         ))}

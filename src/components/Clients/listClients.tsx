@@ -1,19 +1,22 @@
 import { Client } from "../../types";
 import styles from './listClients.module.scss'
-import { RiDeleteBinLine } from "react-icons/ri";
+//import { RiDeleteBinLine } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
 import { Link } from "react-router-dom";
 
 
 interface Props {
     client: Client;
-    deleteClient : (id: string) => void;
+    // deleteClient : (id: string) => void;
     onEdit: (client: Client) => void;
 }
 
 
 
-const ListClients = ({ client, deleteClient, onEdit }: Props) => {
+const ListClients = ({ 
+    client, 
+    // deleteClient, 
+    onEdit }: Props) => {
    
 
     return(
@@ -27,9 +30,9 @@ const ListClients = ({ client, deleteClient, onEdit }: Props) => {
             </Link>
            <div className={styles["list__icons"]}>
 
-            <section className={styles["list__delete"]}>
+            {/* <section className={styles["list__delete"]}>
                 <RiDeleteBinLine onClick={()=> deleteClient(client._id)} />
-            </section>
+            </section> */}
         
             <section className={styles["list__edit"]}>
                 <GrEdit onClick={()=> onEdit(client)} />
