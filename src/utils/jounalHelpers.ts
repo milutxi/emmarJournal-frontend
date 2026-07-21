@@ -11,7 +11,7 @@ export const formatJournalDate = (date?: string) => {
 };
 
 export const getJournalClient = (journal: Journal) => {
-  if (typeof journal.clientId === "string") return null;
+  if (!journal.clientId || typeof journal.clientId === "string") return null;
 
   return journal.clientId as Client;
 };
@@ -19,7 +19,7 @@ export const getJournalClient = (journal: Journal) => {
 export const getJournalClientName = (journal: Journal) => {
   const client = getJournalClient(journal);
 
-  if (!client) return "Kund";
+  if (!client) return "Borttagen kund";
 
   return `${client.name} ${client.lastName}`;
 };

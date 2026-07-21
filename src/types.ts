@@ -65,7 +65,7 @@ export interface Treatment {
 
 export interface Journal {
   _id: string;
-  clientId: string | Client;
+  clientId: string | Client | null;
 
   treatments: Array<
     Omit<
