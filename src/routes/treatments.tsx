@@ -20,27 +20,27 @@ const Treatments = () => {
     loadTreatments();
   }, []);
 
-  const deleteTreatment = async (id: string, name: string) => {
-    const confirmed = window.confirm(
-      `Är du säker på att du vill ta bort den här behandlingen: ${name}?`,
-    );
+  // const deleteTreatment = async (id: string, name: string) => {
+  //   const confirmed = window.confirm(
+  //     `Är du säker på att du vill ta bort den här behandlingen: ${name}?`,
+  //   );
 
-    if (!confirmed) return;
+  //   if (!confirmed) return;
 
-    const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/treatment/" + id,
-      {
-        method: "DELETE",
-      },
-    );
+  //   const response = await fetch(
+  //     import.meta.env.VITE_BACKEND_URL + "/treatment/" + id,
+  //     {
+  //       method: "DELETE",
+  //     },
+  //   );
 
-    if (!response.ok) {
-      throw new Error("Failed to delete treatment");
-    }
+  //   if (!response.ok) {
+  //     throw new Error("Failed to delete treatment");
+  //   }
 
-    // remove from UI without reload
-    setTreatments((prev) => prev.filter((treatment) => treatment._id !== id));
-  };
+  //   // remove from UI without reload
+  //   setTreatments((prev) => prev.filter((treatment) => treatment._id !== id));
+  // };
 
   return (
     <div className={styles.page}>
@@ -53,7 +53,9 @@ const Treatments = () => {
           <div>
             {/* <Link to={`/app/treatments/${treatment._id}`}>{treatment.tname}</Link> */}
 
-            <TreatmentCard key={treatment._id} treatment={treatment} onDelete={deleteTreatment}/>
+            <TreatmentCard key={treatment._id} treatment={treatment} 
+            //onDelete={deleteTreatment}
+            />
 
           </div>
         ))}

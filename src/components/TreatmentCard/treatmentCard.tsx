@@ -2,13 +2,15 @@ import styles from "./treatmentCard.module.scss";
 import { useState } from "react";
 import { Treatment } from "../../types";
 import { GrEdit } from "react-icons/gr";
-import { RiDeleteBinLine } from "react-icons/ri";
+//import { RiDeleteBinLine } from "react-icons/ri";
 
 type Props = {
   treatment: Treatment;
-  onDelete: (id: string, name: string) => void;
+  // onDelete: (id: string, name: string) => void;
 };
-const TreatmentCard = ({ treatment, onDelete }: Props) => {
+const TreatmentCard = ({ treatment, 
+  // onDelete 
+}: Props) => {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -162,14 +164,14 @@ const TreatmentCard = ({ treatment, onDelete }: Props) => {
         </div>
       )}
 
-      {!editMode && (
+      {/* {!editMode && (
         <div className={styles.footer}>
           <RiDeleteBinLine
             className={styles.deleteIcon}
             onClick={() => onDelete(treatment._id, formData.tname)}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
