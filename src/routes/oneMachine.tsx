@@ -17,17 +17,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   );
   return response.json();
 };
-// const formatDate = (date: Date | string) => {
-//   if (!date) return "-";
-
-//   const parsedDate = new Date(date);
-
-//   if (!isNaN(parsedDate.getTime())) {
-//     return new Intl.DateTimeFormat("sv-SE").format(parsedDate);
-//   }
-
-//   return "-";
-// };
 
 const OneMachine = () => {
   const loadedMachine = useLoaderData() as Machine;
@@ -403,26 +392,25 @@ const OneMachine = () => {
 
         <section className={styles["oneMachineStyle__section"]}>
           <h3>Kommentarer</h3>
-        
-            {editSection === "comments" ? (
-              <>
-                <div className={styles.parameterToggle}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={commentsForm.requiresTreatmentParameters}
-                      onChange={(e) =>
-                        setCommentsForm({
-                          ...commentsForm,
-                          requiresTreatmentParameters: e.target.checked,
-                        })
-                      }
-                    />
-                    Kräver behandlingsparametrar
-                  </label>
-                </div>
-                 <div className={styles["oneMachineStyle__textBox"]}>
 
+          {editSection === "comments" ? (
+            <>
+              <div className={styles.parameterToggle}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={commentsForm.requiresTreatmentParameters}
+                    onChange={(e) =>
+                      setCommentsForm({
+                        ...commentsForm,
+                        requiresTreatmentParameters: e.target.checked,
+                      })
+                    }
+                  />
+                  Kräver behandlingsparametrar
+                </label>
+              </div>
+              <div className={styles["oneMachineStyle__textBox"]}>
                 <textarea
                   value={commentsForm.mComments}
                   onChange={(e) =>
@@ -431,22 +419,21 @@ const OneMachine = () => {
                       mComments: e.target.value,
                     })
                   }
-                  />
-                  </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.parameterStatus}>
-                  <strong>Kräver Behandlingsparametrar:</strong>{" "}
-                  {machine.requiresTreatmentParameters ? "Ja" : "Nej"}
-                </div>
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.parameterStatus}>
+                <strong>Kräver Behandlingsparametrar:</strong>{" "}
+                {machine.requiresTreatmentParameters ? "Ja" : "Nej"}
+              </div>
 
-                <div className={styles["oneMachineStyle__textBox"]}>
-                  {machine.mComments || "Ingen kommentarer tillgängliga."}
-                </div>
-              </>
-            )}
-          
+              <div className={styles["oneMachineStyle__textBox"]}>
+                {machine.mComments || "Ingen kommentarer tillgängliga."}
+              </div>
+            </>
+          )}
 
           {editSection === "comments" ? (
             <div>

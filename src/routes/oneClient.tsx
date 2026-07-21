@@ -5,11 +5,12 @@ import { Client, Journal } from "../types";
 import styles from "./oneClient.module.scss";
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 
-import { formatDisplayDate, 
+import {
+  formatDisplayDate,
   getJournalTreatmentNames,
   hasJournalConsentForm,
   hasJournalMedicalHistory,
- } from "../utils/jounalHelpers";
+} from "../utils/jounalHelpers";
 
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { GrStatusWarning } from "react-icons/gr";
@@ -37,45 +38,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   return { client, journals };
 };
-
-// const formatDate = (date: string) => {
-//   const parsed = new Date(date);
-//   if (isNaN(parsed.getTime())) return date;
-
-//   return new Intl.DateTimeFormat("en-GB").format(parsed);
-// };
-
-// const getTreatmentName = (
-//   treatment: Journal["treatments"][number]["treatmentId"],
-// ) => {
-//   if (typeof treatment === "string") {
-//     return "Behandling";
-//   }
-
-//   return treatment.tname || "Behandling";
-// };
-
-// const getJournalTreatmentNames = (journal: Journal) => {
-//   return journal.treatments
-//     .map((session) => getTreatmentName(session.treatmentId))
-//     .join(", ");
-// };
-
-// const getMedicalHistory = (journal: Journal) => {
-//   if (typeof journal.medicalHistoryId === "string") {
-//     return null;
-//   }
-
-//   return journal.medicalHistoryId;
-// };
-
-// const getConsentForm = (journal: Journal) => {
-//   if (typeof journal.consentFormId === "string") {
-//     return null;
-//   }
-
-//   return journal.consentFormId;
-// };
 
 const OneClient = () => {
   const { client, journals } = useLoaderData() as {
@@ -140,7 +102,8 @@ const OneClient = () => {
               <strong>E-mail:</strong> {client.email}
             </p>
             <p>
-              <strong>Födelsedag:</strong> {formatDisplayDate(client.dateOfBirth)}
+              <strong>Födelsedag:</strong>{" "}
+              {formatDisplayDate(client.dateOfBirth)}
             </p>
           </div>
         </div>
