@@ -64,7 +64,7 @@ const ParametrarStep = ({ formData, setFormData }: Props) => {
       <h2>PARAMETRAR</h2>
 
       <div className={styles.inputGroup}>
-        <h4 className={styles.subtitle}>Parametrar:</h4>
+  
 
         <p className={styles.helperText}>
           Lägg till de parametrar som ska visas när maskinen används i en

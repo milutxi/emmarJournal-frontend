@@ -1,7 +1,7 @@
 import styles from "./createMachineModal.module.scss";
 import { useState } from "react";
 import BasicInfoStep from "./steps/basicInfoStep";
-import { CreateMachineForm } from "../../types";
+import { CreateMachineForm, MachineSetupNode } from "../../types";
 import AcquisitionStep from "./steps/acquisitionsStep";
 import LocalserviceStep from "./steps/localserviceStep";
 import TillverkarserviceStep from "./steps/tillverkarserviceStep";
@@ -38,12 +38,28 @@ const CreateMachineModal = ({ onClose }: Props) => {
     parameterDefinitions: [],
   });
 
+
+  const cleanSetupMenu = (nodes: MachineSetupNode[]): MachineSetupNode[] => {
+  return nodes
+    .filter((node) => node.label.trim())
+    .map((node) => ({
+      label: node.label.trim(),
+      children: cleanSetupMenu(node.children ?? []),
+    }));
+};
+
   const handleSubmit = async () => {
     try {
-      const cleanedParameterDefinitions = formData.parameterDefinitions.filter( (parameter) => parameter.label.trim(),);
+      const cleanedParameterDefinitions = formData.parameterDefinitions.filter(
+        (parameter) => parameter.label.trim(),
+      );
+
+      const cleanedSetupMenu = cleanSetupMenu(formData.setupMenu);
+
       const payload = {
         ...formData,
-        cleanedParameterDefinitions: cleanedParameterDefinitions,
+        setupMenu: cleanedSetupMenu,
+        parameterDefinitions: cleanedParameterDefinitions,
         requiresTreatmentParameters: cleanedParameterDefinitions.length > 0,
       };
 
@@ -94,15 +110,11 @@ const CreateMachineModal = ({ onClose }: Props) => {
             />
           )}
           {step === 5 && (
-            <SettingsStep
-              formData={formData}
-              setFormData={setFormData}
-            />
+            <SettingsStep formData={formData} setFormData={setFormData} />
           )}
           {step === 6 && (
-  <ParametrarStep formData={formData} setFormData={setFormData} />
-)}
-
+            <ParametrarStep formData={formData} setFormData={setFormData} />
+          )}
 
           {step === 7 && (
             <CommentsStep formData={formData} setFormData={setFormData} />
