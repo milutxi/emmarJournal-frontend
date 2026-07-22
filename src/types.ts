@@ -55,6 +55,8 @@ export interface CreateMachineForm {
   mServiceManufactureNextDate: string;
   requiresTreatmentParameters: boolean;
   acquisitionType: "leasing" | "purchase";
+  setupMenu: MachineSetupNode[];
+  parameterDefinitions: MachineParameterDefinition[];
 }
 
 export interface MachineSetupNode {
@@ -98,12 +100,14 @@ export interface Journal {
 
   treatments: Array<
     Omit<
-    TreatmentSession, 
-    "treatmentId" | "machineIds" | "treatmentParameters"
+      TreatmentSession,
+      "treatmentId" | "machineIds" | "treatmentParameters"
     > & {
       treatmentId: string | Treatment;
       machineIds: Array<string | Machine>;
-      treatmentParametersId?: string | (TreatmentParametersType & { _id: string });
+      treatmentParametersId?:
+        | string
+        | (TreatmentParametersType & { _id: string });
     }
   >;
 

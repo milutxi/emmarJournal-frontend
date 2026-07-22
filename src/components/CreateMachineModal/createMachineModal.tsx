@@ -6,6 +6,7 @@ import AcquisitionStep from "./steps/acquisitionsStep";
 import LocalserviceStep from "./steps/localserviceStep";
 import TillverkarserviceStep from "./steps/tillverkarserviceStep";
 import CommentsStep from "./steps/commentsStep";
+import SettingsStep from "./steps/settingsStep";
 
 type Props = {
   onClose: () => void;
@@ -32,10 +33,19 @@ const CreateMachineModal = ({ onClose }: Props) => {
     mServiceManufactureNextDate: "",
     requiresTreatmentParameters: false,
     acquisitionType: "purchase",
+    setupMenu: [],
+    parameterDefinitions: [],
   });
 
   const handleSubmit = async () => {
     try {
+      const cleanedParameterDefinitions = formData.parameterDefinitions.filter( (parameter) => parameter.label.trim(),);
+      const payload = {
+        ...formData,
+        cleanedParameterDefinitions: cleanedParameterDefinitions,
+        requiresTreatmentParameters: cleanedParameterDefinitions.length > 0,
+      };
+
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/machine",
         {
@@ -43,7 +53,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         },
       );
 
@@ -73,18 +83,25 @@ const CreateMachineModal = ({ onClose }: Props) => {
           )}
 
           {step === 3 && (
-            <LocalserviceStep formData={formData} setFormData={setFormData}/>
+            <LocalserviceStep formData={formData} setFormData={setFormData} />
           )}
 
           {step === 4 && (
-            <TillverkarserviceStep formData={formData} setFormData={setFormData}/>
+            <TillverkarserviceStep
+              formData={formData}
+              setFormData={setFormData}
+            />
+          )}
+          {step === 5 && (
+            <SettingsStep
+              formData={formData}
+              setFormData={setFormData}
+            />
           )}
 
-          {step === 5 && (
+          {step === 6 && (
             <CommentsStep formData={formData} setFormData={setFormData} />
-          )
-          
-          }
+          )}
         </div>
 
         <div className={styles.actions}>
@@ -94,7 +111,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
             <div />
           )}
 
-          {step < 5 ? (
+          {step < 6 ? (
             <button onClick={() => setStep(step + 1)}>Nästa</button>
           ) : (
             <button onClick={handleSubmit}>Skapa maskin</button>
