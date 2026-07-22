@@ -32,6 +32,8 @@ export interface Machine {
   mServiceManufactureNextDate: string;
   requiresTreatmentParameters: boolean;
   acquisitionType: "leasing" | "purchase";
+  setupMenu?: MachineSetupNode[];
+  parameterDefinitions?: MachineParameterDefinition[];
 }
 
 export interface CreateMachineForm {
@@ -53,6 +55,33 @@ export interface CreateMachineForm {
   mServiceManufactureNextDate: string;
   requiresTreatmentParameters: boolean;
   acquisitionType: "leasing" | "purchase";
+}
+
+export interface MachineSetupNode {
+  _id?: string;
+  label: string;
+  children?: MachineSetupNode[];
+}
+
+//used when creating the machine
+export interface MachineParameterDefinition {
+  _id?: string;
+  label: string;
+  unit?: string;
+}
+
+//used when adding value in the session
+export interface MachineParameterValue {
+  label: string;
+  unit?: string;
+  value: string;
+}
+
+export interface MachineSetting {
+  machineId: string | Machine;
+  setupPath: string[];
+  parameters: MachineParameterValue[];
+  comment: string;
 }
 
 export interface Treatment {
@@ -115,6 +144,7 @@ export interface TreatmentSession {
   treatmentId: string;
   machineIds: string[];
   treatmentParameters?: TreatmentParametersType;
+  machineSettings?: MachineSetting[];
   duration: number;
   price: number;
   discount: number;
