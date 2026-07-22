@@ -64,8 +64,6 @@ const ParametrarStep = ({ formData, setFormData }: Props) => {
       <h2>PARAMETRAR</h2>
 
       <div className={styles.inputGroup}>
-  
-
         <p className={styles.helperText}>
           Lägg till de parametrar som ska visas när maskinen används i en
           behandling. I journalen fyller personalen bara i värdet.
@@ -100,7 +98,6 @@ const ParametrarStep = ({ formData, setFormData }: Props) => {
           <div className={styles.parameterDefinitionHeader}>
             <span>Parameternamn</span>
             <span>Enhet</span>
-           
           </div>
 
           {formData.parameterDefinitions.map((parameter, index) => (
