@@ -14,7 +14,6 @@
   align-items: center;
 
   z-index: 999;
-
 }
 
 .modal {
@@ -34,12 +33,11 @@
 
   position: relative;
 
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 
   display: flex;
   flex-direction: column;
-  gap: $indent__m;
+  gap: $indent__s;
 
   @include responsive-mobile {
     width: 100%;
@@ -75,6 +73,10 @@
   &:hover {
     background: #e7e7e7;
   }
+}
+
+.title {
+  text-align: left;
 }
 
 .stepContent {
@@ -116,7 +118,7 @@
 .formSection {
   display: flex;
   flex-direction: column;
-  gap: $indent__m;
+  gap: $indent__s;
 }
 
 .inputGroup {
@@ -160,14 +162,13 @@
 
       background: white;
 
-      box-shadow:
-        0 0 0 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
     }
   }
 
   textarea {
-  resize: vertical;
-}
+    resize: vertical;
+  }
 }
 
 .rowOne {
@@ -263,10 +264,10 @@
 }
 
 .rowDates {
-   width: fit-content;
+  width: fit-content;
   display: flex;
 
- justify-content: center;
+  justify-content: center;
 
   gap: $indent__m;
   margin: 0 auto;
@@ -285,4 +286,177 @@
   }
 }
 
+.subtitle {
+  text-align: left;
+}
 
+.helperText {
+  margin: 0;
+  color: $color-body-display;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.settingsSelector {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: $indent__xl;
+
+  padding: $indent__m 0;
+
+  border-top: 1px solid $color-dark-outline;
+  border-bottom: 1px solid $color-dark-outline;
+
+  @include responsive-mobile {
+    gap: $indent__m;
+    flex-direction: column;
+  }
+}
+
+.settingsOption {
+  display: flex;
+  align-items: center;
+  gap: $indent__s;
+
+  font-size: $font-size__base;
+  font-weight: 600;
+
+  color: $color-text;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    color: $color-lynx-black;
+  }
+
+  input[type="radio"] {
+    width: 18px;
+    height: 18px;
+
+    cursor: pointer;
+
+    accent-color: $color-lynx-black;
+  }
+}
+
+.parameterDefinitionList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.parameterDefinitionHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px 90px;
+  gap: $indent__m;
+  align-items: center;
+
+  padding: 0 $indent__m;
+
+  span {
+    font-size: $font-size__s;
+    font-weight: 600;
+    color: $color-body-display;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @include responsive-mobile {
+    display: none;
+  }
+}
+
+.parameterDefinitionRow {
+  display: grid;
+  grid-template-columns: 1fr 180px auto;
+  gap: $indent__m;
+  align-items: center;
+
+  padding: $indent__s $indent__m;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 18px;
+
+  background: #fafafa;
+
+  input {
+    width: 100%;
+    padding: $indent__s;
+    border-radius: 16px;
+    border: 1px solid $color-dark-outline;
+    background: white;
+    font-size: $font-size__base;
+    color: $color-text;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $color-lynx-black;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.addButton,
+.removeButton {
+  border: none;
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__base;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+.addButton {
+  align-self: flex-start;
+
+  padding: $indent__s $indent__m;
+  margin-top: $indent__s;
+  background: $color-goldenrod;
+  color: white;
+
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+
+  &:hover {
+    transform: translateY(1px);
+    box-shadow:
+      inset 0 3px 6px rgba(0, 0, 0, 0.18),
+      0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.removeButton {
+  padding: 6px 10px;
+
+  background: white;
+  color: $color-body-display;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 10px;
+
+  font-size: $font-size__s;
+  font-weight: 600;
+
+  &:hover {
+    background: $color-goldenrod;
+    color: white;
+    border-color: $color-goldenrod;
+  }
+}

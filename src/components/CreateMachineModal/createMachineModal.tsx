@@ -71,7 +71,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
         <button className={styles.closeButton} onClick={onClose}>
           X
         </button>
-        <h1>Ny maskin</h1>
+        <h1 className={styles.title}>Ny maskin</h1>
 
         <div className={styles.stepContent}>
           {step === 1 && (
