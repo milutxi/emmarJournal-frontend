@@ -7,6 +7,7 @@ import LocalserviceStep from "./steps/localserviceStep";
 import TillverkarserviceStep from "./steps/tillverkarserviceStep";
 import CommentsStep from "./steps/commentsStep";
 import SettingsStep from "./steps/settingsStep";
+import ParametrarStep from "./steps/parametrarStep";
 
 type Props = {
   onClose: () => void;
@@ -98,8 +99,12 @@ const CreateMachineModal = ({ onClose }: Props) => {
               setFormData={setFormData}
             />
           )}
-
           {step === 6 && (
+  <ParametrarStep formData={formData} setFormData={setFormData} />
+)}
+
+
+          {step === 7 && (
             <CommentsStep formData={formData} setFormData={setFormData} />
           )}
         </div>
@@ -111,7 +116,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
             <div />
           )}
 
-          {step < 6 ? (
+          {step < 7 ? (
             <button onClick={() => setStep(step + 1)}>Nästa</button>
           ) : (
             <button onClick={handleSubmit}>Skapa maskin</button>
