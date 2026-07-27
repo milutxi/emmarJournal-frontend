@@ -53,3 +53,64 @@ export const cleanSetupMenu = (
       children: cleanSetupMenu(node.children ?? []),
     }));
 };
+
+export const updateNodeLabel = (
+  nodes: MachineSetupNode[],
+  path: number[],
+  value: string,
+): MachineSetupNode[] => {
+  return nodes.map((node, index) => {
+    if (index !== path[0]) return node;
+
+    if (path.length === 1) {
+      return {
+        ...node,
+        label: value,
+      };
+    }
+
+    return {
+      ...node,
+      children: updateNodeLabel(node.children ?? [], path.slice(1), value),
+    };
+  });
+};
+
+export const addChildNode = (
+  nodes: MachineSetupNode[],
+  path: number[],
+): MachineSetupNode[] => {
+  return nodes.map((node, index) => {
+    if (index !== path[0]) return node;
+
+    if (path.length === 1) {
+      return {
+        ...node,
+        children: [...(node.children ?? []), { label: "", children: [] }],
+      };
+    }
+
+    return {
+      ...node,
+      children: addChildNode(node.children ?? [], path.slice(1)),
+    };
+  });
+};
+
+export const removeNode = (
+  nodes: MachineSetupNode[],
+  path: number[],
+): MachineSetupNode[] => {
+  if (path.length === 1) {
+    return nodes.filter((_, index) => index !== path[0]);
+  }
+
+  return nodes.map((node, index) => {
+    if (index !== path[0]) return node;
+
+    return {
+      ...node,
+      children: removeNode(node.children ?? [], path.slice(1)),
+    };
+  });
+};
