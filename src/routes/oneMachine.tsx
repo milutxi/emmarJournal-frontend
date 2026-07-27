@@ -1,8 +1,15 @@
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
-import { Machine } from "../types";
+import { Machine, MachineParameterDefinition } from "../types";
 import styles from "./oneMachine.module.scss";
 import { useState } from "react";
 import { formatDisplayDate } from "../utils/jounalHelpers";
+
+import {
+  addParameterDefinition,
+  cleanParameterDefinitions,
+  removeParameterDefinition,
+  updateParameterDefinition,
+} from "../utils/machineSettingsHelpers";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -60,7 +67,6 @@ const OneMachine = () => {
   //     : machine.acquisitionType === "leasing";
 
   const [commentsForm, setCommentsForm] = useState({
-    requiresTreatmentParameters: machine.requiresTreatmentParameters,
     mComments: machine.mComments,
   });
 
@@ -75,6 +81,56 @@ const OneMachine = () => {
     mServiceManufactureNextDate: machine.mServiceManufactureNextDate,
     mCommentsManufactureService: machine.mCommentsManufactureService,
   });
+
+  const [parameterDefinitionsForm, setParameterDefinitionsForm] = useState<
+    MachineParameterDefinition[]
+  >(machine.parameterDefinitions ?? []);
+
+  const hasParameterDefinitions =
+    (machine.parameterDefinitions ?? []).length > 0;
+
+  const handleAddParameterDefinition = () => {
+    setParameterDefinitionsForm((currentParameters) =>
+      addParameterDefinition(currentParameters),
+    );
+  };
+
+  const handleUpdateParameterDefinition = (
+    index: number,
+    key: "label" | "unit",
+    value: string,
+  ) => {
+    setParameterDefinitionsForm((currentParameters) =>
+      updateParameterDefinition(currentParameters, index, key, value),
+    );
+  };
+
+  const handleRemoveParameterDefinition = (index: number) => {
+    setParameterDefinitionsForm((currentParameters) =>
+      removeParameterDefinition(currentParameters, index),
+    );
+  };
+
+  const saveParameterDefinitions = async () => {
+    try {
+      const cleanedParameters = cleanParameterDefinitions(
+        parameterDefinitionsForm,
+      );
+
+      const updatedMachine = await updateMachine({
+        parameterDefinitions: cleanedParameters,
+        requiresTreatmentParameters: cleanedParameters.length > 0,
+      });
+
+      setMachine(updatedMachine);
+      setParameterDefinitionsForm(updatedMachine.parameterDefinitions ?? []);
+      setEditSection(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+ 
 
   return (
     <div className={styles.oneMachineStyle}>
@@ -391,70 +447,123 @@ const OneMachine = () => {
         </section>
 
         <section className={styles["oneMachineStyle__section"]}>
-          <h3>Kommentarer</h3>
+          <h3>Parametrar</h3>
 
-          {editSection === "comments" ? (
+          {editSection === "parameters" ? (
             <>
-              <div className={styles.parameterToggle}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={commentsForm.requiresTreatmentParameters}
-                    onChange={(e) =>
-                      setCommentsForm({
-                        ...commentsForm,
-                        requiresTreatmentParameters: e.target.checked,
-                      })
-                    }
-                  />
-                  Kräver behandlingsparametrar
-                </label>
-              </div>
-              <div className={styles["oneMachineStyle__textBox"]}>
-                <textarea
-                  value={commentsForm.mComments}
-                  onChange={(e) =>
-                    setCommentsForm({
-                      ...commentsForm,
-                      mComments: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.parameterStatus}>
-                <strong>Kräver Behandlingsparametrar:</strong>{" "}
-                {machine.requiresTreatmentParameters ? "Ja" : "Nej"}
-              </div>
+              {parameterDefinitionsForm.length > 0 ? (
+                <div className={styles.parameterDefinitionList}>
+                  <div className={styles.parameterDefinitionHeader}>
+                    <span>Parameternamn</span>
+                    <span>Enhet</span>
+                    <span />
+                  </div>
 
-              <div className={styles["oneMachineStyle__textBox"]}>
-                {machine.mComments || "Ingen kommentarer tillgängliga."}
-              </div>
-            </>
-          )}
+                  {parameterDefinitionsForm.map((parameter, index) => (
+                    <div
+                      key={parameter._id ?? index}
+                      className={styles.parameterDefinitionRow}
+                    >
+                      <input
+                        type="text"
+                        aria-label="Parameternamn"
+                        placeholder="T.ex. Energi"
+                        value={parameter.label}
+                        onChange={(event) =>
+                          handleUpdateParameterDefinition(
+                            index,
+                            "label",
+                            event.target.value,
+                          )
+                        }
+                      />
 
-          {editSection === "comments" ? (
-            <div>
+                      <input
+                        type="text"
+                        aria-label="Enhet"
+                        placeholder="T.ex. J/cm²"
+                        value={parameter.unit ?? ""}
+                        onChange={(event) =>
+                          handleUpdateParameterDefinition(
+                            index,
+                            "unit",
+                            event.target.value,
+                          )
+                        }
+                      />
+
+                      <button
+                        type="button"
+                        className={styles.removeButton}
+                        onClick={() => handleRemoveParameterDefinition(index)}
+                      >
+                        Ta bort
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles["oneMachineStyle__textBox"]}>
+                  Inga parametrar tillagda.
+                </div>
+              )}
+
               <button
-                onClick={async () => {
-                  try {
-                    const updatedMachine = await updateMachine(commentsForm);
-                    setMachine(updatedMachine);
-                    setEditSection(null);
-                  } catch (error) {
-                    console.error(error);
-                  }
-                }}
+                type="button"
+                className={styles.addButton}
+                onClick={handleAddParameterDefinition}
               >
-                Spara
+                + Lägg till parameter
               </button>
 
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
-            </div>
+              <div>
+                <button onClick={saveParameterDefinitions}>Spara</button>
+
+                <button
+                  onClick={() => {
+                    setParameterDefinitionsForm(
+                      machine.parameterDefinitions ?? [],
+                    );
+                    setEditSection(null);
+                  }}
+                >
+                  Avbryt
+                </button>
+              </div>
+            </>
           ) : (
-            <button onClick={() => setEditSection("comments")}>Redigera</button>
+            <>
+              {hasParameterDefinitions ? (
+                <div className={styles.parameterDisplayList}>
+                  {(machine.parameterDefinitions ?? []).map(
+                    (parameter, index) => (
+                      <div
+                        key={parameter._id ?? index}
+                        className={styles.parameterDisplayRow}
+                      >
+                        <span>{parameter.label}</span>
+                        <span>{parameter.unit || "-"}</span>
+                      </div>
+                    ),
+                  )}
+                </div>
+              ) : (
+                <div className={styles["oneMachineStyle__textBox"]}>
+                  Inga parametrar tillagda.
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setParameterDefinitionsForm(
+                    machine.parameterDefinitions ?? [],
+                  );
+                  setEditSection("parameters");
+                }}
+              >
+                Redigera
+              </button>
+            </>
           )}
         </section>
 
@@ -646,6 +755,54 @@ const OneMachine = () => {
             <button onClick={() => setEditSection("manufacturerService")}>
               Redigera
             </button>
+          )}
+        </section>
+
+        <section className={styles["oneMachineStyle__section"]}>
+          <h3>Kommentarer</h3>
+
+          {editSection === "comments" ? (
+            <>
+              <div className={styles["oneMachineStyle__textBox"]}>
+                <textarea
+                  value={commentsForm.mComments}
+                  onChange={(e) =>
+                    setCommentsForm({
+                      ...commentsForm,
+                      mComments: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles["oneMachineStyle__textBox"]}>
+                {machine.mComments || "Ingen kommentarer tillgängliga."}
+              </div>
+            </>
+          )}
+
+          {editSection === "comments" ? (
+            <div>
+              <button
+                onClick={async () => {
+                  try {
+                    const updatedMachine = await updateMachine(commentsForm);
+                    setMachine(updatedMachine);
+                    setEditSection(null);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                Spara
+              </button>
+
+              <button onClick={() => setEditSection(null)}>Avbryt</button>
+            </div>
+          ) : (
+            <button onClick={() => setEditSection("comments")}>Redigera</button>
           )}
         </section>
       </div>
