@@ -44,7 +44,9 @@ const CreateMachineModal = ({ onClose }: Props) => {
 
   const handleSubmit = async () => {
     try {
-      const cleanedParameterDefinitions = cleanParameterDefinitions(formData.parameterDefinitions);
+      const cleanedParameterDefinitions = cleanParameterDefinitions(
+        formData.parameterDefinitions,
+      );
 
       const cleanedSetupMenu = cleanSetupMenu(formData.setupMenu);
 
@@ -92,20 +94,20 @@ const CreateMachineModal = ({ onClose }: Props) => {
           )}
 
           {step === 3 && (
+            <SettingsStep formData={formData} setFormData={setFormData} />
+          )}
+          {step === 4 && (
+            <ParametrarStep formData={formData} setFormData={setFormData} />
+          )}
+          {step === 5 && (
             <LocalserviceStep formData={formData} setFormData={setFormData} />
           )}
 
-          {step === 4 && (
+          {step === 6 && (
             <TillverkarserviceStep
               formData={formData}
               setFormData={setFormData}
             />
-          )}
-          {step === 5 && (
-            <SettingsStep formData={formData} setFormData={setFormData} />
-          )}
-          {step === 6 && (
-            <ParametrarStep formData={formData} setFormData={setFormData} />
           )}
 
           {step === 7 && (
