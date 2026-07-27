@@ -163,7 +163,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: $indent__l;
-    
+
     p {
       display: flex;
       align-items: center;
@@ -180,9 +180,9 @@
       letter-spacing: 0.05em;
       color: $color-body-display;
     }
-     @include responsive-mobile {
-    gap: 0;
-  }
+    @include responsive-mobile {
+      gap: 0;
+    }
   }
 
   &__textBox {
@@ -202,4 +202,116 @@
 .parameterStatus {
   text-align: left;
   padding: $indent__s 0;
+}
+
+.setupMenuList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+  margin-bottom: $indent__m;
+}
+
+.setupMenuNode {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+}
+
+.setupMenuRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: $indent__m;
+  align-items: center;
+
+  padding: $indent__s;
+  border: 1px solid $color-dark-outline;
+  border-radius: 14px;
+  background: #fafafa;
+
+  input {
+    width: 100%;
+    padding: $indent__s;
+    border-radius: 12px;
+    border: 1px solid $color-dark-outline;
+    background: white;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $color-lynx-black;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+    margin-left: 0 !important;
+  }
+}
+
+.setupMenuActions {
+  display: flex;
+  gap: $indent__s;
+  align-items: center;
+
+  @include responsive-mobile {
+    flex-wrap: wrap;
+  }
+}
+
+.subMenuButton {
+  padding: 6px 10px;
+
+  background: white;
+  color: $color-body-display;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 10px;
+
+  font-size: $font-size__s;
+  font-weight: 600;
+  font-family: $font-montserrat;
+
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(2px);
+    box-shadow:
+      inset 0 3px 6px rgba(0, 0, 0, 0.12),
+      0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.setupDisplayList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: $indent__m;
+  align-items: stretch;
+  text-align: left;
+}
+
+.setupDisplayNode {
+  width: 100%;
+}
+
+.setupDisplayItem {
+  width: fit-content;
+  min-width: 180px;
+  box-sizing: border-box;
+
+  padding: 6px $indent__s;
+
+  border-bottom: 1px solid $color-dark-outline;
+  text-align: left;
+
+  span {
+    display: block;
+    font-weight: 600;
+    color: $color-body-display;
+  }
 }
