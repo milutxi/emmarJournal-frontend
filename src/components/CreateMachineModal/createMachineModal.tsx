@@ -1,13 +1,17 @@
 import styles from "./createMachineModal.module.scss";
 import { useState } from "react";
 import BasicInfoStep from "./steps/basicInfoStep";
-import { CreateMachineForm, MachineSetupNode } from "../../types";
+import { CreateMachineForm } from "../../types";
 import AcquisitionStep from "./steps/acquisitionsStep";
 import LocalserviceStep from "./steps/localserviceStep";
 import TillverkarserviceStep from "./steps/tillverkarserviceStep";
 import CommentsStep from "./steps/commentsStep";
 import SettingsStep from "./steps/settingsStep";
 import ParametrarStep from "./steps/parametrarStep";
+import {
+  cleanParameterDefinitions,
+  cleanSetupMenu,
+} from "../../utils/machineSettingsHelpers";
 
 type Props = {
   onClose: () => void;
@@ -38,21 +42,9 @@ const CreateMachineModal = ({ onClose }: Props) => {
     parameterDefinitions: [],
   });
 
-
-  const cleanSetupMenu = (nodes: MachineSetupNode[]): MachineSetupNode[] => {
-  return nodes
-    .filter((node) => node.label.trim())
-    .map((node) => ({
-      label: node.label.trim(),
-      children: cleanSetupMenu(node.children ?? []),
-    }));
-};
-
   const handleSubmit = async () => {
     try {
-      const cleanedParameterDefinitions = formData.parameterDefinitions.filter(
-        (parameter) => parameter.label.trim(),
-      );
+      const cleanedParameterDefinitions = cleanParameterDefinitions(formData.parameterDefinitions);
 
       const cleanedSetupMenu = cleanSetupMenu(formData.setupMenu);
 
