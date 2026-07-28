@@ -138,3 +138,43 @@ export const updateParameterValue = (
     };
   });
 };
+
+export const updateSetupPath = (
+  machineSettings: MachineSetting[],
+  machineSettingIndex: number,
+  setupPath: string[],
+): MachineSetting[] => {
+  return machineSettings.map((setting, settingIndex) => {
+    if (settingIndex !== machineSettingIndex) return setting;
+
+    return {
+      ...setting,
+      setupPath,
+    };
+  });
+};
+
+export const getSetupLevels = (
+  setupMenu: MachineSetupNode[],
+  selectedPath: string[],
+): MachineSetupNode[][] => {
+  const levels: MachineSetupNode[][] = [];
+
+  let currentNodes = setupMenu;
+
+  while (currentNodes.length > 0) {
+    levels.push(currentNodes);
+
+    const selectedLabel = selectedPath[levels.length - 1];
+
+    if(!selectedLabel) break;
+
+    const selectedNode = currentNodes.find(
+      (node) => node.label === selectedLabel,
+    );
+
+    currentNodes = selectedNode?.children ?? [];
+  }
+
+  return levels;
+};
