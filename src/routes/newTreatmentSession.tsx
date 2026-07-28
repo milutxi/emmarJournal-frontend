@@ -8,11 +8,10 @@ import {
   Treatment,
   Machine,
   TreatmentSession,
-  TreatmentParametersType,
   MedicalHistoryType,
   ConsentFormType,
 } from "../types";
-import TreatmentParameters from "../components/TreatmentParameters/treatmentParameters";
+
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 import { GrStatusWarning } from "react-icons/gr";
 import { MdOutlineDoneOutline } from "react-icons/md";
@@ -254,14 +253,6 @@ const NewTreatmentSession = () => {
     0,
   );
 
-  const handleParameters = (index: number, params: TreatmentParametersType) => {
-    const updatedSessions = [...treatmentSessions];
-
-    updatedSessions[index].treatmentParameters = params;
-
-    setTreatmentSessions(updatedSessions);
-  };
-
   const addTreatmentSession = () => {
     setTreatmentSessions([
       ...treatmentSessions,
@@ -277,8 +268,6 @@ const NewTreatmentSession = () => {
         treatmentParameters: {},
       },
     ]);
-
-    // console.log(treatmentSessions);
   };
 
   const removeTreatmentSession = (index: number) => {
@@ -293,38 +282,6 @@ const NewTreatmentSession = () => {
 
     setTreatmentSessions(updatedSessions);
   };
-
-  // const handleMachineCheckboxChange = (
-  //   index: number,
-  //   machineId: string,
-  //   checked: boolean,
-  // ) => {
-  //   setTreatmentSessions((currentSessions) =>
-  //     currentSessions.map((session, sessionIndex) => {
-  //       if (sessionIndex !== index) return session;
-
-  //       const machineIds = checked
-  //         ? [...session.machineIds, machineId]
-  //         : session.machineIds.filter((id) => id !== machineId);
-
-  //       const selectedMachines = machines.filter((machine) =>
-  //         machineIds.includes(machine._id),
-  //       );
-
-  //       const requiresParameters = selectedMachines.some(
-  //         (machine) => machine.requiresTreatmentParameters,
-  //       );
-
-  //       return {
-  //         ...session,
-  //         machineIds,
-  //         treatmentParameters: requiresParameters
-  //           ? session.treatmentParameters || {}
-  //           : undefined,
-  //       };
-  //     }),
-  //   );
-  // };
 
   const handleMachineSettingsChange = (
     index: number,
@@ -353,15 +310,14 @@ const NewTreatmentSession = () => {
       return;
     }
 
-    // if (!savedMedicalHistoryId) {
-    //   alert("Du måste spara hälsodeklarationen först.");
-    //   return;
-    // }
+    const hasMissingTreatment = treatmentSessions.some(
+      (session) => !session.treatmentId,
+    );
 
-    // if (!consentForm._id) {
-    //   alert("Du måste spara samtycket först");
-    //   return;
-    // }
+    if (hasMissingTreatment) {
+      alert("Du måste välja behandling innan du sparar sessionen");
+      return;
+    }
 
     const missingDocuments: string[] = [];
 
@@ -387,8 +343,7 @@ const NewTreatmentSession = () => {
 
     const journalTreatments = treatmentSessions.map((session) => ({
       treatmentId: session.treatmentId,
-      machineIds: session.machineIds,
-      treatmentParameters: session.treatmentParameters,
+      machineSettings: session.machineSettings ?? [],
       duration: session.duration,
       price: session.price,
       discount: session.discount,
@@ -404,7 +359,13 @@ const NewTreatmentSession = () => {
       consentFormId: consentForm._id || undefined,
     };
 
-    //console.log("Journal payload:", payload);
+//     console.log("Journal payload:", payload);
+// console.log(
+//   "Machine settings payload:",
+//   payload.treatments.map((treatment) => treatment.machineSettings),
+// );
+
+
     try {
       setIsSavingSession(true);
 
@@ -618,13 +579,13 @@ const NewTreatmentSession = () => {
                 />
             </div>
 
-            {session.treatmentParameters && (
+            {/* {session.treatmentParameters && (
               <TreatmentParameters
                 value={session}
                 machines={machines}
                 onUpdate={(params) => handleParameters(index, params)}
               />
-            )}
+            )} */}
             <div>
               <label>Behandlingsanteckningar:</label>
               <textarea
