@@ -69,3 +69,74 @@
     }
   }
 }
+
+
+.parameterSection {
+  margin-top: $indent__m;
+
+  h5 {
+    margin: 0 0 $indent__s;
+    color: $color-body-display;
+  }
+}
+
+.parameterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $indent__s $indent__s;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.parameterRow {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 70px 70px;
+ align-items: center;
+ padding-left: $indent__s;
+}
+
+.parameterName {
+  padding-right: $indent__s;
+  text-align: left;
+  font-weight: 600;
+  color: $color-body-display;
+}
+
+.parameterInput {
+  width: 100px;
+  height: 36px;
+  box-sizing: border-box;
+
+  padding: 6px $indent__s;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 10px 0 0 10px;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__base;
+
+  text-align: right;
+}
+
+.parameterUnit {
+  width: 50px;
+  height: 36px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  padding: 6px $indent__s;
+
+  border: 1px solid $color-dark-outline;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+
+  background: white;
+  color: $color-body-display;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__base;
+}

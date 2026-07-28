@@ -1,6 +1,7 @@
 import {
   MachineParameterDefinition,
   MachineSetupNode,
+  MachineSetting,
 } from "../types";
 
 export const cleanParameterDefinitions = (
@@ -111,6 +112,29 @@ export const removeNode = (
     return {
       ...node,
       children: removeNode(node.children ?? [], path.slice(1)),
+    };
+  });
+};
+
+export const updateParameterValue = (
+  machineSettings: MachineSetting[],
+  machineSettingIndex: number,
+  parameterIndex: number,
+  value: string,
+): MachineSetting[] => {
+  return machineSettings.map((setting, settingIndex) => {
+    if (settingIndex !== machineSettingIndex) return setting;
+
+    return{
+      ...setting,
+      parameters: setting.parameters.map((parameter, currentParameterIndex) =>
+        currentParameterIndex === parameterIndex  
+          ? {
+            ...parameter,
+            value,
+          }
+          : parameter,
+      ),
     };
   });
 };

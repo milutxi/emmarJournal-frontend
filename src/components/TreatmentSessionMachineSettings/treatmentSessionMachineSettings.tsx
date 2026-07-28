@@ -1,5 +1,6 @@
 import { Machine, MachineSetting } from "../../types";
 import styles from "./treatmentSessionMachineSettings.module.scss";
+import { updateParameterValue } from "../../utils/machineSettingsHelpers";
 
 type Props = {
   machines: Machine[];
@@ -86,6 +87,40 @@ const TreatmenSessionMachineSettings = ({
                 </option>
               ))}
             </select>
+            {setting.parameters.length > 0 && (
+              <div className={styles.parameterSection}>
+                <h5>Parametrar</h5>
+                <div className={styles.parameterGrid}>
+                  {setting.parameters.map((parameter, parameterIndex) => (
+                    <div key={parameterIndex} className={styles.parameterRow}>
+                      <span className={styles.parameterName}>
+                        {parameter.label}:
+                      </span>
+
+                      <input
+                        className={styles.parameterInput}
+                        type="text"
+                        value={parameter.value}
+                        onChange={(event) =>
+                          onChange(
+                            updateParameterValue(
+                              machineSettings,
+                              index,
+                              parameterIndex,
+                              event.target.value,
+                            ),
+                          )
+                        }
+                      />
+
+                      <span className={styles.parameterUnit}>
+                        {parameter.unit || ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </label>
         </div>
       ))}
