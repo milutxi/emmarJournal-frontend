@@ -21,6 +21,8 @@ import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 
 import { useNavigate } from "react-router-dom";
 
+import TreatmenSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
+
 type NewTreatmentSessionDraft = {
   sessionDate: string;
   treatmentSessions: TreatmentSession[];
@@ -72,6 +74,7 @@ const NewTreatmentSession = () => {
     {
       treatmentId: "",
       machineIds: [],
+      machineSettings: [],
       duration: 0,
       price: 0,
       discount: 0,
@@ -265,6 +268,7 @@ const NewTreatmentSession = () => {
       {
         treatmentId: "",
         machineIds: [],
+        machineSettings: [],
         duration: 0,
         price: 0,
         discount: 0,
@@ -290,33 +294,54 @@ const NewTreatmentSession = () => {
     setTreatmentSessions(updatedSessions);
   };
 
-  const handleMachineCheckboxChange = (
+  // const handleMachineCheckboxChange = (
+  //   index: number,
+  //   machineId: string,
+  //   checked: boolean,
+  // ) => {
+  //   setTreatmentSessions((currentSessions) =>
+  //     currentSessions.map((session, sessionIndex) => {
+  //       if (sessionIndex !== index) return session;
+
+  //       const machineIds = checked
+  //         ? [...session.machineIds, machineId]
+  //         : session.machineIds.filter((id) => id !== machineId);
+
+  //       const selectedMachines = machines.filter((machine) =>
+  //         machineIds.includes(machine._id),
+  //       );
+
+  //       const requiresParameters = selectedMachines.some(
+  //         (machine) => machine.requiresTreatmentParameters,
+  //       );
+
+  //       return {
+  //         ...session,
+  //         machineIds,
+  //         treatmentParameters: requiresParameters
+  //           ? session.treatmentParameters || {}
+  //           : undefined,
+  //       };
+  //     }),
+  //   );
+  // };
+
+  const handleMachineSettingsChange = (
     index: number,
-    machineId: string,
-    checked: boolean,
+    machineSettings: TreatmentSession["machineSettings"],
   ) => {
-    setTreatmentSessions((currentSessions) =>
+    setTreatmentSessions((currentSessions) => 
       currentSessions.map((session, sessionIndex) => {
         if (sessionIndex !== index) return session;
 
-        const machineIds = checked
-          ? [...session.machineIds, machineId]
-          : session.machineIds.filter((id) => id !== machineId);
-
-        const selectedMachines = machines.filter((machine) =>
-          machineIds.includes(machine._id),
-        );
-
-        const requiresParameters = selectedMachines.some(
-          (machine) => machine.requiresTreatmentParameters,
-        );
-
-        return {
+        return{
           ...session,
-          machineIds,
-          treatmentParameters: requiresParameters
-            ? session.treatmentParameters || {}
-            : undefined,
+          machineSettings,
+          machineIds: machineSettings?.map((setting) => 
+            typeof setting.machineId === "string"
+              ? setting.machineId
+              : setting.machineId._id,
+          ) ?? [],
         };
       }),
     );
@@ -556,7 +581,7 @@ const NewTreatmentSession = () => {
               </div>
             </div>
 
-            <div className={styles.formSection}>
+            {/* <div className={styles.formSection}>
               <h4 className={styles.formSectionTitle}>Maskiner</h4>
 
               <div className={styles.machineGrid}>
@@ -581,6 +606,16 @@ const NewTreatmentSession = () => {
                   );
                 })}
               </div>
+            </div> */}
+
+            <div>
+              <TreatmenSessionMachineSettings
+                machines={machines}
+                machineSettings={session.machineSettings ?? []}
+                onChange={(machineSettings) => 
+                  handleMachineSettingsChange(index, machineSettings)
+                }
+                />
             </div>
 
             {session.treatmentParameters && (

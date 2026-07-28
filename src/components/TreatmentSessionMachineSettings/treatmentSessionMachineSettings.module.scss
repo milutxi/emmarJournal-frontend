@@ -7,6 +7,30 @@
   display: flex;
   flex-direction: column;
   gap: $indent__m;
+
+  button {
+    align-self: flex-start;
+
+    padding: 6px 10px;
+
+    background: white;
+    color: $color-body-display;
+
+    border: 1px solid $color-dark-outline;
+    border-radius: 10px;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    &:hover {
+      background: $color-goldenrod;
+      color: white;
+      border-color: $color-goldenrod;
+    }
+  }
 }
 
 .machineCard {
@@ -22,4 +46,26 @@
   align-items: center;
   gap: $indent__m;
   margin-bottom: $indent__m;
+
+   button {
+    padding: 6px 10px;
+
+    background: white;
+    color: $color-body-display;
+
+    border: 1px solid $color-dark-outline;
+    border-radius: 10px;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    &:hover {
+      background: $color-goldenrod;
+      color: white;
+      border-color: $color-goldenrod;
+    }
+  }
 }
