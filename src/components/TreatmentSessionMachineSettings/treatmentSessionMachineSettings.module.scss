@@ -140,3 +140,69 @@
   font-family: $font-montserrat;
   font-size: $font-size__base;
 }
+
+.setupSection {
+  margin-top: $indent__m;
+
+  h5 {
+    margin: 0 0 $indent__s;
+    color: $color-body-display;
+  }
+}
+
+.setupFlow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: $indent__s;
+  align-items: stretch;
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.setupFlowItem {
+  display: flex;
+  align-items: center;
+  gap: $indent__s;
+  min-width: 0;
+
+  select {
+    width: 100%;
+    min-height: 70px;
+
+    padding: $indent__s;
+
+    border: 1px solid $color-dark-outline;
+    border-radius: 14px;
+
+    background: white;
+    color: $color-text;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__base;
+    font-weight: 600;
+
+    white-space: normal;
+    text-align: center;
+  }
+}
+.setupArrow {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $color-goldenrod;
+
+  svg {
+    font-size: 1.8rem;
+    fill: $color-goldenrod;
+    stroke: $color-goldenrod;
+  }
+
+  @include responsive-mobile {
+    display: none;
+  }
+}

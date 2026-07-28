@@ -1,6 +1,8 @@
 import { Machine, MachineSetting } from "../../types";
 import styles from "./treatmentSessionMachineSettings.module.scss";
-import { updateParameterValue } from "../../utils/machineSettingsHelpers";
+import { updateParameterValue, getSetupLevels, updateSetupPath, } from "../../utils/machineSettingsHelpers";
+
+import { TbArrowBadgeRight } from "react-icons/tb";
 
 type Props = {
   machines: Machine[];
@@ -59,8 +61,22 @@ const TreatmenSessionMachineSettings = ({
     <div className={styles.machineSettings}>
       <h4>Maskiner</h4>
 
-      {machineSettings.map((setting, index) => (
-        <div key={index} className={styles.machineCard}>
+     {machineSettings.map((setting, index) => {
+  const selectedMachineId =
+    typeof setting.machineId === "string"
+      ? setting.machineId
+      : setting.machineId._id;
+
+  const selectedMachine = machines.find(
+    (machine) => machine._id === selectedMachineId,
+  );
+
+  const setupLevels = selectedMachine
+    ? getSetupLevels(selectedMachine.setupMenu ?? [], setting.setupPath ?? [])
+    : [];
+
+  return (
+    <div key={index} className={styles.machineCard}>
           <div className={styles.machineCardHeader}>
             <strong>Maskin {index + 1}</strong>
 
@@ -87,6 +103,52 @@ const TreatmenSessionMachineSettings = ({
                 </option>
               ))}
             </select>
+
+{setupLevels.length > 0 && (
+  <div className={styles.setupSection}>
+    <h5>Setup / meny</h5>
+
+    <div className={styles.setupFlow}>
+      {setupLevels.map((levelOptions, levelIndex) => (
+        <div key={levelIndex} className={styles.setupFlowItem}>
+          <select
+            value={setting.setupPath?.[levelIndex] ?? ""}
+            onChange={(event) => {
+              const selectedValue = event.target.value;
+
+              const nextSetupPath = selectedValue
+                ? [
+                    ...(setting.setupPath ?? []).slice(0, levelIndex),
+                    selectedValue,
+                  ]
+                : (setting.setupPath ?? []).slice(0, levelIndex);
+
+              onChange(updateSetupPath(machineSettings, index, nextSetupPath));
+            }}
+          >
+            <option value="">Välj</option>
+
+            {levelOptions.map((option) => (
+              <option key={option.label} value={option.label}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          {levelIndex < setupLevels.length - 1 && (
+            
+<span className={styles.setupArrow}>
+  <TbArrowBadgeRight />
+</span>
+
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+
             {setting.parameters.length > 0 && (
               <div className={styles.parameterSection}>
                 <h5>Parametrar</h5>
@@ -123,7 +185,9 @@ const TreatmenSessionMachineSettings = ({
             )}
           </label>
         </div>
-      ))}
+      
+     );
+})}
 
       <button type="button" onClick={addMachineSetting}>
         + Lägg till maskin
