@@ -1,0 +1,25 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+
+
+.machineSettings {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.machineCard {
+  padding: $indent__m;
+  border: 1px solid $color-dark-outline;
+  border-radius: 16px;
+  background: #fafafa;
+}
+
+.machineCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $indent__m;
+  margin-bottom: $indent__m;
+}
