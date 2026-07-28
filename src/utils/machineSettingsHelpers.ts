@@ -178,3 +178,18 @@ export const getSetupLevels = (
 
   return levels;
 };
+
+export const updateMachineSettingComment = (
+  machineSettings: MachineSetting[],
+  machineSettingIndex: number,
+  comment: string,
+): MachineSetting[] => {
+  return machineSettings.map((setting, settingIndex) => {
+    if (settingIndex !== machineSettingIndex) return setting;
+
+    return {
+      ...setting,
+      comment,
+    };
+  });
+};
