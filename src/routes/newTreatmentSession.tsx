@@ -287,18 +287,19 @@ const NewTreatmentSession = () => {
     index: number,
     machineSettings: TreatmentSession["machineSettings"],
   ) => {
-    setTreatmentSessions((currentSessions) => 
+    setTreatmentSessions((currentSessions) =>
       currentSessions.map((session, sessionIndex) => {
         if (sessionIndex !== index) return session;
 
-        return{
+        return {
           ...session,
           machineSettings,
-          machineIds: machineSettings?.map((setting) => 
-            typeof setting.machineId === "string"
-              ? setting.machineId
-              : setting.machineId._id,
-          ) ?? [],
+          machineIds:
+            machineSettings?.map((setting) =>
+              typeof setting.machineId === "string"
+                ? setting.machineId
+                : setting.machineId._id,
+            ) ?? [],
         };
       }),
     );
@@ -316,6 +317,24 @@ const NewTreatmentSession = () => {
 
     if (hasMissingTreatment) {
       alert("Du måste välja behandling innan du sparar sessionen");
+      return;
+    }
+
+    const hasEmptyMachineBlock = treatmentSessions.some((session) =>
+      (session.machineSettings ?? []).some((setting) => {
+        const machineId =
+          typeof setting.machineId === "string"
+            ? setting.machineId
+            : setting.machineId._id;
+
+        return !machineId;
+      }),
+    );
+
+    if (hasEmptyMachineBlock) {
+      alert(
+        "Du har lagt till en maskinrad utan att välja maskin. Välj en maskin eller ta bort raden. ",
+      );
       return;
     }
 
@@ -359,12 +378,11 @@ const NewTreatmentSession = () => {
       consentFormId: consentForm._id || undefined,
     };
 
-//     console.log("Journal payload:", payload);
-// console.log(
-//   "Machine settings payload:",
-//   payload.treatments.map((treatment) => treatment.machineSettings),
-// );
-
+    //     console.log("Journal payload:", payload);
+    // console.log(
+    //   "Machine settings payload:",
+    //   payload.treatments.map((treatment) => treatment.machineSettings),
+    // );
 
     try {
       setIsSavingSession(true);
@@ -573,10 +591,10 @@ const NewTreatmentSession = () => {
               <TreatmenSessionMachineSettings
                 machines={machines}
                 machineSettings={session.machineSettings ?? []}
-                onChange={(machineSettings) => 
+                onChange={(machineSettings) =>
                   handleMachineSettingsChange(index, machineSettings)
                 }
-                />
+              />
             </div>
 
             {/* {session.treatmentParameters && (
