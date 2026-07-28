@@ -1,8 +1,6 @@
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
-
-
 .machineSettings {
   display: flex;
   flex-direction: column;
@@ -10,19 +8,14 @@
 
   button {
     align-self: flex-start;
-
     padding: 6px 10px;
-
     background: white;
     color: $color-body-display;
-
     border: 1px solid $color-dark-outline;
     border-radius: 10px;
-
     font-family: $font-montserrat;
     font-size: $font-size__s;
     font-weight: 600;
-
     cursor: pointer;
 
     &:hover {
@@ -47,19 +40,15 @@
   gap: $indent__m;
   margin-bottom: $indent__m;
 
-   button {
+  button {
     padding: 6px 10px;
-
     background: white;
     color: $color-body-display;
-
     border: 1px solid $color-dark-outline;
     border-radius: 10px;
-
     font-family: $font-montserrat;
     font-size: $font-size__s;
     font-weight: 600;
-
     cursor: pointer;
 
     &:hover {
@@ -69,7 +58,6 @@
     }
   }
 }
-
 
 .parameterSection {
   margin-top: $indent__m;
@@ -93,8 +81,8 @@
 .parameterRow {
   display: grid;
   grid-template-columns: minmax(90px, 1fr) 70px 70px;
- align-items: center;
- padding-left: $indent__s;
+  align-items: center;
+  padding-left: $indent__s;
 }
 
 .parameterName {
@@ -108,15 +96,11 @@
   width: 100px;
   height: 36px;
   box-sizing: border-box;
-
   padding: 6px $indent__s;
-
   border: 1px solid $color-dark-outline;
   border-radius: 10px 0 0 10px;
-
   font-family: $font-montserrat;
   font-size: $font-size__base;
-
   text-align: right;
 }
 
@@ -124,19 +108,14 @@
   width: 50px;
   height: 36px;
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
-
   padding: 6px $indent__s;
-
   border: 1px solid $color-dark-outline;
   border-left: none;
   border-radius: 0 10px 10px 0;
-
   background: white;
   color: $color-body-display;
-
   font-family: $font-montserrat;
   font-size: $font-size__base;
 }
@@ -170,30 +149,23 @@
   select {
     width: 100%;
     min-height: 70px;
-
     padding: $indent__s;
-
     border: 1px solid $color-dark-outline;
     border-radius: 14px;
-
     background: white;
     color: $color-text;
-
     font-family: $font-montserrat;
     font-size: $font-size__base;
     font-weight: 600;
-
     white-space: normal;
     text-align: center;
   }
 }
 .setupArrow {
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: $color-goldenrod;
 
   svg {
@@ -204,5 +176,36 @@
 
   @include responsive-mobile {
     display: none;
+  }
+}
+
+.machineCommentSection {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+  margin-top: $indent__m;
+
+  h5 {
+    margin: 0 0 $indent__s;
+    color: $color-body-display;
+  }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: $indent__s;
+    border: 1px solid $color-dark-outline;
+    border-radius: 12px;
+    background: white;
+    color: $color-text;
+    font-family: $font-montserrat;
+    font-size: $font-size__base;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: $color-lynx-black;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
   }
 }
