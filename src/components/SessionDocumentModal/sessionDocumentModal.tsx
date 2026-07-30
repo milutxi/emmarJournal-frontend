@@ -124,99 +124,7 @@ const SessionDocumentModal = ({
         </div>
 
         <div className={styles.content}>
-          {/* SESSION */}
-          {/* <section className={styles.section}>
-            <h3>Session</h3>
-
-            {journal.treatments.map((session, index) => {
-              const treatmentParameters = getTreatmentParameters(
-                session.treatmentParametersId,
-              );
-
-              return (
-                <div
-                  key={`${journal._id}-${index}`}
-                  className={styles.treatment}
-                >
-                  <div className={styles.row}>
-                    <span>Behandling</span>
-                    <strong>{getTreatmentName(session.treatmentId)}</strong>
-                  </div>
-
-                  {session.machineIds.length > 0 && (
-                    <div className={styles.notes}>
-                      <span>Maskiner</span>
-                      <p>
-                        {session.machineIds
-                          .map((machine) => getMachineName(machine))
-                          .join(", ")}
-                      </p>
-                    </div>
-                  )}
-
-                  {treatmentParameters && (
-                    <div className={styles.parameterBlock}>
-                      <span>Laserparametrar</span>
-
-                      <div className={styles.parameterGrid}>
-                        {treatmentParameterFields.map((field) => {
-                          const value = treatmentParameters[field.key];
-
-                          if (field.type === "boolean") {
-                            return (
-                              <p key={String(field.key)}>
-                                <strong>{field.label}:</strong>{" "}
-                                {value ? "Ja" : "Nej"}
-                              </p>
-                            );
-                          }
-
-                          if (typeof value !== "string" || !value.trim()) {
-                            return null;
-                          }
-
-                          return (
-                            <p key={String(field.key)}>
-                              <strong>{field.label}:</strong> {value}
-                            </p>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className={styles.row}>
-                    <span>Tid</span>
-                    <strong>{session.duration} min</strong>
-                  </div>
-
-                  <div className={styles.row}>
-                    <span>Pris</span>
-                    <strong>{session.price} kr</strong>
-                  </div>
-
-                  <div className={styles.row}>
-                    <span>Rabatt</span>
-                    <strong>{session.discount ?? 0} kr</strong>
-                  </div>
-
-                  <div className={styles.row}>
-                    <span>Total</span>
-                    <strong>{session.totalPrice} kr</strong>
-                  </div>
-
-                  {session.notes && (
-                    <div className={styles.notes}>
-                      <span>Anteckning</span>
-                      <p>{session.notes}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-
-          </section> */}
-
+    
           {/* SESSION */}
           <section className={styles.sessionPanel}>
             <div className={styles.sessionHeader}>
@@ -231,13 +139,6 @@ const SessionDocumentModal = ({
             </div>
 
             <div className={styles.sessionTable}>
-              {/* <div className={styles.sessionTableHeader}>
-                <span>Behandling</span>
-                <span>Tid</span>
-                <span>Pris</span>
-                <span>Rabatt</span>
-                <span>Total</span>
-              </div> */}
 
               {journal.treatments.map((session, index) => {
                 const treatmentParameters = getTreatmentParameters(
@@ -377,14 +278,6 @@ const SessionDocumentModal = ({
                 <p className={styles.sectionKicker}>Dokument</p>
                 <h3>Hälsodeklaration</h3>
               </div>
-
-              {/* {medicalHistory &&
-                "version" in medicalHistory &&
-                medicalHistory.version && (
-                  <span className={styles.versionBadge}>
-                    Version {medicalHistory.version}
-                  </span>
-                )} */}
             </div>
 
             {!medicalHistory ? (
