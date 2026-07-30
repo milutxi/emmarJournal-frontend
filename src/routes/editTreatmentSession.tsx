@@ -337,6 +337,8 @@ const EditTreatmentSession = () => {
       if (!response.ok) {
         throw new Error("Could not update journal session");
       }
+      
+      alert("Ändringarna har sparats.");
 
       navigate(`/app/clients/${client._id}`);
     } catch (error) {
