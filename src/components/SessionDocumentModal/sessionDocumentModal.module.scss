@@ -466,3 +466,74 @@
   gap: $indent__m;
  // padding-top: $indent__m;
 }
+
+
+
+
+
+
+
+.machineSettingsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  > span {
+    display: block;
+    color: $color-text;
+    opacity: 0.7;
+    font-size: 0.8rem;
+  }
+}
+
+.machineSettingsList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+}
+
+.machineSettingsCard {
+  padding: $indent__m;
+  border: 1px solid $color-dark-outline;
+  background: white;
+
+  h4 {
+    margin: 0 0 $indent__m;
+    color: $color-body-display;
+  }
+}
+
+.machineSettingRow {
+  margin-bottom: $indent__m;
+
+  > span {
+    display: block;
+    margin-bottom: 2px;
+    color: $color-text;
+    opacity: 0.7;
+    font-size: 0.8rem;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.machineParameterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $indent__s $indent__m;
+
+  p {
+    margin: 0;
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}

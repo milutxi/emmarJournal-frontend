@@ -1,4 +1,4 @@
-import { Journal } from "../../types";
+import { Journal, MachineSetting } from "../../types";
 import styles from "./sessionDocumentModal.module.scss";
 
 import {
@@ -46,6 +46,17 @@ const getMachineName = (
 
   return machine.mName || "Maskin";
 };
+
+const getMachineSettingName = (machineSetting: MachineSetting) => {
+  const machine = machineSetting.machineId;
+
+  if(!machine || typeof machine === "string") {
+    return "Maskin";
+  }
+
+  return machine.mName || "Maskin";
+};
+
 
 const getTreatmentParameters = (
   parameters: Journal["treatments"][number]["treatmentParametersId"],
@@ -145,6 +156,8 @@ const SessionDocumentModal = ({
                   session.treatmentParametersId,
                 );
 
+                const machineSettings = session.machineSettings ?? [];
+
                 return (
                   <div
                     key={`${journal._id}-${index}`}
@@ -176,20 +189,74 @@ const SessionDocumentModal = ({
                       </div>
                     </div>
 
-                    {(session.machineIds.length > 0 ||
+                    {(machineSettings.length > 0 ||
+                     session.machineIds.length > 0 ||
                       treatmentParameters ||
                       session.notes) && (
                       <div className={styles.sessionDetailsBlock}>
-                        {session.machineIds.length > 0 && (
-                          <div className={styles.sessionInfoBlock}>
-                            <span>Maskiner</span>
-                            <p>
-                              {session.machineIds
-                                .map((machine) => getMachineName(machine))
-                                .join(", ")}
-                            </p>
-                          </div>
-                        )}
+
+                        {machineSettings.length > 0 ? (
+  <div className={styles.machineSettingsBlock}>
+    <span>Maskininställningar</span>
+
+    <div className={styles.machineSettingsList}>
+      {machineSettings.map((machineSetting, machineIndex) => {
+        const parameters = machineSetting.parameters ?? [];
+        const setupPath = machineSetting.setupPath ?? [];
+
+        return (
+          <div
+            key={machineIndex}
+            className={styles.machineSettingsCard}
+          >
+            <h4>{getMachineSettingName(machineSetting)}</h4>
+
+            {setupPath.length > 0 && (
+              <div className={styles.machineSettingRow}>
+                <span>Setup / meny</span>
+                <p>{setupPath.join(" → ")}</p>
+              </div>
+            )}
+
+            {parameters.length > 0 && (
+              <div className={styles.machineSettingRow}>
+                <span>Parametrar</span>
+
+                <div className={styles.machineParameterGrid}>
+                  {parameters.map((parameter, parameterIndex) => (
+                    <p key={parameterIndex}>
+                      <strong>{parameter.label}:</strong>{" "}
+                      {parameter.value || "-"}
+                      {parameter.unit ? ` ${parameter.unit}` : ""}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {machineSetting.comment && (
+              <div className={styles.machineSettingRow}>
+                <span>Kommentar</span>
+                <p>{machineSetting.comment}</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+) : (
+  session.machineIds.length > 0 && (
+    <div className={styles.sessionInfoBlock}>
+      <span>Maskiner</span>
+      <p>
+        {session.machineIds
+          .map((machine) => getMachineName(machine))
+          .join(", ")}
+      </p>
+    </div>
+  )
+)}
 
                         {treatmentParameters && (
                           <div className={styles.sessionInfoBlock}>
