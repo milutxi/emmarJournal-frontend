@@ -15,15 +15,17 @@ import {
   TreatmentSession,
   ConsentFormType,
   MedicalHistoryType,
+  MachineSetting,
 } from "../types";
-import {
-  treatmentParameterFields,
-  treatmentParameterTextFields,
-} from "../config/treatmentParameterFields";
+// import {
+//   treatmentParameterFields,
+//   treatmentParameterTextFields,
+// } from "../config/treatmentParameterFields";
 
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
+import TreatmentSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
@@ -64,24 +66,70 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     latestMedicalHistory,
   };
 };
+const getId = (value: string | { _id?: string } | null | undefined) => {
+  if (!value) return "";
 
-const getId = (value: string | { _id: string }) => {
   if (typeof value === "string") return value;
-  return value._id;
+  return value._id ?? "";
 };
 
-const getTreatmentParametersForEdit = (
-  parameters: Journal["treatments"][number]["treatmentParametersId"],
-) => {
-  if (!parameters || typeof parameters === "string") return undefined;
+// const getTreatmentParametersForEdit = (
+//   parameters: Journal["treatments"][number]["treatmentParametersId"],
+// ) => {
+//   if (!parameters || typeof parameters === "string") return undefined;
 
-  const editableParameters = Object.fromEntries(
-    Object.entries(parameters).filter(
-      ([key]) => !["_id", "createdAt", "updatedAt", "__v"].includes(key),
-    ),
-  );
+//   const editableParameters = Object.fromEntries(
+//     Object.entries(parameters).filter(
+//       ([key]) => !["_id", "createdAt", "updatedAt", "__v"].includes(key),
+//     ),
+//   );
 
-  return editableParameters;
+//   return editableParameters;
+// };
+
+const getMachineSettingsForEdit = (
+  session: Journal["treatments"][number],
+  machines: Machine[],
+): MachineSetting[] => {
+  const savedMachineSettings = session.machineSettings ?? [];
+
+  if(savedMachineSettings.length > 0) {
+    return savedMachineSettings
+    .map((setting) => ({
+      machineId: getId(setting.machineId),
+      setupPath: setting.setupPath ?? [],
+      parameters: (setting.parameters ?? []).map((parameter) => ({
+        label: parameter.label,
+        unit: parameter.unit ?? "",
+        value: parameter.value ?? "",
+      })),
+    comment: setting.comment ?? "",
+
+    }))
+    .filter((setting) => setting.machineId);
+  }
+
+  return (session.machineIds ?? [])
+    .map((machine) => {
+      const machineId = getId(machine);
+
+      const selectedMachine = machines.find(
+        (machineItem) => machineItem._id === machineId,
+      );
+
+      return {
+        machineId,
+        setupPath: [],
+        parameters:
+          selectedMachine?.parameterDefinitions?.map((parameter) => ({
+            label: parameter.label,
+            unit: parameter.unit ?? "",
+            value: "",
+          })) ?? [],
+          comment: "",
+      };
+    }) 
+    .filter((setting) => setting.machineId);
 };
 
 const EditTreatmentSession = () => {
@@ -99,18 +147,30 @@ const EditTreatmentSession = () => {
   const [treatmentSessions, setTreatmentSessions] = useState<
     TreatmentSession[]
   >(
-    journal.treatments.map((session) => ({
-      treatmentId: getId(session.treatmentId),
-      machineIds: session.machineIds.map((machine) => getId(machine)),
-      treatmentParameters: getTreatmentParametersForEdit(
-        session.treatmentParametersId,
-      ),
-      duration: session.duration,
-      price: session.price,
-      discount: session.discount ?? 0,
-      totalPrice: session.totalPrice,
-      notes: session.notes ?? "",
-    })),
+    journal.treatments.map((session) => {
+
+const machineSettings = getMachineSettingsForEdit(session, machines);
+
+return {
+
+  
+  treatmentId: getId(session.treatmentId),
+  machineIds: machineSettings
+    .map((setting) => getId(setting.machineId))
+    .filter(Boolean),
+    machineSettings,
+
+    // treatmentParameters: getTreatmentParametersForEdit(
+    //   session.treatmentParametersId
+    // ),
+    
+    duration: session.duration,
+    price: session.price,
+    discount: session.discount ?? 0,
+    totalPrice: session.totalPrice,
+    notes: session.notes ?? "",
+  };
+    })
   );
 
   const [sessionDate, setSessionDate] = useState(
@@ -258,6 +318,25 @@ const consentFormId = consentForm._id;
       currentSessions.map((session, sessionIndex) =>
         sessionIndex === index ? updatedSession : session,
       ),
+    );
+  };
+
+  const handleMachineSettingsChange = (
+    index: number,
+    machineSettings: MachineSetting[],
+  ) => {
+    setTreatmentSessions((currentSessions) => 
+      currentSessions.map((session, sessionIndex) => {
+        if (sessionIndex !== index) return session;
+        
+        return {
+          ...session,
+          machineSettings,
+          machineIds: machineSettings
+            .map((setting) => getId(setting.machineId))
+            .filter(Boolean),
+        };
+      }),
     );
   };
 
@@ -427,7 +506,7 @@ const consentFormId = consentForm._id;
                 </div>
               </div>
 
-              <div className={styles.formSection}>
+              {/* <div className={styles.formSection}>
                 <h4 className={styles.formSectionTitle}>Maskiner</h4>
 
                 <div className={styles.machineGrid}>
@@ -457,9 +536,19 @@ const consentFormId = consentForm._id;
                     );
                   })}
                 </div>
-              </div>
+              </div> */}
 
-              <div className={styles.formSection}>
+<div className={styles.formSection}>
+  <TreatmentSessionMachineSettings
+    machines={machines}
+    machineSettings={session.machineSettings ?? []}
+    onChange={(machineSettings) =>
+      handleMachineSettingsChange(index, machineSettings)
+    }
+  />
+</div>
+
+              {/* <div className={styles.formSection}>
                 <h4 className={styles.formSectionTitle}>
                   Behandlingsparametrar
                 </h4>
@@ -543,7 +632,7 @@ const consentFormId = consentForm._id;
                     </label>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               <label>
                 Anteckningar
