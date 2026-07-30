@@ -17,10 +17,6 @@ import {
   MedicalHistoryType,
   MachineSetting,
 } from "../types";
-// import {
-//   treatmentParameterFields,
-//   treatmentParameterTextFields,
-// } from "../config/treatmentParameterFields";
 
 import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistoryModal";
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
@@ -73,40 +69,25 @@ const getId = (value: string | { _id?: string } | null | undefined) => {
   return value._id ?? "";
 };
 
-// const getTreatmentParametersForEdit = (
-//   parameters: Journal["treatments"][number]["treatmentParametersId"],
-// ) => {
-//   if (!parameters || typeof parameters === "string") return undefined;
-
-//   const editableParameters = Object.fromEntries(
-//     Object.entries(parameters).filter(
-//       ([key]) => !["_id", "createdAt", "updatedAt", "__v"].includes(key),
-//     ),
-//   );
-
-//   return editableParameters;
-// };
-
 const getMachineSettingsForEdit = (
   session: Journal["treatments"][number],
   machines: Machine[],
 ): MachineSetting[] => {
   const savedMachineSettings = session.machineSettings ?? [];
 
-  if(savedMachineSettings.length > 0) {
+  if (savedMachineSettings.length > 0) {
     return savedMachineSettings
-    .map((setting) => ({
-      machineId: getId(setting.machineId),
-      setupPath: setting.setupPath ?? [],
-      parameters: (setting.parameters ?? []).map((parameter) => ({
-        label: parameter.label,
-        unit: parameter.unit ?? "",
-        value: parameter.value ?? "",
-      })),
-    comment: setting.comment ?? "",
-
-    }))
-    .filter((setting) => setting.machineId);
+      .map((setting) => ({
+        machineId: getId(setting.machineId),
+        setupPath: setting.setupPath ?? [],
+        parameters: (setting.parameters ?? []).map((parameter) => ({
+          label: parameter.label,
+          unit: parameter.unit ?? "",
+          value: parameter.value ?? "",
+        })),
+        comment: setting.comment ?? "",
+      }))
+      .filter((setting) => setting.machineId);
   }
 
   return (session.machineIds ?? [])
@@ -126,20 +107,21 @@ const getMachineSettingsForEdit = (
             unit: parameter.unit ?? "",
             value: "",
           })) ?? [],
-          comment: "",
+        comment: "",
       };
-    }) 
+    })
     .filter((setting) => setting.machineId);
 };
 
 const EditTreatmentSession = () => {
-  const { client, treatments, machines, journal, latestMedicalHistory } = useLoaderData() as {
-    client: Client;
-    treatments: Treatment[];
-    machines: Machine[];
-    journal: Journal;
-    latestMedicalHistory: MedicalHistoryType | null;
-  };
+  const { client, treatments, machines, journal, latestMedicalHistory } =
+    useLoaderData() as {
+      client: Client;
+      treatments: Treatment[];
+      machines: Machine[];
+      journal: Journal;
+      latestMedicalHistory: MedicalHistoryType | null;
+    };
 
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
@@ -148,29 +130,21 @@ const EditTreatmentSession = () => {
     TreatmentSession[]
   >(
     journal.treatments.map((session) => {
+      const machineSettings = getMachineSettingsForEdit(session, machines);
 
-const machineSettings = getMachineSettingsForEdit(session, machines);
-
-return {
-
-  
-  treatmentId: getId(session.treatmentId),
-  machineIds: machineSettings
-    .map((setting) => getId(setting.machineId))
-    .filter(Boolean),
-    machineSettings,
-
-    // treatmentParameters: getTreatmentParametersForEdit(
-    //   session.treatmentParametersId
-    // ),
-    
-    duration: session.duration,
-    price: session.price,
-    discount: session.discount ?? 0,
-    totalPrice: session.totalPrice,
-    notes: session.notes ?? "",
-  };
-    })
+      return {
+        treatmentId: getId(session.treatmentId),
+        machineIds: machineSettings
+          .map((setting) => getId(setting.machineId))
+          .filter(Boolean),
+        machineSettings,
+        duration: session.duration,
+        price: session.price,
+        discount: session.discount ?? 0,
+        totalPrice: session.totalPrice,
+        notes: session.notes ?? "",
+      };
+    }),
   );
 
   const [sessionDate, setSessionDate] = useState(
@@ -184,7 +158,7 @@ return {
     string | null
   >(
     journal.medicalHistoryId && typeof journal.medicalHistoryId === "object"
-      ? journal.medicalHistoryId._id ?? null
+      ? (journal.medicalHistoryId._id ?? null)
       : typeof journal.medicalHistoryId === "string"
         ? journal.medicalHistoryId
         : null,
@@ -194,7 +168,7 @@ return {
     string | null
   >(
     journal.consentFormId && typeof journal.consentFormId === "object"
-      ? journal.consentFormId._id ?? null
+      ? (journal.consentFormId._id ?? null)
       : typeof journal.consentFormId === "string"
         ? journal.consentFormId
         : null,
@@ -226,30 +200,30 @@ return {
   const hasMedicalHistory = Boolean(attachedMedicalHistoryId);
   const hasConsentForm = Boolean(attachedConsentFormId);
 
-  const attachDocumentToJournal = useCallback (
-     async (documents: {
-    medicalHistoryId?: string;
-    consentFormId?: string;
-  }) => {
-    const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/journals/" + journal._id,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+  const attachDocumentToJournal = useCallback(
+    async (documents: {
+      medicalHistoryId?: string;
+      consentFormId?: string;
+    }) => {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/journals/" + journal._id,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(documents),
         },
-        body: JSON.stringify(documents),
-      },
-    );
+      );
 
-    if (!response.ok) {
-      throw new Error("Could not attach document to journal");
-    }
+      if (!response.ok) {
+        throw new Error("Could not attach document to journal");
+      }
 
-    return response.json();
-  },
-  [journal._id],
-);
+      return response.json();
+    },
+    [journal._id],
+  );
 
   const handleSaveMedicalHistory = async (
     updatedMedicalHistory: MedicalHistoryType,
@@ -292,7 +266,7 @@ return {
 
   useEffect(() => {
     if (!consentForm._id || attachedConsentFormId) return;
-const consentFormId = consentForm._id;
+    const consentFormId = consentForm._id;
     const attachConsentForm = async () => {
       try {
         await attachDocumentToJournal({
@@ -325,10 +299,10 @@ const consentFormId = consentForm._id;
     index: number,
     machineSettings: MachineSetting[],
   ) => {
-    setTreatmentSessions((currentSessions) => 
+    setTreatmentSessions((currentSessions) =>
       currentSessions.map((session, sessionIndex) => {
         if (sessionIndex !== index) return session;
-        
+
         return {
           ...session,
           machineSettings,
@@ -506,134 +480,15 @@ const consentFormId = consentForm._id;
                 </div>
               </div>
 
-              {/* <div className={styles.formSection}>
-                <h4 className={styles.formSectionTitle}>Maskiner</h4>
-
-                <div className={styles.machineGrid}>
-                  {machines.map((machine) => {
-                    const isChecked = session.machineIds.includes(machine._id);
-
-                    return (
-                      <label key={machine._id} className={styles.machineOption}>
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={(event) => {
-                            const machineIds = event.target.checked
-                              ? [...session.machineIds, machine._id]
-                              : session.machineIds.filter(
-                                  (machineId) => machineId !== machine._id,
-                                );
-
-                            updateTreatmentSession(index, {
-                              ...session,
-                              machineIds,
-                            });
-                          }}
-                        />
-                        {machine.mName}
-                      </label>
-                    );
-                  })}
-                </div>
-              </div> */}
-
-<div className={styles.formSection}>
-  <TreatmentSessionMachineSettings
-    machines={machines}
-    machineSettings={session.machineSettings ?? []}
-    onChange={(machineSettings) =>
-      handleMachineSettingsChange(index, machineSettings)
-    }
-  />
-</div>
-
-              {/* <div className={styles.formSection}>
-                <h4 className={styles.formSectionTitle}>
-                  Behandlingsparametrar
-                </h4>
-
-                <div className={styles.parameterGrid}>
-                  {treatmentParameterFields.map((field) => {
-                    if (field.type === "boolean") {
-                      return (
-                        <label key={field.key} className={styles.booleanField}>
-                          <span className={styles.parameterLabel}>
-                            {field.label}
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked={Boolean(
-                              session.treatmentParameters?.[field.key],
-                            )}
-                            onChange={(event) =>
-                              updateTreatmentSession(index, {
-                                ...session,
-                                treatmentParameters: {
-                                  ...session.treatmentParameters,
-                                  [field.key]: event.target.checked,
-                                },
-                              })
-                            }
-                          />
-                        </label>
-                      );
-                    }
-
-                    return (
-                      <label key={field.key} className={styles.parameterField}>
-                        <span className={styles.parameterLabel}>
-                          {field.label}
-                        </span>
-
-                        <input
-                          type="text"
-                          value={
-                            (session.treatmentParameters?.[
-                              field.key
-                            ] as string) ?? ""
-                          }
-                          onChange={(event) =>
-                            updateTreatmentSession(index, {
-                              ...session,
-                              treatmentParameters: {
-                                ...session.treatmentParameters,
-                                [field.key]: event.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </label>
-                    );
-                  })}
-
-                  {treatmentParameterTextFields.map((field) => (
-                    <label
-                      key={field.key}
-                      className={styles.parameterTextField}
-                    >
-                      {field.label}
-                      <textarea
-                        value={
-                          (session.treatmentParameters?.[
-                            field.key
-                          ] as string) ?? ""
-                        }
-                        onChange={(event) =>
-                          updateTreatmentSession(index, {
-                            ...session,
-                            treatmentParameters: {
-                              ...session.treatmentParameters,
-                              [field.key]: event.target.value,
-                            },
-                          })
-                        }
-                      />
-                    </label>
-                  ))}
-                </div>
-              </div> */}
-
+              <div className={styles.formSection}>
+                <TreatmentSessionMachineSettings
+                  machines={machines}
+                  machineSettings={session.machineSettings ?? []}
+                  onChange={(machineSettings) =>
+                    handleMachineSettingsChange(index, machineSettings)
+                  }
+                />
+              </div>
               <label>
                 Anteckningar
                 <textarea
