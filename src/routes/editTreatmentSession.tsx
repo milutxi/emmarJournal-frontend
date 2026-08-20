@@ -22,6 +22,7 @@ import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistor
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 import TreatmentSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
+import { BiCurrentLocation } from "react-icons/bi";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
@@ -314,6 +315,39 @@ const EditTreatmentSession = () => {
     );
   };
 
+  const addTreatmentSession = () => {
+    setTreatmentSessions((currentSessions) => [
+      ...currentSessions,
+      {
+        treatmentId: "",
+        machineIds: [],
+        machineSettings: [],
+        duration: 0,
+        price: 0,
+        discount: 0,
+        totalPrice: 0,
+        notes: "",
+      },
+    ]);
+  };
+
+  const removeTreatmentSession = (index: number) => {
+    if (treatmentSessions.length === 1) {
+      alert("Sessionen måste ha minst en behandling.");
+      return;
+    }
+
+    const shouldRemove = window.confirm(
+      "Vill du ta bort denna behandling från sessionen?",
+    );
+
+    if (!shouldRemove) return;
+
+    setTreatmentSessions((currentSessions) => 
+    currentSessions.filter((_, sessionIndex) => sessionIndex !== index),
+    );
+  };
+
   const handleSaveJournal = async () => {
     try {
       setIsSaving(true);
@@ -385,7 +419,14 @@ const EditTreatmentSession = () => {
         {treatmentSessions.map((session, index) => {
           return (
             <div key={index} className={styles.treatmentCard}>
-              <h2>Behandling {index + 1}</h2>
+              <div className={styles.treatmentCardHeader}>
+                <h2>Behandling {index + 1}</h2>
+                <button
+                  type="button"
+                  className={styles.removeTreatmentButton}
+                  onClick={() => removeTreatmentSession(index)}
+                >Ta bort behandling</button>
+              </div>
 
               <div className={styles.sessionTable}>
                 <div className={styles.sessionTableHeader}>
@@ -506,6 +547,12 @@ const EditTreatmentSession = () => {
             </div>
           );
         })}
+
+        <button
+          type="button"
+          className={styles.addTreatmentButton}
+          onClick={addTreatmentSession}
+        >+ Lägg till behandling</button>
 
         <button
           type="button"
