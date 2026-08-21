@@ -22,7 +22,6 @@ import MedicalHistoryModal from "../components/MedicalHistoryModal/medicalHistor
 import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 import TreatmentSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
-import { BiCurrentLocation } from "react-icons/bi";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
