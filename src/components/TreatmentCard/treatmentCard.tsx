@@ -8,8 +8,9 @@ type Props = {
   treatment: Treatment;
   // onDelete: (id: string, name: string) => void;
 };
-const TreatmentCard = ({ treatment, 
-  // onDelete 
+const TreatmentCard = ({
+  treatment,
+  // onDelete
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
 
@@ -28,6 +29,7 @@ const TreatmentCard = ({ treatment,
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       },
     );

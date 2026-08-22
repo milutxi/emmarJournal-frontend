@@ -159,6 +159,7 @@ const ClientModal = ({ onClose, initialData }: Props) => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(payload),
         },
       );

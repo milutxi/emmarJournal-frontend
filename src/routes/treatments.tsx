@@ -1,3 +1,4 @@
+
 import TreatmentCard from "../components/TreatmentCard/treatmentCard";
 import Treatmentsmodal from "../components/TreatmentsModal/treatmentsModal";
 import { Treatment } from "../types";
@@ -12,9 +13,18 @@ const Treatments = () => {
   const [showModal, setShowModal] = useState(false);
 
   const loadTreatments = () => {
-    fetch(import.meta.env.VITE_BACKEND_URL + "/treatment")
+    fetch(import.meta.env.VITE_BACKEND_URL + "/treatment", {
+      credentials: "include",
+    })
       .then((res) => res.json())
-      .then((data) => setTreatments(data));
+       .then((data) => {
+      if (Array.isArray(data)) {
+        setTreatments(data);
+      } else {
+        console.error("Could not load treatments:", data);
+        setTreatments([]);
+      }
+    });
   };
   useEffect(() => {
     loadTreatments();

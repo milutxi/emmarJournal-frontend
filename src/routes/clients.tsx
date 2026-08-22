@@ -24,12 +24,13 @@ const Clients = () => {
             headers: {
               Accept: "application/json",
             },
+            credentials: "include",
           },
         );
 
         const data = await response.json();
 
-        setClients(data);
+        setClients(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching clients:", error);
       }

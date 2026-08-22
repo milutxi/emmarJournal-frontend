@@ -21,6 +21,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const response = await fetch(
     import.meta.env.VITE_BACKEND_URL + "/machine/" + id,
     {
+      credentials: "include",
       headers: {
         Accept: "application/json",
       },
@@ -43,6 +44,7 @@ const OneMachine = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(update),
       },
     );

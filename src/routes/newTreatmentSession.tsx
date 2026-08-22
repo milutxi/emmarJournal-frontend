@@ -37,10 +37,18 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     machinesResponse,
     medicalHistoryResponse,
   ] = await Promise.all([
-    fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id),
-    fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/"),
-    fetch(import.meta.env.VITE_BACKEND_URL + "/machine/"),
-    fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
+      credentials: "include",
+    }),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/", {
+      credentials: "include",
+    }),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/machine/", {
+      credentials: "include",
+    }),
+    fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id, {
+      credentials: "include",
+    }),
   ]);
 
   const client = await clientResponse.json();
@@ -394,6 +402,7 @@ const NewTreatmentSession = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(payload),
         },
       );
@@ -454,6 +463,7 @@ const NewTreatmentSession = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(payload),
         },
       );

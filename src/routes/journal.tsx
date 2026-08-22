@@ -13,6 +13,7 @@ export const loader = async () => {
     headers: {
       Accept: "application/json",
     },
+    credentials: "include",
   });
 
   if (!response.ok) {

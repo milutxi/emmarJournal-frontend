@@ -19,12 +19,13 @@ const Machines = () => {
             headers: {
               Accepts: "application/json",
             },
+            credentials: "include",
           },
         );
 
         const data = await response.json();
 
-        setMachines(data);
+        setMachines(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching machines: ", error);
       }

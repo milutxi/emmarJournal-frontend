@@ -21,12 +21,14 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   const [clientResponse, journalsResponse] = await Promise.all([
     fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
+      credentials: "include",
       headers: {
         Accept: "application/json",
       },
     }),
 
     fetch(import.meta.env.VITE_BACKEND_URL + "/journals/client/" + id, {
+      credentials: "include",
       headers: {
         Accept: "application/json",
       },
