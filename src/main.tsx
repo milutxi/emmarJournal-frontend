@@ -22,10 +22,16 @@ import EditTreatmentSession, {
 
 import { AuthProvider } from "./context/authContext.tsx";
 
+import Login from "./routes/login.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Index />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/app",

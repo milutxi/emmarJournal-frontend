@@ -1,0 +1,97 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $indent__l;
+}
+
+.loginCard {
+  width: min(420px, 100%);
+  background: $color-bg;
+  border: 1px solid $color-dark-outline;
+  padding: $indent__l;
+  text-align: center;
+}
+
+.logo {
+  max-width: 180px;
+  margin-bottom: $indent__l;
+}
+
+.kicker {
+  margin: 0 0 $indent__s;
+  color: $color-goldenrod;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.loginCard h1 {
+  margin: 0 0 $indent__l;
+  color: $color-body-display;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+  text-align: left;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: $indent__s;
+    font-weight: 600;
+    color: $color-body-display;
+  }
+
+  input {
+    padding: $indent__s;
+    border: 1px solid $color-dark-outline;
+    border-radius: 8px;
+    font-family: $font-montserrat;
+  }
+
+  button {
+    margin-top: $indent__s;
+    padding: $indent__s $indent__m;
+    border: 2px solid $color-goldenrod;
+    border-radius: 8px;
+    background: transparent;
+    color: $color-body-display;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-goldenrod;
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.errorMessage {
+  margin: 0;
+  color: #b00020;
+  font-size: 0.9rem;
+}
+
+.backLink {
+  display: inline-block;
+  margin-top: $indent__m;
+  color: $color-text;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-goldenrod;
+  }
+}
