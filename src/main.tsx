@@ -16,7 +16,11 @@ import OneMachine, {
 import NewTreatmentSession, {
   loader as newTreatmentSessionLoader,
 } from "./routes/newTreatmentSession.tsx";
-import EditTreatmentSession, {loader as editTreatmentSessionLoader} from "./routes/editTreatmentSession.tsx";
+import EditTreatmentSession, {
+  loader as editTreatmentSessionLoader,
+} from "./routes/editTreatmentSession.tsx";
+
+import { AuthProvider } from "./context/authContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +74,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 );
