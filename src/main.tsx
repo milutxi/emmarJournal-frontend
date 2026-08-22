@@ -21,6 +21,7 @@ import EditTreatmentSession, {
 } from "./routes/editTreatmentSession.tsx";
 
 import { AuthProvider } from "./context/authContext.tsx";
+import ProtectedRoute from "./components/ProtectedRoute/protectedRoute.tsx";
 
 import Login from "./routes/login.tsx";
 
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "journal",

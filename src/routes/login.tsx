@@ -1,11 +1,16 @@
 import { useState, FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import styles from "./login.module.scss";
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from =
+    (location.state as { from?: { pathname: string } } | null)?.from
+      ?.pathname || "/app/journal";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +26,13 @@ const Login = () => {
 
       await login(email, password);
 
-      navigate("/app/journal");
-    } catch (error: any) {
-      setErrorMessage(error.message || "Kunde inte logga in.");
+      navigate(from, { replace: true });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Kunde inte logga in.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +50,7 @@ const Login = () => {
         <p className={styles.kicker}>Personalinloggning</p>
         <h1>Logga in</h1>
 
-         <form onSubmit={handleLogin} className={styles.loginForm}>
+        <form onSubmit={handleLogin} className={styles.loginForm}>
           <label>
             E-post
             <input
