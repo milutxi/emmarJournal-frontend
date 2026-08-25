@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import styles from "./header.module.scss";
+import UserMenu from "../UserMenu/userMenu";
 
 const Header = () => {
   return (
@@ -54,6 +55,9 @@ const Header = () => {
         >
           MASKINER
         </NavLink>
+      </div>
+      <div>
+        <UserMenu />
       </div>
     </div>
   );

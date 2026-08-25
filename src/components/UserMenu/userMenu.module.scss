@@ -1,0 +1,76 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.userMenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.userButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: $color-text;
+  cursor: pointer;
+  padding: $indent__s;
+
+  svg {
+    font-size: 1.7rem;
+  }
+
+  &:hover {
+    color: $color-goldenrod;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + $indent__s);
+  right: 0;
+  z-index: 100;
+  min-width: 180px;
+  background: $color-bg;
+  border: 1px solid $color-dark-outline;
+  padding: $indent__m;
+  display: flex;
+  flex-direction: column;
+  gap: $indent__m;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+
+  strong {
+    color: $color-body-display;
+  }
+
+  span {
+    color: $color-goldenrod;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+}
+
+.logoutButton {
+  background: transparent;
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+  padding: $indent__s $indent__m;
+  cursor: pointer;
+  font-weight: 600;
+  color: $color-text;
+  font-family: $font-montserrat;
+
+  &:hover {
+    background: $color-goldenrod;
+    border-color: $color-goldenrod;
+    color: white;
+  }
+}
