@@ -10,8 +10,6 @@ const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  if (!user) return null;
-
   const handleLogout = async () => {
     await logout();
     setIsOpen(false);
@@ -20,20 +18,19 @@ const UserMenu = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return() => {
+    return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  if (!user) return null;
 
   return (
     <div className={styles.userMenu} ref={menuRef}>
