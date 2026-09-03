@@ -22,6 +22,12 @@ import { useNavigate } from "react-router-dom";
 
 import TreatmenSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
 
+import {
+  calculateDiscountFromTotalPrice,
+  calculateTotalPriceFromDiscount,
+  normalizePriceNumber,
+} from "../utils/priceHelpers";
+
 type NewTreatmentSessionDraft = {
   sessionDate: string;
   treatmentSessions: TreatmentSession[];
@@ -230,30 +236,94 @@ const NewTreatmentSession = () => {
     );
   };
 
+  // const handleTreatmentChange = (index: number, treatmentId: string) => {
+  //   const updatedSessions = [...treatmentSessions];
+
+  //   const treatment = treatments.find((t) => t._id === treatmentId);
+
+  //   updatedSessions[index].treatmentId = treatmentId;
+
+  //   if (treatment) {
+  //     updatedSessions[index].price = treatment.tprice;
+  //     updatedSessions[index].duration = treatment.tduration;
+  //     updatedSessions[index].totalPrice =
+  //       treatment.tprice - updatedSessions[index].discount;
+  //   }
+
+  //   setTreatmentSessions(updatedSessions);
+  // };
+
   const handleTreatmentChange = (index: number, treatmentId: string) => {
-    const updatedSessions = [...treatmentSessions];
+  const treatment = treatments.find((t) => t._id === treatmentId);
 
-    const treatment = treatments.find((t) => t._id === treatmentId);
+  const price = treatment ? treatment.tprice : 0;
+  const duration = treatment ? treatment.tduration : 0;
 
-    updatedSessions[index].treatmentId = treatmentId;
+  setTreatmentSessions((currentSessions) =>
+    currentSessions.map((session, sessionIndex) => {
+      if (sessionIndex !== index) {
+        return session;
+      }
 
-    if (treatment) {
-      updatedSessions[index].price = treatment.tprice;
-      updatedSessions[index].duration = treatment.tduration;
-      updatedSessions[index].totalPrice =
-        treatment.tprice - updatedSessions[index].discount;
-    }
+      return {
+        ...session,
+        treatmentId,
+        price,
+        duration,
+        discount: 0,
+        totalPrice: price,
+      };
+    }),
+  );
+};
 
-    setTreatmentSessions(updatedSessions);
-  };
+  // const handleDiscountChange = (index: number, value: number) => {
+  //   const updatedSessions = [...treatmentSessions];
+
+  //   updatedSessions[index].discount = value;
+  //   updatedSessions[index].totalPrice = updatedSessions[index].price - value;
+
+  //   setTreatmentSessions(updatedSessions);
+  // };
 
   const handleDiscountChange = (index: number, value: number) => {
-    const updatedSessions = [...treatmentSessions];
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) => {
+        if (sessionIndex !== index) {
+          return session;
+        }
 
-    updatedSessions[index].discount = value;
-    updatedSessions[index].totalPrice = updatedSessions[index].price - value;
+        const price = normalizePriceNumber(session.price);
+        const discount = Math.min(normalizePriceNumber(value), price);
+        const totalPrice = calculateTotalPriceFromDiscount(price, discount);
 
-    setTreatmentSessions(updatedSessions);
+        return {
+          ...session,
+          discount,
+          totalPrice,
+        };
+      }),
+    );
+  };
+
+  const handleTotalPriceChange = (index: number, value: number) => {
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) => {
+        if (sessionIndex !== index) {
+          return session;
+        }
+
+        const price = normalizePriceNumber(session.price);
+        const totalPrice = Math.min(normalizePriceNumber(value), price);
+        const discount = calculateDiscountFromTotalPrice(price, totalPrice);
+
+        return {
+          ...session,
+          totalPrice,
+          discount,
+        };
+      }),
+    );
   };
 
   const totalDuration = treatmentSessions.reduce(
@@ -558,15 +628,29 @@ const NewTreatmentSession = () => {
 
                 <input
                   type="number"
-                  value={session.discount}
+                  min="0"
+                  max={session.price}
+                  placeholder="0"
+                  value={session.discount === 0 ? "" : session.discount}
                   onChange={(e) =>
                     handleDiscountChange(index, Number(e.target.value))
                   }
                 />
 
-                <div className={styles.totalPreview}>
+                {/* <div className={styles.totalPreview}>
                   {session.totalPrice} kr
-                </div>
+                </div> */}
+
+                <input
+                  type="number"
+                  min="0"
+                  max={session.price}
+                  placeholder="0"
+                  value={session.totalPrice === 0 ? "" : session.totalPrice}
+                  onChange={(e) =>
+                    handleTotalPriceChange(index, Number(e.target.value))
+                  }
+                />
               </div>
             </div>
 
