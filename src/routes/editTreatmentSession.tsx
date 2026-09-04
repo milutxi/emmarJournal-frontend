@@ -23,6 +23,12 @@ import ConsentFormModal from "../components/ConsentFormModal/consentFormModal";
 import { emptyMedicalHistory } from "../defaults/emptyMedicalHistory";
 import TreatmentSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
 
+import {
+  applyDiscount,
+  applyTotalPrice,
+  applyTreatmenSelection,
+} from "../utils/priceHelpers";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
 
@@ -222,7 +228,7 @@ const EditTreatmentSession = () => {
           headers: {
             "Content-Type": "application/json",
           },
-           credentials: "include",
+          credentials: "include",
           body: JSON.stringify(documents),
         },
       );
@@ -252,7 +258,7 @@ const EditTreatmentSession = () => {
           headers: {
             "Content-Type": "application/json",
           },
-           credentials: "include",
+          credentials: "include",
           body: JSON.stringify(payload),
         },
       );
@@ -341,6 +347,54 @@ const EditTreatmentSession = () => {
       },
     ]);
   };
+  const handleTreatmentChange = (index: number, treatmentId: string) => {
+    const treatment = treatments.find((t) => t._id === treatmentId);
+
+    const price = treatment ? treatment.tprice : 0;
+    const duration = treatment ? treatment.tduration : 0;
+
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index
+          ? applyTreatmenSelection(session, treatmentId, price, duration)
+          : session,
+      ),
+    );
+  };
+
+  const handlePriceChange = (index: number, value: number) => {
+  setTreatmentSessions((currentSessions) =>
+    currentSessions.map((session, sessionIndex) => {
+      if (sessionIndex !== index) return session;
+
+      const price = Number(value);
+      const discount = Math.min(session.discount ?? 0, price);
+
+      return {
+        ...session,
+        price,
+        discount,
+        totalPrice: price - discount,
+      };
+    }),
+  );
+};
+
+  const handleDiscountChange = (index: number, value: number) => {
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index ? applyDiscount(session, value) : session,
+      ),
+    );
+  };
+
+  const handleTotalPriceChange = (index: number, value: number) => {
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index ? applyTotalPrice(session, value) : session,
+      ),
+    );
+  };
 
   const removeTreatmentSession = (index: number) => {
     if (treatmentSessions.length === 1) {
@@ -354,8 +408,8 @@ const EditTreatmentSession = () => {
 
     if (!shouldRemove) return;
 
-    setTreatmentSessions((currentSessions) => 
-    currentSessions.filter((_, sessionIndex) => sessionIndex !== index),
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.filter((_, sessionIndex) => sessionIndex !== index),
     );
   };
 
@@ -375,7 +429,7 @@ const EditTreatmentSession = () => {
           headers: {
             "Content-Type": "application/json",
           },
-           credentials: "include",
+          credentials: "include",
           body: JSON.stringify(payload),
         },
       );
@@ -383,7 +437,7 @@ const EditTreatmentSession = () => {
       if (!response.ok) {
         throw new Error("Could not update journal session");
       }
-      
+
       alert("Ändringarna har sparats.");
 
       navigate(`/app/clients/${client._id}`);
@@ -437,7 +491,9 @@ const EditTreatmentSession = () => {
                   type="button"
                   className={styles.removeTreatmentButton}
                   onClick={() => removeTreatmentSession(index)}
-                >Ta bort behandling</button>
+                >
+                  Ta bort behandling
+                </button>
               </div>
 
               <div className={styles.sessionTable}>
@@ -449,90 +505,79 @@ const EditTreatmentSession = () => {
                   <span>Total</span>
                 </div>
 
-                <div className={styles.sessionSummaryRow}>
-                  <label>
-                    <select
-                      value={session.treatmentId}
-                      onChange={(event) => {
-                        const selectedTreatment = treatments.find(
-                          (treatment) => treatment._id === event.target.value,
-                        );
+               <div className={styles.sessionSummaryRow}>
+  <label>
+    <select
+      value={session.treatmentId}
+      onChange={(event) =>
+        handleTreatmentChange(index, event.target.value)
+      }
+    >
+      <option value="">Välj behandling</option>
 
-                        const price =
-                          selectedTreatment?.tprice ?? session.price;
-                        const duration =
-                          selectedTreatment?.tduration ?? session.duration;
-                        const discount = session.discount ?? 0;
+      {treatments.map((treatment) => (
+        <option key={treatment._id} value={treatment._id}>
+          {treatment.tname}
+        </option>
+      ))}
+    </select>
+  </label>
 
-                        updateTreatmentSession(index, {
-                          ...session,
-                          treatmentId: event.target.value,
-                          price,
-                          duration,
-                          totalPrice: price - discount,
-                        });
-                      }}
-                    >
-                      <option value="">Välj behandling</option>
+  <label>
+    <input
+      type="number"
+      min="0"
+      value={session.duration === 0 ? "" : session.duration}
+      placeholder="0"
+      onChange={(event) =>
+        updateTreatmentSession(index, {
+          ...session,
+          duration: Number(event.target.value),
+        })
+      }
+    />
+  </label>
 
-                      {treatments.map((treatment) => (
-                        <option key={treatment._id} value={treatment._id}>
-                          {treatment.tname}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+  <label>
+    <input
+      type="number"
+      min="0"
+      value={session.price === 0 ? "" : session.price}
+      placeholder="0"
+      onChange={(event) =>
+        handlePriceChange(index, Number(event.target.value))
+      }
+    />
+  </label>
 
-                  <label>
-                    <input
-                      type="number"
-                      value={session.duration}
-                      onChange={(event) =>
-                        updateTreatmentSession(index, {
-                          ...session,
-                          duration: Number(event.target.value),
-                        })
-                      }
-                    />
-                  </label>
+  <label>
+    <input
+      type="number"
+      min="0"
+      max={session.price}
+      value={session.discount === 0 ? "" : session.discount}
+      placeholder="0"
+      onChange={(event) =>
+        handleDiscountChange(index, Number(event.target.value))
+      }
+    />
+  </label>
 
-                  <label>
-                    <input
-                      type="number"
-                      value={session.price}
-                      onChange={(event) => {
-                        const price = Number(event.target.value);
-                        const discount = session.discount ?? 0;
+  <label>
+    <input
+      type="number"
+      min="0"
+      max={session.price}
+      value={session.totalPrice === 0 ? "" : session.totalPrice}
+      placeholder="0"
+      onChange={(event) =>
+        handleTotalPriceChange(index, Number(event.target.value))
+      }
+    />
+  </label>
+</div>
 
-                        updateTreatmentSession(index, {
-                          ...session,
-                          price,
-                          totalPrice: price - discount,
-                        });
-                      }}
-                    />
-                  </label>
 
-                  <label>
-                    <input
-                      type="number"
-                      value={session.discount}
-                      onChange={(event) => {
-                        const discount = Number(event.target.value);
-
-                        updateTreatmentSession(index, {
-                          ...session,
-                          discount,
-                          totalPrice: session.price - discount,
-                        });
-                      }}
-                    />
-                  </label>
-
-                  <div className={styles.totalPreview}>
-                    {session.totalPrice} kr
-                  </div>
-                </div>
               </div>
 
               <div className={styles.formSection}>
@@ -564,7 +609,9 @@ const EditTreatmentSession = () => {
           type="button"
           className={styles.addTreatmentButton}
           onClick={addTreatmentSession}
-        >+ Lägg till behandling</button>
+        >
+          + Lägg till behandling
+        </button>
 
         <button
           type="button"

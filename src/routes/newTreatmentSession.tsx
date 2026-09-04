@@ -23,9 +23,9 @@ import { useNavigate } from "react-router-dom";
 import TreatmenSessionMachineSettings from "../components/TreatmentSessionMachineSettings/treatmentSessionMachineSettings";
 
 import {
-  calculateDiscountFromTotalPrice,
-  calculateTotalPriceFromDiscount,
-  normalizePriceNumber,
+  applyDiscount,
+  applyTotalPrice,
+  applyTreatmenSelection,
 } from "../utils/priceHelpers";
 
 type NewTreatmentSessionDraft = {
@@ -254,28 +254,19 @@ const NewTreatmentSession = () => {
   // };
 
   const handleTreatmentChange = (index: number, treatmentId: string) => {
-  const treatment = treatments.find((t) => t._id === treatmentId);
+    const treatment = treatments.find((t) => t._id === treatmentId);
 
-  const price = treatment ? treatment.tprice : 0;
-  const duration = treatment ? treatment.tduration : 0;
+    const price = treatment ? treatment.tprice : 0;
+    const duration = treatment ? treatment.tduration : 0;
 
-  setTreatmentSessions((currentSessions) =>
-    currentSessions.map((session, sessionIndex) => {
-      if (sessionIndex !== index) {
-        return session;
-      }
-
-      return {
-        ...session,
-        treatmentId,
-        price,
-        duration,
-        discount: 0,
-        totalPrice: price,
-      };
-    }),
-  );
-};
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index
+          ? applyTreatmenSelection(session, treatmentId, price, duration)
+          : session,
+      ),
+    );
+  };
 
   // const handleDiscountChange = (index: number, value: number) => {
   //   const updatedSessions = [...treatmentSessions];
@@ -288,41 +279,17 @@ const NewTreatmentSession = () => {
 
   const handleDiscountChange = (index: number, value: number) => {
     setTreatmentSessions((currentSessions) =>
-      currentSessions.map((session, sessionIndex) => {
-        if (sessionIndex !== index) {
-          return session;
-        }
-
-        const price = normalizePriceNumber(session.price);
-        const discount = Math.min(normalizePriceNumber(value), price);
-        const totalPrice = calculateTotalPriceFromDiscount(price, discount);
-
-        return {
-          ...session,
-          discount,
-          totalPrice,
-        };
-      }),
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index ? applyDiscount(session, value) : session,
+      ),
     );
   };
 
   const handleTotalPriceChange = (index: number, value: number) => {
     setTreatmentSessions((currentSessions) =>
-      currentSessions.map((session, sessionIndex) => {
-        if (sessionIndex !== index) {
-          return session;
-        }
-
-        const price = normalizePriceNumber(session.price);
-        const totalPrice = Math.min(normalizePriceNumber(value), price);
-        const discount = calculateDiscountFromTotalPrice(price, totalPrice);
-
-        return {
-          ...session,
-          totalPrice,
-          discount,
-        };
-      }),
+      currentSessions.map((session, sessionIndex) => 
+      sessionIndex === index ? applyTotalPrice(session, value) : session,
+      ),
     );
   };
 
