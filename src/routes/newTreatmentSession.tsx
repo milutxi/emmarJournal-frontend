@@ -100,11 +100,6 @@ const NewTreatmentSession = () => {
     new Date().toISOString().split("T")[0],
   );
 
-  const grandTotal = treatmentSessions.reduce(
-    (sum, session) => sum + session.totalPrice,
-    0,
-  );
-
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
 
   // when the state lives in the parent the modal gets localStorage.
@@ -287,16 +282,11 @@ const NewTreatmentSession = () => {
 
   const handleTotalPriceChange = (index: number, value: number) => {
     setTreatmentSessions((currentSessions) =>
-      currentSessions.map((session, sessionIndex) => 
-      sessionIndex === index ? applyTotalPrice(session, value) : session,
+      currentSessions.map((session, sessionIndex) =>
+        sessionIndex === index ? applyTotalPrice(session, value) : session,
       ),
     );
   };
-
-  const totalDuration = treatmentSessions.reduce(
-    (sum, session) => sum + session.duration,
-    0,
-  );
 
   const addTreatmentSession = () => {
     setTreatmentSessions([
@@ -468,7 +458,9 @@ const NewTreatmentSession = () => {
     }
   };
 
-  const treatmentCount = treatmentSessions.length;
+  const treatmentCount = treatmentSessions.filter(
+    (session) => session.treatmentId,
+  ).length;
 
   const totalDiscount = treatmentSessions.reduce(
     (sum, session) => sum + session.discount,
@@ -477,6 +469,16 @@ const NewTreatmentSession = () => {
 
   const subtotal = treatmentSessions.reduce(
     (sum, session) => sum + session.price,
+    0,
+  );
+
+  const totalDuration = treatmentSessions.reduce(
+    (sum, session) => sum + session.duration,
+    0,
+  );
+
+  const grandTotal = treatmentSessions.reduce(
+    (sum, session) => sum + session.totalPrice,
     0,
   );
 
@@ -701,51 +703,59 @@ const NewTreatmentSession = () => {
       {/* summary on the right side */}
 
       <div className={styles.newTreatmentStyle__right}>
-        <div className={styles.sessionSummary}>
-          <h2>Session Summary</h2>
+        <aside className={styles.sessionSummary}>
+          <h3>Sessionsöversikt</h3>
 
           <p>
-            <strong>Client:</strong> {client.name} {client.lastName}
+            <strong>Kund:</strong> {client.name} {client.lastName}
           </p>
 
           <p>
-            <strong>Date:</strong> {sessionDate}
+            <strong>Datum:</strong> {sessionDate}
           </p>
 
           <p>
-            <strong>Treatments:</strong> {treatmentCount}
+            <strong>Antal behandlingar:</strong> {treatmentCount}
           </p>
 
-          <ul>
-            {treatmentSessions.map((session, index) => {
-              const treatment = treatments.find(
-                (t) => t._id === session.treatmentId,
-              );
+          {treatmentCount > 0 ? (
+            <ul>
+              {treatmentSessions
+                .filter((session) => session.treatmentId)
+                .map((session, index) => {
+                  const treatment = treatments.find(
+                    (treatmentItem) =>
+                      treatmentItem._id === session.treatmentId,
+                  );
 
-              return (
-                <li key={index}>
-                  {treatment?.tname || "No treatment selected"}
-                </li>
-              );
-            })}
-          </ul>
+                  return (
+                    <li key={index} className={styles.summaryTreatmentList}>
+                      <p>{treatment?.tname || "Behandling saknas"}</p>
+                    </li>
+                  );
+                })}
+            </ul>
+          ) : (
+            <p>Ingen behandling vald</p>
+          )}
+
           <p>
             <strong>Total behandlingstid:</strong>{" "}
             {Math.floor(totalDuration / 60)}h {totalDuration % 60}min
           </p>
 
           <p>
-            <strong>Subtotal:</strong> {subtotal} kr
+            <strong>Ordinarie pris:</strong> {subtotal} kr
           </p>
 
           <p>
-            <strong>Total discount:</strong> {totalDiscount} kr
+            <strong>Total rabatt:</strong> {totalDiscount} kr
           </p>
 
-          <p>
-            <strong>Total:</strong> {grandTotal} kr
+          <p className={styles.grandTotal}>
+            <strong>Slutpris:</strong> {grandTotal} kr
           </p>
-        </div>
+        </aside>
 
         {showMedicalHistory && (
           <MedicalHistoryModal

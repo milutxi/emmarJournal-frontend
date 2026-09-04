@@ -302,6 +302,14 @@
   &:hover {
     opacity: 0.9;
   }
+
+  .editTreatmentSessionPage {
+    grid-template-columns: 1fr;
+  }
+
+  .sessionSummary {
+    position: static;
+  }
 }
 
 .documentStatus {
@@ -357,4 +365,43 @@
   &:hover {
     opacity: 0.9;
   }
+}
+
+.editTreatmentSessionPage {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: $indent__l;
+  align-items: start;
+}
+
+.editTreatmentSessionForm {
+  min-width: 0;
+}
+
+.sessionSummary {
+  position: sticky;
+  top: $indent__m;
+  padding: $indent__m;
+  border: 1px solid $color-dark-outline;
+  border-radius: 16px;
+  background-color: $color-bg;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: $indent__m;
+  }
+
+  p {
+    margin: 0 0 $indent__s;
+  }
+
+  ul {
+    margin: $indent__m 0;
+    padding-left: $indent__m;
+  }
+}
+
+.grandTotal {
+  margin-top: $indent__m;
+  font-size: $font-size__m;
 }

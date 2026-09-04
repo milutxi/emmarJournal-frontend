@@ -363,22 +363,22 @@ const EditTreatmentSession = () => {
   };
 
   const handlePriceChange = (index: number, value: number) => {
-  setTreatmentSessions((currentSessions) =>
-    currentSessions.map((session, sessionIndex) => {
-      if (sessionIndex !== index) return session;
+    setTreatmentSessions((currentSessions) =>
+      currentSessions.map((session, sessionIndex) => {
+        if (sessionIndex !== index) return session;
 
-      const price = Number(value);
-      const discount = Math.min(session.discount ?? 0, price);
+        const price = Number(value);
+        const discount = Math.min(session.discount ?? 0, price);
 
-      return {
-        ...session,
-        price,
-        discount,
-        totalPrice: price - discount,
-      };
-    }),
-  );
-};
+        return {
+          ...session,
+          price,
+          discount,
+          totalPrice: price - discount,
+        };
+      }),
+    );
+  };
 
   const handleDiscountChange = (index: number, value: number) => {
     setTreatmentSessions((currentSessions) =>
@@ -449,13 +449,27 @@ const EditTreatmentSession = () => {
     }
   };
 
-  const totalDuration = treatmentSessions.reduce(
-    (sum, session) => sum + session.duration,
+  const treatmentCount = treatmentSessions.filter(
+    (session) => session.treatmentId,
+  ).length;
+
+  const subtotal = treatmentSessions.reduce(
+    (sum, session) => sum + session.price,
     0,
   );
 
-  const totalPrice = treatmentSessions.reduce(
+  const totalDiscount = treatmentSessions.reduce(
+    (sum, session) => sum + (session.discount ?? 0),
+    0,
+  );
+
+  const grandTotal = treatmentSessions.reduce(
     (sum, session) => sum + session.totalPrice,
+    0,
+  );
+
+  const totalDuration = treatmentSessions.reduce(
+    (sum, session) => sum + session.duration,
     0,
   );
 
@@ -505,79 +519,80 @@ const EditTreatmentSession = () => {
                   <span>Total</span>
                 </div>
 
-               <div className={styles.sessionSummaryRow}>
-  <label>
-    <select
-      value={session.treatmentId}
-      onChange={(event) =>
-        handleTreatmentChange(index, event.target.value)
-      }
-    >
-      <option value="">Välj behandling</option>
+                <div className={styles.sessionSummaryRow}>
+                  <label>
+                    <select
+                      value={session.treatmentId}
+                      onChange={(event) =>
+                        handleTreatmentChange(index, event.target.value)
+                      }
+                    >
+                      <option value="">Välj behandling</option>
 
-      {treatments.map((treatment) => (
-        <option key={treatment._id} value={treatment._id}>
-          {treatment.tname}
-        </option>
-      ))}
-    </select>
-  </label>
+                      {treatments.map((treatment) => (
+                        <option key={treatment._id} value={treatment._id}>
+                          {treatment.tname}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
 
-  <label>
-    <input
-      type="number"
-      min="0"
-      value={session.duration === 0 ? "" : session.duration}
-      placeholder="0"
-      onChange={(event) =>
-        updateTreatmentSession(index, {
-          ...session,
-          duration: Number(event.target.value),
-        })
-      }
-    />
-  </label>
+                  <label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={session.duration === 0 ? "" : session.duration}
+                      placeholder="0"
+                      onChange={(event) =>
+                        updateTreatmentSession(index, {
+                          ...session,
+                          duration: Number(event.target.value),
+                        })
+                      }
+                    />
+                  </label>
 
-  <label>
-    <input
-      type="number"
-      min="0"
-      value={session.price === 0 ? "" : session.price}
-      placeholder="0"
-      onChange={(event) =>
-        handlePriceChange(index, Number(event.target.value))
-      }
-    />
-  </label>
+                  <label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={session.price === 0 ? "" : session.price}
+                      placeholder="0"
+                      onChange={(event) =>
+                        handlePriceChange(index, Number(event.target.value))
+                      }
+                    />
+                  </label>
 
-  <label>
-    <input
-      type="number"
-      min="0"
-      max={session.price}
-      value={session.discount === 0 ? "" : session.discount}
-      placeholder="0"
-      onChange={(event) =>
-        handleDiscountChange(index, Number(event.target.value))
-      }
-    />
-  </label>
+                  <label>
+                    <input
+                      type="number"
+                      min="0"
+                      max={session.price}
+                      value={session.discount === 0 ? "" : session.discount}
+                      placeholder="0"
+                      onChange={(event) =>
+                        handleDiscountChange(index, Number(event.target.value))
+                      }
+                    />
+                  </label>
 
-  <label>
-    <input
-      type="number"
-      min="0"
-      max={session.price}
-      value={session.totalPrice === 0 ? "" : session.totalPrice}
-      placeholder="0"
-      onChange={(event) =>
-        handleTotalPriceChange(index, Number(event.target.value))
-      }
-    />
-  </label>
-</div>
-
-
+                  <label>
+                    <input
+                      type="number"
+                      min="0"
+                      max={session.price}
+                      value={session.totalPrice === 0 ? "" : session.totalPrice}
+                      placeholder="0"
+                      onChange={(event) =>
+                        handleTotalPriceChange(
+                          index,
+                          Number(event.target.value),
+                        )
+                      }
+                    />
+                  </label>
+                </div>
               </div>
 
               <div className={styles.formSection}>
@@ -624,24 +639,59 @@ const EditTreatmentSession = () => {
       </div>
 
       <aside className={styles.editTreatmentStyle__right}>
-        <div className={styles.sessionSummary}>
-          <h2>Sammanfattning</h2>
+        <aside className={styles.sessionSummary}>
+          <h3>Sessionsöversikt</h3>
 
           <p>
-            <span>Antal behandlingar</span>
-            <strong>{treatmentSessions.length}</strong>
+            <strong>Kund:</strong> {client.name} {client.lastName}
           </p>
 
           <p>
-            <span>Total tid</span>
-            <strong>{totalDuration} min</strong>
+            <strong>Datum:</strong> {sessionDate}
           </p>
 
           <p>
-            <span>Total</span>
-            <strong>{totalPrice} kr</strong>
+            <strong>Antal behandlingar:</strong> {treatmentCount}
           </p>
-        </div>
+
+          {treatmentCount > 0 ? (
+            <ul>
+              {treatmentSessions
+                .filter((session) => session.treatmentId)
+                .map((session, index) => {
+                  const treatment = treatments.find(
+                    (treatmentItem) =>
+                      treatmentItem._id === session.treatmentId,
+                  );
+
+                  return (
+                    <li key={index} className={styles.summaryTreatmentList}>
+                      <p>{treatment?.tname || "Behandling saknas"}</p>
+                    </li>
+                  );
+                })}
+            </ul>
+          ) : (
+            <p>Ingen behandling vald</p>
+          )}
+
+          <p>
+            <strong>Total behandlingstid:</strong>{" "}
+            {Math.floor(totalDuration / 60)}h {totalDuration % 60}min
+          </p>
+
+          <p>
+            <strong>Ordinarie pris:</strong> {subtotal} kr
+          </p>
+
+          <p>
+            <strong>Total rabatt:</strong> {totalDiscount} kr
+          </p>
+
+          <p className={styles.grandTotal}>
+            <strong>Slutpris:</strong> {grandTotal} kr
+          </p>
+        </aside>
         <div className={styles.documentActions}>
           {hasMedicalHistory ? (
             <div className={styles.documentStatus}>Hälsodeklaration finns</div>
