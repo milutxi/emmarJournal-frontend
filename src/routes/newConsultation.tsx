@@ -1,8 +1,41 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  Link,
+  LoaderFunctionArgs,
+  useLoaderData,
+} from "react-router-dom";
+import styles from "./newConsultation.module.scss";
+
+import { Client } from "../types";
+
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  const { id } = params;
+
+  if (!id) {
+    throw new Response("Client id missing", { status: 400 });
+  }
+
+  const response = await fetch(
+    import.meta.env.VITE_BACKEND_URL + "/clients/" + id,
+    { credentials: "include" },
+  );
+
+  if (!response.ok) {
+    throw new Response("Could not get client", {
+      status: response.status,
+    });
+  }
+
+  const client = await response.json();
+
+  return { client };
+};
 
 const NewConsultation = () => {
-  const { id } = useParams();
+  const { client } = useLoaderData() as { client: Client;
+
+  };
 
   const navigate = useNavigate();
 
@@ -14,14 +47,14 @@ const NewConsultation = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSaveConsultation = async () => {
-    if (!id) {
+    if (!client._id) {
       alert("Kund saknas.");
       return;
     }
 
     if (
       !consultationDate ||
-      !consultationTitle.trim() || 
+      !consultationTitle.trim() ||
       !consultationText.trim()
     ) {
       alert("Datum, title och anteckning behövs.");
@@ -40,7 +73,7 @@ const NewConsultation = () => {
           },
           credentials: "include",
           body: JSON.stringify({
-            clientId: id,
+            clientId: client._id,
             consultationTitle,
             consultationText,
             consultationDate,
@@ -57,7 +90,7 @@ const NewConsultation = () => {
       console.log("Saved consultation:", savedConsultation);
       alert("Konsultation har sparats.");
 
-      navigate(`/app/clients/${id}`);
+      navigate(`/app/clients/${client._id}`);
     } catch (error) {
       console.error("Save consultation error:", error);
 
@@ -68,42 +101,55 @@ const NewConsultation = () => {
   };
 
   return (
-    <main>
-      <h1>Ny Konsultation</h1>
-      <label>
-        Datum
-        <input 
-          type="date"
-          value={consultationDate}
-          onChange={(event) => setConsultationDate(event.target.value)}
-        />
-      </label>
+    <main className={styles.newConsultationPage}>
+      <div className={styles.newConsultationCard}>
+        <div className={styles.newConsultationHeader}>
+          <Link
+            to={`/app/clients/${client._id}`}
+            className={styles.newConsultationHeaderLink}
+          >
+            <div>
+              <h1>Ny Konsultation</h1>
 
-      <label>
-        Title
-        <input
-          type="text"
-          value={consultationTitle}
-          onChange={(event) => setConsultationTitle(event.target.value)}
-          placeholder="Ex. Första konsultation"
-        />
-      </label>
-      <label>
-        Anteckning
-        <textarea
-          value={consultationText}
-          onChange={(event) => setConsultationText(event.target.value)}
-          placeholder="Skriv konsultationen här..."
-          rows={30}
-        />
-      </label>
-      <button
-        type="button"
-        disabled={isSaving}
-        onClick={handleSaveConsultation}
-      >
-        {isSaving ? "Sparar..." : "Spara"}
-      </button>
+              <h2>
+                {client.name} {client.lastName}
+              </h2>
+            </div>
+          </Link>
+
+          <input
+            type="date"
+            value={consultationDate}
+            onChange={(event) => setConsultationDate(event.target.value)}
+          />
+        </div>
+
+        <label>
+          Title
+          <input
+            type="text"
+            value={consultationTitle}
+            onChange={(event) => setConsultationTitle(event.target.value)}
+            placeholder="Ex. Första konsultation"
+          />
+        </label>
+        <label>
+          Anteckning
+          <textarea
+            value={consultationText}
+            onChange={(event) => setConsultationText(event.target.value)}
+            placeholder="Skriv konsultationen här..."
+            rows={30}
+          />
+        </label>
+        <button
+          type="button"
+          disabled={isSaving}
+          onClick={handleSaveConsultation}
+        >
+          {isSaving ? "Sparar..." : "Spara"}
+        </button>
+      </div>
     </main>
   );
 };
