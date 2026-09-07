@@ -8,23 +8,31 @@ const NewConsultation = () => {
 
   const [consultationTitle, setConsultationTitle] = useState("");
   const [consultationText, setConsultationText] = useState("");
+  const [consultationDate, setConsultationDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSaveConsultation = async () => {
-    if(!id) {
+    if (!id) {
       alert("Kund saknas.");
       return;
     }
 
-    if(!consultationTitle.trim() || !consultationText.trim()) {
-      alert("Title och anteckning behövs.");
+    if (
+      !consultationDate ||
+      !consultationTitle.trim() || 
+      !consultationText.trim()
+    ) {
+      alert("Datum, title och anteckning behövs.");
       return;
     }
 
-    try{
+    try {
       setIsSaving(true);
 
-      const response = await fetch( import.meta.env.VITE_BACKEND_URL + "/consultations",
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/consultations",
         {
           method: "POST",
           headers: {
@@ -35,12 +43,12 @@ const NewConsultation = () => {
             clientId: id,
             consultationTitle,
             consultationText,
-            consultationDate: new Date().toISOString(),
+            consultationDate,
           }),
         },
       );
 
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error("Could not save consultation");
       }
 
@@ -50,25 +58,30 @@ const NewConsultation = () => {
       alert("Konsultation har sparats.");
 
       navigate(`/app/clients/${id}`);
-
-    }catch(error){ 
+    } catch (error) {
       console.error("Save consultation error:", error);
 
       alert("Kunde inte spara konsultationen.");
-
-    }finally {
+    } finally {
       setIsSaving(false);
     }
-
   };
 
   return (
     <main>
       <h1>Ny Konsultation</h1>
+      <label>
+        Datum
+        <input 
+          type="date"
+          value={consultationDate}
+          onChange={(event) => setConsultationDate(event.target.value)}
+        />
+      </label>
 
       <label>
         Title
-        <input 
+        <input
           type="text"
           value={consultationTitle}
           onChange={(event) => setConsultationTitle(event.target.value)}
@@ -77,7 +90,7 @@ const NewConsultation = () => {
       </label>
       <label>
         Anteckning
-        <textarea 
+        <textarea
           value={consultationText}
           onChange={(event) => setConsultationText(event.target.value)}
           placeholder="Skriv konsultationen här..."
