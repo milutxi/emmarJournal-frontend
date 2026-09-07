@@ -116,8 +116,14 @@ const OneClient = () => {
         <div className={styles.oneClientStyle__header}>
           <h2 className={styles["oneClientStyle__title"]}>Client Journal</h2>
           <div className={styles["oneClientStyle__meny"]}>
-            <button className={styles["oneClientStyle__button"]}>
-              + Ny konsult
+            <button
+            type="button" 
+            className={styles["oneClientStyle__button"]}
+            onClick={() => 
+              navigate(`/app/clients/${client._id}/consultations/new`)
+            }
+            >
+              + Ny konsultation
             </button>
             <button
               className={styles["oneClientStyle__button"]}

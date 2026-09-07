@@ -214,3 +214,12 @@ export interface ConsentFormType {
   signatureImage: string;
   signedAt?: string;
 }
+
+export interface Consultation {
+  _id?: string;
+  clientId: string;
+  consultationTitle: string;
+  consultationText: string;
+  consultationDate: string;
+  
+}
