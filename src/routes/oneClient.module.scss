@@ -176,6 +176,23 @@
   border-bottom: 1px solid $color-dark-outline;
 }
 
+.oneClientStyle__consultationRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  padding: $indent__s 0;
+  border-bottom: 1px solid $color-dark-outline;
+}
+
+.onceClientStyle__consultationRow {
+    display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: $indent__s;
+  align-items: center;
+  padding: $indent__s 0;
+  border-bottom: 1px solid $color-dark-outline;
+}
+
 .oneClientStyle__sessionButton {
   border: none;
   background: transparent;

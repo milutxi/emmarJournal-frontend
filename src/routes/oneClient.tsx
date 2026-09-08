@@ -92,8 +92,6 @@ const OneClient = () => {
   //   steg.");
   // };
 
-  
-
   return (
     <div className={styles.oneClientStyle}>
       {/* LEFT SIDE */}
@@ -270,7 +268,7 @@ const OneClient = () => {
               return (
                 <li
                   key={consultation._id}
-                  className={styles.oneClientStyle__journalRow}
+                  className={styles.oneClientStyle__consultationRow}
                 >
                   <button
                     type="button"
@@ -287,37 +285,37 @@ const OneClient = () => {
                     </span>
                   </button>
 
-                  <div className={styles.oneClientStyle__journalMenuWrapper}>
-                    <button
-                      type="button"
-                      className={styles.oneClientStyle__journalMenuButton}
-                      aria-label="Öppna konsultationsmeny"
-                      onClick={() =>
-                        setOpenJournalMenuId(
-                          openJournalMenuId === consultationMenuId
-                            ? null
-                            : consultationMenuId,
-                        )
-                      }
-                    >
-                      <HiOutlineEllipsisHorizontalCircle />
-                    </button>
+ <div className={styles.oneClientStyle__journalMenuWrapper}>
+          <button
+            type="button"
+            className={styles.oneClientStyle__journalMenuButton}
+            aria-label="Öppna konsultationsmeny"
+            onClick={() =>
+              setOpenJournalMenuId(
+                openJournalMenuId === consultationMenuId
+                  ? null
+                  : consultationMenuId,
+              )
+            }
+          >
+            <HiOutlineEllipsisHorizontalCircle />
+          </button>
 
-                    {openJournalMenuId === consultationMenuId && (
-                      <div className={styles.oneClientStyle__journalMenu}>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            alert(
-                              "Redigering av konsultation kommer i nästa steg.",
-                            )
-                          }
-                        >
-                          Redigera konsultation
-                        </button>
-                      </div>
-                    )}
-                  </div>
+           {openJournalMenuId === consultationMenuId && (
+            <div className={styles.oneClientStyle__journalMenu}>
+              <button
+                type="button"
+                onClick={() =>
+                  alert("Redigering av konsultation kommer i nästa steg.")
+                }
+              >
+                Redigera konsultation
+              </button>
+            </div>
+          )}
+        </div>
+
+
                 </li>
               );
             })}
