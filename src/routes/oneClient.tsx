@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { Client, Journal } from "../types";
+import { Client, Journal, Consultation } from "../types";
 import styles from "./oneClient.module.scss";
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 
@@ -19,32 +19,42 @@ import { HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
-  const [clientResponse, journalsResponse] = await Promise.all([
-    fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-      },
-    }),
+  const [clientResponse, journalsResponse, consultationsResponse] =
+    await Promise.all([
+      fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      }),
 
-    fetch(import.meta.env.VITE_BACKEND_URL + "/journals/client/" + id, {
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-      },
-    }),
-  ]);
+      fetch(import.meta.env.VITE_BACKEND_URL + "/journals/client/" + id, {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+
+      fetch(import.meta.env.VITE_BACKEND_URL + "/consultations/client/" + id, {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+    ]);
 
   const client = await clientResponse.json();
   const journals = await journalsResponse.json();
+  const consultations = await consultationsResponse.json();
 
-  return { client, journals };
+  return { client, journals, consultations };
 };
 
 const OneClient = () => {
-  const { client, journals } = useLoaderData() as {
+  const { client, journals, consultations } = useLoaderData() as {
     client: Client;
     journals: Journal[];
+    consultations: Consultation[];
   };
   const navigate = useNavigate();
 
@@ -82,6 +92,8 @@ const OneClient = () => {
   //   steg.");
   // };
 
+  
+
   return (
     <div className={styles.oneClientStyle}>
       {/* LEFT SIDE */}
@@ -117,11 +129,11 @@ const OneClient = () => {
           <h2 className={styles["oneClientStyle__title"]}>Client Journal</h2>
           <div className={styles["oneClientStyle__meny"]}>
             <button
-            type="button" 
-            className={styles["oneClientStyle__button"]}
-            onClick={() => 
-              navigate(`/app/clients/${client._id}/consultations/new`)
-            }
+              type="button"
+              className={styles["oneClientStyle__button"]}
+              onClick={() =>
+                navigate(`/app/clients/${client._id}/consultations/new`)
+              }
             >
               + Ny konsultation
             </button>
@@ -136,7 +148,7 @@ const OneClient = () => {
           </div>
         </div>
 
-        {journals.length === 0 ? (
+        {journals.length === 0 && consultations.length === 0 ? (
           <div className={styles.oneClientStyle__emptyState}>
             <p>Inga behandlingssessioner ännu</p>
             <span>
@@ -245,6 +257,64 @@ const OneClient = () => {
                         >
                           Ta bort session
                         </button> */}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+
+            {consultations.map((consultation) => {
+              const consultationMenuId = `consultation-${consultation._id}`;
+
+              return (
+                <li
+                  key={consultation._id}
+                  className={styles.oneClientStyle__journalRow}
+                >
+                  <button
+                    type="button"
+                    className={styles.oneClientStyle__sessionButton}
+                  >
+                    <span className={styles.oneClientStyle__journalDate}>
+                      {formatDisplayDate(consultation.consultationDate)}
+                    </span>
+
+                    <span
+                      className={styles.oneClientStyle__journalTreatmentName}
+                    >
+                      {consultation.consultationTitle}
+                    </span>
+                  </button>
+
+                  <div className={styles.oneClientStyle__journalMenuWrapper}>
+                    <button
+                      type="button"
+                      className={styles.oneClientStyle__journalMenuButton}
+                      aria-label="Öppna konsultationsmeny"
+                      onClick={() =>
+                        setOpenJournalMenuId(
+                          openJournalMenuId === consultationMenuId
+                            ? null
+                            : consultationMenuId,
+                        )
+                      }
+                    >
+                      <HiOutlineEllipsisHorizontalCircle />
+                    </button>
+
+                    {openJournalMenuId === consultationMenuId && (
+                      <div className={styles.oneClientStyle__journalMenu}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert(
+                              "Redigering av konsultation kommer i nästa steg.",
+                            )
+                          }
+                        >
+                          Redigera konsultation
+                        </button>
                       </div>
                     )}
                   </div>
