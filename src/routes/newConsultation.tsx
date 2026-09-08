@@ -101,8 +101,8 @@ const NewConsultation = () => {
   };
 
   return (
-    <main className={styles.newConsultationPage}>
-      <div className={styles.newConsultationCard}>
+    <main className={styles.newConsultationStyle}>
+      {/* <div className={styles.newConsultationStyle__content}> */}
         <div className={styles.newConsultationHeader}>
           <Link
             to={`/app/clients/${client._id}`}
@@ -124,6 +124,8 @@ const NewConsultation = () => {
           />
         </div>
 
+<div className={styles.consultationCard}>
+
         <label>
           Title
           <input
@@ -131,7 +133,7 @@ const NewConsultation = () => {
             value={consultationTitle}
             onChange={(event) => setConsultationTitle(event.target.value)}
             placeholder="Ex. Första konsultation"
-          />
+            />
         </label>
         <label>
           Anteckning
@@ -140,16 +142,30 @@ const NewConsultation = () => {
             onChange={(event) => setConsultationText(event.target.value)}
             placeholder="Skriv konsultationen här..."
             rows={30}
-          />
+            />
         </label>
+
+        <div className={styles.consultationActions}>
+
+          <button
+            type="button"
+            className={styles.cancelButton}
+            onClick={() => navigate(`/app/clients/${client._id}`)}
+          >
+            Avbryt
+          </button>
+
         <button
           type="button"
+          className={styles.saveButton}
           disabled={isSaving}
           onClick={handleSaveConsultation}
-        >
+          >
           {isSaving ? "Sparar..." : "Spara"}
         </button>
-      </div>
+            </div>
+          </div>
+      {/* </div> */}
     </main>
   );
 };
