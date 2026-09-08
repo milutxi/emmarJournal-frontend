@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Client, Journal, Consultation } from "../types";
 import styles from "./oneClient.module.scss";
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
+import ConsultationDocumentModal from "../components/ConsultationDocumentModal/consultationDocumentModal";
 
 import {
   formatDisplayDate,
@@ -60,6 +61,8 @@ const OneClient = () => {
 
   const [sessionDocumentJournal, setSessionDocumentJournal] =
     useState<Journal | null>(null);
+  const [selectedConsultation, setSelectedConsultation] =
+    useState<Consultation | null>(null);
 
   const [openJournalMenuId, setOpenJournalMenuId] = useState<string | null>(
     null,
@@ -273,6 +276,7 @@ const OneClient = () => {
                   <button
                     type="button"
                     className={styles.oneClientStyle__sessionButton}
+                    onClick={() => setSelectedConsultation(consultation)}
                   >
                     <span className={styles.oneClientStyle__journalDate}>
                       {formatDisplayDate(consultation.consultationDate)}
@@ -281,7 +285,7 @@ const OneClient = () => {
                     <span
                       className={styles.oneClientStyle__journalTreatmentName}
                     >
-                      {consultation.consultationTitle}
+                     KONSULTATION: {consultation.consultationTitle}
                     </span>
                   </button>
 
@@ -326,6 +330,13 @@ const OneClient = () => {
         isOpen={!!sessionDocumentJournal}
         onClose={() => setSessionDocumentJournal(null)}
         journal={sessionDocumentJournal}
+        clientName={`${client.name} ${client.lastName}`}
+      />
+
+      <ConsultationDocumentModal
+        isOpen={!!selectedConsultation}
+        onClose={() => setSelectedConsultation(null)}
+        consultation={selectedConsultation}
         clientName={`${client.name} ${client.lastName}`}
       />
     </div>
