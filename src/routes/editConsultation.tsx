@@ -1,52 +1,61 @@
 import { useState } from "react";
-import {
-  useNavigate,
-  Link,
-  LoaderFunctionArgs,
-  useLoaderData,
-} from "react-router-dom";
+import { Link, LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router-dom";
+import { Client, Consultation } from "../types";
 import styles from "./newConsultation.module.scss";
 
-import { Client } from "../types";
-
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const { id } = params;
+  const { id, consultationId } = params;
 
-  if (!id) {
-    throw new Response("Client id missing", { status: 400 });
-  }
+  const [clientResponse, consultationResponse] = await Promise.all([
+    fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+      },
+    }),
 
-  const response = await fetch(
-    import.meta.env.VITE_BACKEND_URL + "/clients/" + id,
-    { credentials: "include" },
-  );
+    fetch(
+      import.meta.env.VITE_BACKEND_URL + "/consultations/" + consultationId,
+      {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      },
+    ),
+  ]);
 
-  if (!response.ok) {
-    throw new Response("Could not get client", {
-      status: response.status,
-    });
-  }
+  const client = await clientResponse.json();
+  const consultation = await consultationResponse.json();
 
-  const client = await response.json();
-
-  return { client };
+  return { client, consultation };
 };
 
-const NewConsultation = () => {
-  const { client } = useLoaderData() as { client: Client };
+const EditConsultation = () => {
+  const { client, consultation } = useLoaderData() as {
+    client: Client;
+    consultation: Consultation;
+  };
 
   const navigate = useNavigate();
-
-  const [consultationTitle, setConsultationTitle] = useState("");
-  const [consultationText, setConsultationText] = useState("");
-  const [consultationDate, setConsultationDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSaveConsultation = async () => {
-    if (!client._id) {
-      alert("Kund saknas.");
+  const [consultationDate, setConsultationDate] = useState(
+    consultation.consultationDate.slice(0, 10),
+  );
+
+  const [consultationTitle, setConsultationTitle] = useState(
+    consultation.consultationTitle,
+  );
+
+  const [consultationText, setConsultationText] = useState(
+    consultation.consultationText,
+  );
+
+
+  const handleSaveEditConsultation = async () => {
+    if(!consultation._id) {
+      alert("Konsultation saknas.");
       return;
     }
 
@@ -55,59 +64,53 @@ const NewConsultation = () => {
       !consultationTitle.trim() ||
       !consultationText.trim()
     ) {
-      alert("Datum, title och anteckning behövs.");
+      alert("Datum, titel och anteckning behövs.");
       return;
     }
 
-    try {
+    try{
       setIsSaving(true);
 
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/consultations",
+      const response = await fetch (
+        import.meta.env.VITE_BACKEND_URL + "/consultations/" + consultation._id,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include",
           body: JSON.stringify({
-            clientId: client._id,
+            consultationDate,
             consultationTitle,
             consultationText,
-            consultationDate,
           }),
         },
       );
 
       if (!response.ok) {
-        throw new Error("Could not save consultation");
+        throw new Error("Could not update consultation");
       }
 
-      const savedConsultation = await response.json();
-
-      console.log("Saved consultation:", savedConsultation);
-      alert("Konsultation har sparats.");
-
+      alert("Konsultationen har updaterats.");
       navigate(`/app/clients/${client._id}`);
-    } catch (error) {
-      console.error("Save consultation error:", error);
 
-      alert("Kunde inte spara konsultationen.");
-    } finally {
+    }catch (error) {
+      console.error("Update consultation error:", error);
+      alert("Kunde inte uppdatera konsultationen.");
+    }finally {
       setIsSaving(false);
     }
   };
 
   return (
     <main className={styles.newConsultationStyle}>
-      {/* <div className={styles.newConsultationStyle__content}> */}
       <div className={styles.newConsultationHeader}>
         <Link
           to={`/app/clients/${client._id}`}
           className={styles.newConsultationHeaderLink}
         >
           <div>
-            <h1>Ny Konsultation</h1>
+            <h1>Redigera Konsultation</h1>
 
             <h2>
               {client.name} {client.lastName}
@@ -129,7 +132,7 @@ const NewConsultation = () => {
             type="text"
             value={consultationTitle}
             onChange={(event) => setConsultationTitle(event.target.value)}
-            placeholder="Ex. Första konsultation"
+            
           />
         </label>
         <label>
@@ -137,7 +140,6 @@ const NewConsultation = () => {
           <textarea
             value={consultationText}
             onChange={(event) => setConsultationText(event.target.value)}
-            placeholder="Skriv konsultationen här..."
             rows={30}
           />
         </label>
@@ -155,15 +157,14 @@ const NewConsultation = () => {
             type="button"
             className={styles.saveButton}
             disabled={isSaving}
-            onClick={handleSaveConsultation}
+            onClick={handleSaveEditConsultation}
           >
-            {isSaving ? "Sparar..." : "Spara"}
+            {isSaving ? "Sparar..." : "Spara ändringar"}
           </button>
         </div>
       </div>
-      {/* </div> */}
     </main>
   );
 };
 
-export default NewConsultation;
+export default EditConsultation;

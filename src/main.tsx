@@ -19,7 +19,12 @@ import NewTreatmentSession, {
 import EditTreatmentSession, {
   loader as editTreatmentSessionLoader,
 } from "./routes/editTreatmentSession.tsx";
-import NewConsultation, { loader as newConsultationLoader,} from "./routes/newConsultation.tsx";
+import NewConsultation, {
+  loader as newConsultationLoader,
+} from "./routes/newConsultation.tsx";
+import EditConsultation, {
+  loader as editConsultationLoader,
+} from "./routes/editConsultation";
 
 import { AuthProvider } from "./context/authContext.tsx";
 import ProtectedRoute from "./components/ProtectedRoute/protectedRoute.tsx";
@@ -66,6 +71,11 @@ const router = createBrowserRouter([
         path: "clients/:id/consultations/new",
         loader: newConsultationLoader,
         element: <NewConsultation />,
+      },
+      {
+        path: "clients/:id/consultations/:consultationId/edit",
+        loader: editConsultationLoader,
+        element: <EditConsultation />,
       },
       {
         path: "clients/:id/journals/:journalId/edit",
