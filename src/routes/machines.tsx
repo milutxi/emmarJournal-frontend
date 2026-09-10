@@ -12,29 +12,70 @@ const Machines = () => {
   const [machines, setMachines] = useState<Machine[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         import.meta.env.VITE_BACKEND_URL + "/machine",
+  //         {
+  //           credentials: "include",
+  //           headers: {
+  //             Accept: "application/json",
+  //             ...getAuthHeaders(),
+  //           },
+  //         },
+  //       );
+
+  //       const data = await response.json();
+
+  //       setMachines(Array.isArray(data) ? data : []);
+  //     } catch (error) {
+  //       console.error("Error fetching machines: ", error);
+  //     }
+  //   };
+  //   fetchData();
+  // });
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          import.meta.env.VITE_BACKEND_URL + "/machine",
-          {
-            credentials: "include",
-            headers: {
-              Accept: "application/json",
-              ...getAuthHeaders(),
-            },
+  const fetchData = async () => {
+    try {
+      const authHeaders = getAuthHeaders();
+
+      alert(
+        "Machine auth header exists: " +
+          Boolean(authHeaders.Authorization),
+      );
+
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/machine",
+        {
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            ...authHeaders,
           },
-        );
+        },
+      );
 
-        const data = await response.json();
+      alert("Machine response status: " + response.status);
 
-        setMachines(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Error fetching machines: ", error);
-      }
-    };
-    fetchData();
-  });
+      const data = await response.json();
+
+      alert(
+        "Machine data is array: " +
+          Array.isArray(data) +
+          " / count: " +
+          (Array.isArray(data) ? data.length : "not array"),
+      );
+
+      setMachines(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching machines: ", error);
+    }
+  };
+
+  fetchData();
+}, []);
 
   // const addMachineClick = () => {
   //     <CreateMachine />
