@@ -12,6 +12,8 @@ const Machines = () => {
   const [machines, setMachines] = useState<Machine[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
+  const [debugMessage, setDebugMessage] = useState("");
+
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -37,45 +39,45 @@ const Machines = () => {
   // });
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const authHeaders = getAuthHeaders();
+    const fetchData = async () => {
+      try {
+        const authHeaders = getAuthHeaders();
 
-      alert(
-        "Machine auth header exists: " +
-          Boolean(authHeaders.Authorization),
-      );
+        setDebugMessage("Auth header: " + Boolean(authHeaders.Authorization));
 
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/machine",
-        {
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            ...authHeaders,
+        const response = await fetch(
+          import.meta.env.VITE_BACKEND_URL + "/machine",
+          {
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              ...authHeaders,
+            },
           },
-        },
-      );
+        );
 
-      alert("Machine response status: " + response.status);
+        const data = await response.json();
 
-      const data = await response.json();
+        setDebugMessage(
+          "Auth header: " +
+            Boolean(authHeaders.Authorization) +
+            " | Status: " +
+            response.status +
+            " | Is array: " +
+            Array.isArray(data) +
+            " | Count: " +
+            (Array.isArray(data) ? data.length : "not array"),
+        );
 
-      alert(
-        "Machine data is array: " +
-          Array.isArray(data) +
-          " / count: " +
-          (Array.isArray(data) ? data.length : "not array"),
-      );
+        setMachines(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching machines: ", error);
+        setDebugMessage("Machine fetch error");
+      }
+    };
 
-      setMachines(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Error fetching machines: ", error);
-    }
-  };
-
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   // const addMachineClick = () => {
   //     <CreateMachine />
@@ -103,6 +105,9 @@ const Machines = () => {
     <div className={styles.machinesStyle}>
       <div className={styles["machinesStyle__top"]}>
         <h1 className={styles["machinesStyle__title"]}>MASKINER</h1>
+
+        <p>{debugMessage}</p>
+
         <button
           className={styles["machinesStyle__createButton"]}
           onClick={() => setShowCreateModal(true)}
