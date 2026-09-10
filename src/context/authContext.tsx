@@ -110,6 +110,8 @@ export const AuthProvider = ({ children }: Props) => {
 
     if (data.token) {
       saveStoredToken(data.token);
+
+      alert("token saved: " + Boolean(localStorage.getItem("emmarToken")));
     }
 
     setUser({
