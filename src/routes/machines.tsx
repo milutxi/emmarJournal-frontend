@@ -63,8 +63,8 @@ const Machines = () => {
             Boolean(authHeaders.Authorization) +
             " | Status: " +
             response.status +
-            " | Is array: " +
-            Array.isArray(data) +
+            " | Message: " +
+            (data.message || "no message") +
             " | Count: " +
             (Array.isArray(data) ? data.length : "not array"),
         );
