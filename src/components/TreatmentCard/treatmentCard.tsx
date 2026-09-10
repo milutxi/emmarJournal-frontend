@@ -2,6 +2,7 @@ import styles from "./treatmentCard.module.scss";
 import { useState } from "react";
 import { Treatment } from "../../types";
 import { GrEdit } from "react-icons/gr";
+import { getAuthHeaders } from "../../utils/authHeaders";
 //import { RiDeleteBinLine } from "react-icons/ri";
 
 type Props = {
@@ -28,6 +29,7 @@ const TreatmentCard = ({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          ...getAuthHeaders(),
         },
         credentials: "include",
         body: JSON.stringify(formData),

@@ -6,6 +6,8 @@ import styles from "./machines.module.scss";
 import { Machine } from "../types";
 import { useEffect, useState } from "react";
 import CreateMachineModal from "../components/CreateMachineModal/createMachineModal";
+import { getAuthHeaders } from "../utils/authHeaders";
+
 const Machines = () => {
   const [machines, setMachines] = useState<Machine[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -16,10 +18,11 @@ const Machines = () => {
         const response = await fetch(
           import.meta.env.VITE_BACKEND_URL + "/machine",
           {
-            headers: {
-              Accepts: "application/json",
-            },
             credentials: "include",
+            headers: {
+              Accept: "application/json",
+              ...getAuthHeaders(),
+            },
           },
         );
 

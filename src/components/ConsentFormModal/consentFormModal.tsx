@@ -9,6 +9,7 @@ import {
 
 import SignatureCanvas from "react-signature-canvas";
 import { useRef } from "react";
+import { getAuthHeaders } from "../../utils/authHeaders";
 
 type Props = {
   isOpen: boolean;
@@ -75,6 +76,7 @@ const ConsentFormModal = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...getAuthHeaders(),
         },
         credentials: "include",
         body: JSON.stringify(payload),

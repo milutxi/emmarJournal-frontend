@@ -9,6 +9,8 @@ import styles from "./newConsultation.module.scss";
 
 import { Client } from "../types";
 
+import { getAuthHeaders } from "../utils/authHeaders";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
@@ -18,7 +20,13 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   const response = await fetch(
     import.meta.env.VITE_BACKEND_URL + "/clients/" + id,
-    { credentials: "include" },
+    {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
+    },
   );
 
   if (!response.ok) {
@@ -68,6 +76,7 @@ const NewConsultation = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify({

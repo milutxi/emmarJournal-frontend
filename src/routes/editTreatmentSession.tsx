@@ -29,6 +29,8 @@ import {
   applyTreatmenSelection,
 } from "../utils/priceHelpers";
 
+import { getAuthHeaders } from "../utils/authHeaders";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, journalId } = params;
 
@@ -41,18 +43,38 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   ] = await Promise.all([
     fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/", {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/machine/", {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/journals/client/" + id, {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id, {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
   ]);
 
@@ -227,6 +249,7 @@ const EditTreatmentSession = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify(documents),
@@ -257,6 +280,7 @@ const EditTreatmentSession = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify(payload),
@@ -428,6 +452,7 @@ const EditTreatmentSession = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify(payload),

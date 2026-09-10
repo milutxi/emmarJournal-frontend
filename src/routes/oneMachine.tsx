@@ -1,5 +1,9 @@
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
-import { Machine, MachineParameterDefinition, MachineSetupNode } from "../types";
+import {
+  Machine,
+  MachineParameterDefinition,
+  MachineSetupNode,
+} from "../types";
 import styles from "./oneMachine.module.scss";
 import { useState } from "react";
 import { formatDisplayDate } from "../utils/jounalHelpers";
@@ -15,6 +19,8 @@ import {
   removeNode,
 } from "../utils/machineSettingsHelpers";
 
+import { getAuthHeaders } from "../utils/authHeaders";
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
@@ -24,6 +30,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       credentials: "include",
       headers: {
         Accept: "application/json",
+        ...getAuthHeaders(),
       },
     },
   );
@@ -43,6 +50,7 @@ const OneMachine = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          ...getAuthHeaders(),
         },
         credentials: "include",
         body: JSON.stringify(update),
@@ -94,7 +102,6 @@ const OneMachine = () => {
 
   const [setupMenuForm, setSetupMenuForm] = useState<MachineSetupNode[]>(
     machine.setupMenu ?? [],
-
   );
 
   const hasParameterDefinitions =
@@ -143,116 +150,110 @@ const OneMachine = () => {
 
   const hasSetupMenu = (machine.setupMenu ?? []).length > 0;
 
-const addTopLevelMenuItem = () => {
-  setSetupMenuForm((currentSetupMenu) => [
-    ...currentSetupMenu,
-    { label: "", children: [] },
-  ]);
-};
+  const addTopLevelMenuItem = () => {
+    setSetupMenuForm((currentSetupMenu) => [
+      ...currentSetupMenu,
+      { label: "", children: [] },
+    ]);
+  };
 
-const updateSetupMenuItem = (path: number[], value: string) => {
-  setSetupMenuForm((currentSetupMenu) =>
-    updateNodeLabel(currentSetupMenu, path, value),
-  );
-};
+  const updateSetupMenuItem = (path: number[], value: string) => {
+    setSetupMenuForm((currentSetupMenu) =>
+      updateNodeLabel(currentSetupMenu, path, value),
+    );
+  };
 
-const addSubMenuItem = (path: number[]) => {
-  setSetupMenuForm((currentSetupMenu) =>
-    addChildNode(currentSetupMenu, path),
-  );
-};
+  const addSubMenuItem = (path: number[]) => {
+    setSetupMenuForm((currentSetupMenu) =>
+      addChildNode(currentSetupMenu, path),
+    );
+  };
 
-const removeSetupMenuItem = (path: number[]) => {
-  setSetupMenuForm((currentSetupMenu) =>
-    removeNode(currentSetupMenu, path),
-  );
-};
+  const removeSetupMenuItem = (path: number[]) => {
+    setSetupMenuForm((currentSetupMenu) => removeNode(currentSetupMenu, path));
+  };
 
-const saveSetupMenu = async () => {
-  try {
-    const cleanedSetupMenu = cleanSetupMenu(setupMenuForm);
+  const saveSetupMenu = async () => {
+    try {
+      const cleanedSetupMenu = cleanSetupMenu(setupMenuForm);
 
-    const updatedMachine = await updateMachine({
-      setupMenu: cleanedSetupMenu,
-    });
+      const updatedMachine = await updateMachine({
+        setupMenu: cleanedSetupMenu,
+      });
 
-    setMachine(updatedMachine);
-    setSetupMenuForm(updatedMachine.setupMenu ?? []);
-    setEditSection(null);
-  } catch (error) {
-    console.error(error);
-  }
-};
+      setMachine(updatedMachine);
+      setSetupMenuForm(updatedMachine.setupMenu ?? []);
+      setEditSection(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const renderSetupNode = (
+    node: MachineSetupNode,
+    path: number[],
+    level: number,
+  ) => {
+    return (
+      <div key={path.join("-")} className={styles.setupMenuNode}>
+        <div
+          className={styles.setupMenuRow}
+          style={{ marginLeft: `${level * 24}px` }}
+        >
+          <input
+            type="text"
+            aria-label="Menyval"
+            placeholder={level === 0 ? "T.ex. Hårborttagning" : "T.ex. Ansikte"}
+            value={node.label}
+            onChange={(event) => updateSetupMenuItem(path, event.target.value)}
+          />
 
-const renderSetupNode = (
-  node: MachineSetupNode,
-  path: number[],
-  level: number,
-) => {
-  return (
-    <div key={path.join("-")} className={styles.setupMenuNode}>
-      <div
-        className={styles.setupMenuRow}
-        style={{ marginLeft: `${level * 24}px` }}
-      >
-        <input
-          type="text"
-          aria-label="Menyval"
-          placeholder={level === 0 ? "T.ex. Hårborttagning" : "T.ex. Ansikte"}
-          value={node.label}
-          onChange={(event) =>
-            updateSetupMenuItem(path, event.target.value)
-          }
-        />
+          <div className={styles.setupMenuActions}>
+            <button
+              type="button"
+              className={styles.subMenuButton}
+              onClick={() => addSubMenuItem(path)}
+            >
+              + Submeny
+            </button>
 
-        <div className={styles.setupMenuActions}>
-          <button
-            type="button"
-            className={styles.subMenuButton}
-            onClick={() => addSubMenuItem(path)}
-          >
-            + Submeny
-          </button>
-
-          <button
-            type="button"
-            className={styles.removeButton}
-            onClick={() => removeSetupMenuItem(path)}
-          >
-            Ta bort
-          </button>
+            <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => removeSetupMenuItem(path)}
+            >
+              Ta bort
+            </button>
+          </div>
         </div>
+
+        {(node.children ?? []).map((child, childIndex) =>
+          renderSetupNode(child, [...path, childIndex], level + 1),
+        )}
       </div>
+    );
+  };
 
-      {(node.children ?? []).map((child, childIndex) =>
-        renderSetupNode(child, [...path, childIndex], level + 1),
-      )}
-    </div>
-  );
-};
+  const renderSetupDisplayNode = (
+    node: MachineSetupNode,
+    path: number[],
+    level: number,
+  ) => {
+    return (
+      <div key={path.join("-")} className={styles.setupDisplayNode}>
+        <div
+          className={styles.setupDisplayItem}
+          style={{ marginLeft: `${level * 28}px` }}
+        >
+          <span>{node.label}</span>
+        </div>
 
-const renderSetupDisplayNode = (
-  node: MachineSetupNode,
-  path: number[],
-  level: number,
-) => {
-  return (
-    <div key={path.join("-")} className={styles.setupDisplayNode}>
-      <div
-        className={styles.setupDisplayItem}
-        style={{ marginLeft: `${level * 28}px` }}
-      >
-        <span>{node.label}</span>
+        {(node.children ?? []).map((child, childIndex) =>
+          renderSetupDisplayNode(child, [...path, childIndex], level + 1),
+        )}
       </div>
-
-      {(node.children ?? []).map((child, childIndex) =>
-        renderSetupDisplayNode(child, [...path, childIndex], level + 1),
-      )}
-    </div>
-  );
-};
- 
+    );
+  };
 
   return (
     <div className={styles.oneMachineStyle}>
@@ -568,71 +569,69 @@ const renderSetupDisplayNode = (
           )}
         </section>
 
-<section className={styles["oneMachineStyle__section"]}>
-  <h3>Setup / meny</h3>
+        <section className={styles["oneMachineStyle__section"]}>
+          <h3>Setup / meny</h3>
 
-  {editSection === "setupMenu" ? (
-    <>
-      {setupMenuForm.length > 0 ? (
-        <div className={styles.setupMenuList}>
-          {setupMenuForm.map((item, index) =>
-            renderSetupNode(item, [index], 0),
+          {editSection === "setupMenu" ? (
+            <>
+              {setupMenuForm.length > 0 ? (
+                <div className={styles.setupMenuList}>
+                  {setupMenuForm.map((item, index) =>
+                    renderSetupNode(item, [index], 0),
+                  )}
+                </div>
+              ) : (
+                <div className={styles["oneMachineStyle__textBox"]}>
+                  Ingen setup / meny tillagd.
+                </div>
+              )}
+
+              <button
+                type="button"
+                className={styles.addButton}
+                onClick={addTopLevelMenuItem}
+              >
+                + Lägg till menyval
+              </button>
+
+              <div>
+                <button onClick={saveSetupMenu}>Spara</button>
+
+                <button
+                  onClick={() => {
+                    setSetupMenuForm(machine.setupMenu ?? []);
+                    setEditSection(null);
+                  }}
+                >
+                  Avbryt
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {hasSetupMenu ? (
+                <div className={styles.setupDisplayList}>
+                  {(machine.setupMenu ?? []).map((item, index) =>
+                    renderSetupDisplayNode(item, [index], 0),
+                  )}
+                </div>
+              ) : (
+                <div className={styles["oneMachineStyle__textBox"]}>
+                  Ingen setup / meny tillagd.
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setSetupMenuForm(machine.setupMenu ?? []);
+                  setEditSection("setupMenu");
+                }}
+              >
+                Redigera
+              </button>
+            </>
           )}
-        </div>
-      ) : (
-        <div className={styles["oneMachineStyle__textBox"]}>
-          Ingen setup / meny tillagd.
-        </div>
-      )}
-
-      <button
-        type="button"
-        className={styles.addButton}
-        onClick={addTopLevelMenuItem}
-      >
-        + Lägg till menyval
-      </button>
-
-      <div>
-        <button onClick={saveSetupMenu}>Spara</button>
-
-        <button
-          onClick={() => {
-            setSetupMenuForm(machine.setupMenu ?? []);
-            setEditSection(null);
-          }}
-        >
-          Avbryt
-        </button>
-      </div>
-    </>
-  ) : (
-    <>
-      {hasSetupMenu ? (
-       
-<div className={styles.setupDisplayList}>
-  {(machine.setupMenu ?? []).map((item, index) =>
-    renderSetupDisplayNode(item, [index], 0),
-  )}
-</div>
-
-      ) : (
-        <div className={styles["oneMachineStyle__textBox"]}>
-          Ingen setup / meny tillagd.
-        </div>
-      )}
-
-      <button
-        onClick={() => {
-          setSetupMenuForm(machine.setupMenu ?? []);
-          setEditSection("setupMenu");
-        }}
-      >
-        Redigera
-      </button>
-    </>
-  )}
-</section>
+        </section>
 
         <section className={styles["oneMachineStyle__section"]}>
           <h3>Parametrar</h3>

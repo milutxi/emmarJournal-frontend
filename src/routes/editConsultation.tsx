@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router-dom";
 import { Client, Consultation } from "../types";
 import styles from "./newConsultation.module.scss";
+import { getAuthHeaders } from "../utils/authHeaders";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id, consultationId } = params;
@@ -11,6 +12,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       credentials: "include",
       headers: {
         Accept: "application/json",
+        ...getAuthHeaders(),
       },
     }),
 
@@ -20,6 +22,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         credentials: "include",
         headers: {
           Accept: "application/json",
+          ...getAuthHeaders(),
         },
       },
     ),
@@ -77,6 +80,7 @@ const EditConsultation = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify({

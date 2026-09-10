@@ -117,6 +117,7 @@
 // export default ClientModal;
 
 import { Client } from "../../types";
+import { getAuthHeaders } from "../../utils/authHeaders";
 import styles from "./clientModal.module.scss";
 
 type Props = {
@@ -158,6 +159,7 @@ const ClientModal = ({ onClose, initialData }: Props) => {
           method: id ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify(payload),

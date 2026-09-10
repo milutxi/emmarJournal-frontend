@@ -16,6 +16,7 @@ import {
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { GrStatusWarning } from "react-icons/gr";
 import { HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
+import { getAuthHeaders } from "../utils/authHeaders";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
@@ -26,6 +27,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         credentials: "include",
         headers: {
           Accept: "application/json",
+          ...getAuthHeaders(),
         },
       }),
 
@@ -33,6 +35,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         credentials: "include",
         headers: {
           Accept: "application/json",
+          ...getAuthHeaders(),
         },
       }),
 
@@ -40,6 +43,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         credentials: "include",
         headers: {
           Accept: "application/json",
+          ...getAuthHeaders(),
         },
       }),
     ]);
@@ -285,7 +289,7 @@ const OneClient = () => {
                     <span
                       className={styles.oneClientStyle__journalTreatmentName}
                     >
-                     KONSULTATION: {consultation.consultationTitle}
+                      KONSULTATION: {consultation.consultationTitle}
                     </span>
                   </button>
 

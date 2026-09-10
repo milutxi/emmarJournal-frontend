@@ -28,6 +28,8 @@ import {
   applyTreatmenSelection,
 } from "../utils/priceHelpers";
 
+import { getAuthHeaders } from "../utils/authHeaders";
+
 type NewTreatmentSessionDraft = {
   sessionDate: string;
   treatmentSessions: TreatmentSession[];
@@ -45,15 +47,31 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   ] = await Promise.all([
     fetch(import.meta.env.VITE_BACKEND_URL + "/clients/" + id, {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/treatment/", {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/machine/", {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
     fetch(import.meta.env.VITE_BACKEND_URL + "/medicalHistory/latest/" + id, {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     }),
   ]);
 
@@ -426,10 +444,11 @@ const NewTreatmentSession = () => {
         import.meta.env.VITE_BACKEND_URL + "/createJournal/",
         {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
-          credentials: "include",
           body: JSON.stringify(payload),
         },
       );
@@ -499,10 +518,11 @@ const NewTreatmentSession = () => {
         import.meta.env.VITE_BACKEND_URL + "/medicalHistory",
         {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
-          credentials: "include",
           body: JSON.stringify(payload),
         },
       );

@@ -1,4 +1,3 @@
-
 import TreatmentCard from "../components/TreatmentCard/treatmentCard";
 import Treatmentsmodal from "../components/TreatmentsModal/treatmentsModal";
 import { Treatment } from "../types";
@@ -8,6 +7,8 @@ import styles from "./treatments.module.scss";
 import { useEffect, useState } from "react";
 //import { Link } from "react-router-dom";
 
+import { getAuthHeaders } from "../utils/authHeaders";
+
 const Treatments = () => {
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -15,16 +16,20 @@ const Treatments = () => {
   const loadTreatments = () => {
     fetch(import.meta.env.VITE_BACKEND_URL + "/treatment", {
       credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...getAuthHeaders(),
+      },
     })
       .then((res) => res.json())
-       .then((data) => {
-      if (Array.isArray(data)) {
-        setTreatments(data);
-      } else {
-        console.error("Could not load treatments:", data);
-        setTreatments([]);
-      }
-    });
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setTreatments(data);
+        } else {
+          console.error("Could not load treatments:", data);
+          setTreatments([]);
+        }
+      });
   };
   useEffect(() => {
     loadTreatments();
@@ -56,17 +61,20 @@ const Treatments = () => {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1>BEHANDLINGAR</h1>
-        <button className={styles.newButton} onClick={() => setShowModal(true)}>+ Ny behandling</button>
+        <button className={styles.newButton} onClick={() => setShowModal(true)}>
+          + Ny behandling
+        </button>
       </div>
       <div className={styles.grid}>
         {treatments.map((treatment) => (
           <div>
             {/* <Link to={`/app/treatments/${treatment._id}`}>{treatment.tname}</Link> */}
 
-            <TreatmentCard key={treatment._id} treatment={treatment} 
-            //onDelete={deleteTreatment}
+            <TreatmentCard
+              key={treatment._id}
+              treatment={treatment}
+              //onDelete={deleteTreatment}
             />
-
           </div>
         ))}
 

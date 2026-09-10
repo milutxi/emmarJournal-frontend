@@ -12,6 +12,7 @@ import {
   cleanParameterDefinitions,
   cleanSetupMenu,
 } from "../../utils/machineSettingsHelpers";
+import { getAuthHeaders } from "../../utils/authHeaders";
 
 type Props = {
   onClose: () => void;
@@ -63,6 +64,7 @@ const CreateMachineModal = ({ onClose }: Props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           credentials: "include",
           body: JSON.stringify(payload),

@@ -8,10 +8,12 @@ import {
 import SessionDocumentModal from "../components/SessionDocumentModal/sessionDocumentModal";
 import JournalSessionRow from "../components/JournalSessionRow/journalSessionRow";
 import styles from "./journal.module.scss";
+import { getAuthHeaders } from "../utils/authHeaders";
 export const loader = async () => {
   const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/journals", {
     headers: {
       Accept: "application/json",
+      ...getAuthHeaders(),
     },
     credentials: "include",
   });

@@ -7,6 +7,7 @@ import styles from "./clients.module.scss";
 
 import ClientModal from "../components/ClientModal/clientModal";
 import { FiSearch } from "react-icons/fi";
+import { getAuthHeaders } from "../utils/authHeaders";
 
 const Clients = () => {
   const [clients, setClients] = useState<Client[]>([]);
@@ -21,10 +22,11 @@ const Clients = () => {
         const response = await fetch(
           import.meta.env.VITE_BACKEND_URL + "/clients",
           {
+            credentials: "include",
             headers: {
               Accept: "application/json",
+              ...getAuthHeaders(),
             },
-            credentials: "include",
           },
         );
 
