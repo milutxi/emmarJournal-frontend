@@ -23,12 +23,24 @@ type LoginResponse = AuthUser & {
 
 const tokenStorageKey = "emmarToken";
 
+// const getStoredToken = () => {
+//   return localStorage.getItem(tokenStorageKey);
+// };
+
+// const saveStoredToken = (token: string) => {
+//   localStorage.setItem(tokenStorageKey, token);
+// };
+
+// const removeStoredToken = () => {
+//   localStorage.removeItem(tokenStorageKey);
+// };
+
 const getStoredToken = () => {
-  return localStorage.getItem(tokenStorageKey);
+  return localStorage.getItem(tokenStorageKey)?.trim() || null;
 };
 
 const saveStoredToken = (token: string) => {
-  localStorage.setItem(tokenStorageKey, token);
+  localStorage.setItem(tokenStorageKey, token.trim());
 };
 
 const removeStoredToken = () => {
@@ -109,11 +121,24 @@ export const AuthProvider = ({ children }: Props) => {
       throw new Error(data.message || "Could not log in");
     }
 
-    if (data.token) {
-      saveStoredToken(data.token);
+    // if (data.token) {
+    //   saveStoredToken(data.token);
 
-      alert("token saved: " + Boolean(localStorage.getItem("emmarToken")));
+    //   alert("token saved: " + Boolean(localStorage.getItem("emmarToken")));
+    // }
+
+    // setUser({
+    //   _id: data._id,
+    //   name: data.name,
+    //   email: data.email,
+    //   role: data.role,
+    // });
+
+    if (!data.token) {
+      throw new Error("Login succeeded but no token was returned");
     }
+
+    saveStoredToken(data.token);
 
     setUser({
       _id: data._id,
@@ -122,6 +147,25 @@ export const AuthProvider = ({ children }: Props) => {
       role: data.role,
     });
   };
+
+  // const logout = async () => {
+  //   const token = getStoredToken();
+
+  //   removeStoredToken();
+  //   setUser(null);
+
+  //   await fetch(import.meta.env.VITE_BACKEND_URL + "/auth/logout", {
+  //     method: "POST",
+  //     credentials: "include",
+  //     headers: token
+  //       ? {
+  //           Authorization: `Bearer ${token}`,
+  //         }
+  //       : {},
+  //   });
+
+  //   (removeStoredToken(), setUser(null));
+  // };
 
   const logout = async () => {
     const token = getStoredToken();
@@ -138,8 +182,6 @@ export const AuthProvider = ({ children }: Props) => {
           }
         : {},
     });
-
-    (removeStoredToken(), setUser(null));
   };
 
   useEffect(() => {
