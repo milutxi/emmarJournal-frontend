@@ -12,67 +12,25 @@ const Machines = () => {
   const [machines, setMachines] = useState<Machine[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const [debugMessage, setDebugMessage] = useState("");
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         import.meta.env.VITE_BACKEND_URL + "/machine",
-  //         {
-  //           credentials: "include",
-  //           headers: {
-  //             Accept: "application/json",
-  //             ...getAuthHeaders(),
-  //           },
-  //         },
-  //       );
-
-  //       const data = await response.json();
-
-  //       setMachines(Array.isArray(data) ? data : []);
-  //     } catch (error) {
-  //       console.error("Error fetching machines: ", error);
-  //     }
-  //   };
-  //   fetchData();
-  // });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const authHeaders = getAuthHeaders();
-
-        setDebugMessage("Auth header: " + Boolean(authHeaders.Authorization));
-
         const response = await fetch(
           import.meta.env.VITE_BACKEND_URL + "/machine",
           {
             credentials: "include",
             headers: {
               Accept: "application/json",
-              ...authHeaders,
+              ...getAuthHeaders(),
             },
           },
         );
 
         const data = await response.json();
 
-        setDebugMessage(
-          "Auth header: " +
-            Boolean(authHeaders.Authorization) +
-            " | Status: " +
-            response.status +
-            " | Message: " +
-            (data.message || "no message") +
-            " | Count: " +
-            (Array.isArray(data) ? data.length : "not array"),
-        );
-
         setMachines(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching machines: ", error);
-        setDebugMessage("Machine fetch error");
       }
     };
 
@@ -105,8 +63,6 @@ const Machines = () => {
     <div className={styles.machinesStyle}>
       <div className={styles["machinesStyle__top"]}>
         <h1 className={styles["machinesStyle__title"]}>MASKINER</h1>
-
-        <p>{debugMessage}</p>
 
         <button
           className={styles["machinesStyle__createButton"]}
