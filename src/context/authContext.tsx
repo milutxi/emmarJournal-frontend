@@ -87,6 +87,7 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   const login = async (email: string, password: string) => {
+    removeStoredToken();
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/auth/login",
       {
@@ -124,6 +125,9 @@ export const AuthProvider = ({ children }: Props) => {
 
   const logout = async () => {
     const token = getStoredToken();
+
+    removeStoredToken();
+    setUser(null);
 
     await fetch(import.meta.env.VITE_BACKEND_URL + "/auth/logout", {
       method: "POST",
