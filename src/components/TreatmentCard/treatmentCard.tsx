@@ -1,8 +1,9 @@
 import styles from "./treatmentCard.module.scss";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Treatment } from "../../types";
 import { GrEdit } from "react-icons/gr";
 import { getAuthHeaders } from "../../utils/authHeaders";
+import { TbDeviceSdCard } from "react-icons/tb";
 //import { RiDeleteBinLine } from "react-icons/ri";
 
 type Props = {
@@ -14,6 +15,9 @@ const TreatmentCard = ({
   // onDelete
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const [descriptionNeedsMore, setDescriptionNeedsMore] = useState(false);
 
   const [formData, setFormData] = useState({
     tname: treatment.tname,
@@ -21,6 +25,18 @@ const TreatmentCard = ({
     tduration: treatment.tduration,
     tprice: treatment.tprice,
   });
+
+  useEffect(() => {
+    if (editMode || showFullDescription) return;
+
+    const descriptionElement = descriptionRef.current;
+
+    if(!descriptionElement) return;
+
+    setDescriptionNeedsMore(
+      descriptionElement.scrollHeight > descriptionElement.clientHeight + 1,
+    );
+  }, [formData.tdescription, editMode, showFullDescription]);
 
   const updateTreatment = async () => {
     const response = await fetch(
@@ -48,7 +64,9 @@ const TreatmentCard = ({
   };
 
   return (
-    <div className={`${styles.card} ${editMode ? styles.editing : ""}`}>
+    <div
+      className={`${styles.card} ${editMode ? styles.editing : ""} ${showFullDescription ? styles.expanded : ""}`}
+    >
       <div className={styles.header}>
         {editMode ? (
           <div className={styles.editBadge}>Redigeringsläge</div>
@@ -79,7 +97,12 @@ const TreatmentCard = ({
       <section className={styles.descriptionSection}>
         <h5 className={styles.subtitle}>Beskrivning:</h5>
 
-        <div className={styles.description}>
+        <div
+        ref={descriptionRef}
+          className={`${styles.description} ${
+            showFullDescription ? styles.descriptionExpanded : ""
+          }`}
+        >
           {editMode ? (
             <textarea
               className={styles.descriptionInput}
@@ -95,6 +118,16 @@ const TreatmentCard = ({
             formData.tdescription || "Ingen beskrivning tillgänglig."
           )}
         </div>
+
+        {!editMode && formData.tdescription && descriptionNeedsMore && (
+          <button
+            type="button"
+            className={styles.showMoreButton}
+            onClick={() => setShowFullDescription(!showFullDescription)}
+          >
+            {showFullDescription ? "Visa mindre" : "Visa mer"}
+          </button>
+        )}
       </section>
 
       <section className={styles.infoRow}>

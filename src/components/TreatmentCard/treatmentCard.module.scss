@@ -87,6 +87,30 @@
   -webkit-box-orient: vertical;
 }
 
+.descriptionExpanded {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+}
+
+.showMoreButton {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  color: $color-goldenrod;
+  padding: 0;
+  margin-top: $indent__s;
+  font-family: $font-montserrat;
+  font-size: $font-size__s;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .infoRow {
   display: flex;
   justify-content: space-between;
@@ -227,4 +251,10 @@
   text-align: center;
   border: 1px solid $color-dark-outline;
   border-radius: 8px;
+}
+
+.expanded {
+  height: auto;
+  min-height: 420px;
+  overflow: visible;
 }
