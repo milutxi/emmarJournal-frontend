@@ -146,15 +146,20 @@ const TreatmentCard = ({
 
       {editMode ? (
         <div className={styles.actions}>
-          <button className={styles.saveButton} onClick={updateTreatment}>
-            Spara
-          </button>
-
           <button
+            type="button"
             className={styles.cancelButton}
             onClick={() => setEditMode(false)}
           >
             Avbryt
+          </button>
+
+          <button
+            type="button"
+            className={styles.saveButton}
+            onClick={updateTreatment}
+          >
+            Spara
           </button>
         </div>
       ) : (

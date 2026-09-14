@@ -71,7 +71,7 @@
 
 .description {
   color: $color-body-display;
-  text-align: left;
+  text-align: justify;
   word-break: break-word;
   line-height: 1.4;
   white-space: pre-line;
@@ -108,14 +108,13 @@
 
 .actions {
   display: flex;
+  justify-content: flex-end;
   gap: $indent__s;
   margin-top: $indent__m;
 }
 
 .actions button {
-  flex: 1;
-  padding: $indent__s;
-  border: none;
+  padding: $indent__s $indent__m;
   border-radius: 8px;
   font-family: $font-montserrat;
   font-size: $font-size__s;
@@ -139,22 +138,25 @@
   }
 }
 
-.saveButton {
-  background-color: $color-body-display;
-  color: white;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-}
-
 .cancelButton {
-  background-color: transparent;
-  border: 1px solid $color-dark-outline !important;
+  border: 1px solid $color-dark-outline;
+  background: transparent;
   color: $color-text;
 
   &:hover {
-    background-color: $color-bg;
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
+  }
+}
+
+.saveButton {
+  border: 1px solid $color-goldenrod;
+  background-color: $color-goldenrod;
+  color: white;
+
+  &:hover {
+     transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   }
 }
 
@@ -203,11 +205,13 @@
 
 .descriptionInput {
   width: 100%;
-  min-height: 100px;
+  min-height: 260px;
   padding: $indent__s;
   resize: vertical;
   font-family: inherit;
   font-size: $font-size__base;
+  line-height: 1.5;
+  text-align: justify;
   border: 1px solid $color-dark-outline;
   border-radius: 8px;
 }
