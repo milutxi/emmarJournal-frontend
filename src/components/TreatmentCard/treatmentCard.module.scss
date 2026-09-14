@@ -46,11 +46,16 @@
 
 .title {
   color: $color-lynx-black;
-  font-size: $font-size__m;
+  font-size: 1.20rem;
   margin: 0;
   flex: 1;
   word-break: break-word;
   line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  min-height: 3rem;
+
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
