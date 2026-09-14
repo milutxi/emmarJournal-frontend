@@ -16,39 +16,56 @@
   }
 }
 
+// .grid {
+//   @include gridbox(320px);
+//   gap: $indent__m;
+// }
+
 .grid {
-  @include gridbox(320px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: $indent__m;
+  //max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .newButton {
   display: flex;
-    align-items: center;
+  align-items: center;
 
-    gap: 8px;
+  gap: 8px;
 
-    border: none;
-    border-radius: 10px;
+  border: none;
+  border-radius: 10px;
 
-    padding: 12px 18px;
+  padding: 12px 18px;
 
-    background: $color-goldenrod;
-    color: white;
+  background: $color-goldenrod;
+  color: white;
 
-    font-size: 14px;
-    font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    transition: all 0.2s ease;
+  transition: all 0.2s ease;
 
-    &:hover {
-      transform: scale(1.02);
+  &:hover {
+    transform: scale(1.02);
 
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-    }
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  }
 
-    &:active {
-      transform: scale(1.02);
-    }
+  &:active {
+    transform: scale(1.02);
+  }
 }
+
+

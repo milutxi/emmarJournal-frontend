@@ -76,7 +76,7 @@ const TreatmentCard = ({
         />
       )}
 
-      <section>
+      <section className={styles.descriptionSection}>
         <h5 className={styles.subtitle}>Beskrivning:</h5>
 
         <div className={styles.description}>
