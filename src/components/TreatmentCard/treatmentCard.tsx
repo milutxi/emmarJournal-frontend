@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Treatment } from "../../types";
 import { GrEdit } from "react-icons/gr";
 import { getAuthHeaders } from "../../utils/authHeaders";
-import { TbDeviceSdCard } from "react-icons/tb";
+
 //import { RiDeleteBinLine } from "react-icons/ri";
 
 type Props = {
