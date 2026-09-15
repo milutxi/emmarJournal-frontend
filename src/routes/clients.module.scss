@@ -22,48 +22,62 @@
     color: $color-lynx-black;
   }
 
-  &__toolbar {
-    position: relative;
-  flex: 1;
-    @include flexbox;
-
+  &__actions {
+    display: flex;
+    align-items: center;
     justify-content: flex-end;
-    width: 50%;
     gap: $indent__m;
 
-    margin-bottom: $indent__l;
-    margin-left: auto;
-
+    width: min(700px, 65%);
 
     @include responsive-mobile {
-     width: 100%;
+      width: 100%;
+      flex-direction: column;
+      gap: $indent__base;
+    }
+  }
+
+  &__toolbar {
+    position: relative;
+    width: 100%;
+    // flex: 1;
+    //   @include flexbox;
+
+    //   justify-content: flex-end;
+    //   width: 50%;
+    //   gap: $indent__m;
+
+    //   margin-bottom: $indent__l;
+    //   margin-left: auto;
+
+    @include responsive-mobile {
+      width: 100%;
     }
   }
 
   &__searchIcon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-  font-size: 16px;
-  pointer-events: none;
-}
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 16px;
+    pointer-events: none;
+  }
 
   &__search {
+    width: 100%;
+    padding: 12px 16px 12px 38px; // 👈 space for icon
 
-     width: 100%;
-  padding: 12px 16px 12px 38px; // 👈 space for icon
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
 
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
+    font-size: 14px;
+    outline: none;
 
-  font-size: 14px;
-  outline: none;
-
-  &:focus {
-    border-color: $color-goldenrod;
-  }
+    &:focus {
+      border-color: $color-goldenrod;
+    }
     // flex: 1;
 
     // padding: 12px 16px;
@@ -83,7 +97,10 @@
   &__button {
     display: flex;
     align-items: center;
+    justify-content: center;
 
+    min-width: 120px;
+    white-space: nowrap;
     gap: 8px;
 
     border: none;
@@ -109,6 +126,11 @@
 
     &:active {
       transform: scale(1.02);
+    }
+
+    @include responsive-mobile {
+      width: 100%;
+      justify-content: center;
     }
   }
 }

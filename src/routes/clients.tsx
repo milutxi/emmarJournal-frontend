@@ -67,28 +67,29 @@ const Clients = () => {
 
   return (
     <div className={styles.clientStyle}>
-      <div className={styles["clientStyle__header"]}>
-        <h1 className={styles["clientStyle__title"]}>KUNDER</h1>
-        {/* Add button */}
-        <button
-          className={styles["clientStyle__button"]}
-          onClick={() => setIsCreateOpen(true)}
-        >
-          + Ny Kund
-        </button>
-      </div>
+    <div className={styles["clientStyle__header"]}>
+  <h1 className={styles["clientStyle__title"]}>KUNDER</h1>
 
-      {/* Toolbar */}
-      <div className={styles["clientStyle__toolbar"]}>
-        <FiSearch className={styles["clientStyle__searchIcon"]} />
-        <input
-          type="text"
-          placeholder="Sök kund..."
-          value={searchClient}
-          onChange={(e) => setSearchClient(e.target.value)}
-          className={styles["clientStyle__search"]}
-        />
-      </div>
+  <div className={styles["clientStyle__actions"]}>
+    <div className={styles["clientStyle__toolbar"]}>
+      <FiSearch className={styles["clientStyle__searchIcon"]} />
+      <input
+        type="text"
+        placeholder="Sök kund..."
+        value={searchClient}
+        onChange={(e) => setSearchClient(e.target.value)}
+        className={styles["clientStyle__search"]}
+      />
+    </div>
+
+    <button
+      className={styles["clientStyle__button"]}
+      onClick={() => setIsCreateOpen(true)}
+    >
+      + Ny Kund
+    </button>
+  </div>
+</div>
 
       {/* Clients list */}
       <div className={styles.clientListStyle}>
