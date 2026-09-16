@@ -110,9 +110,23 @@ const Treatmentsmodal = ({ onClose, onCreated }: Props) => {
             </div>
           </div>
 
-          <button className={styles.createBtn} onClick={handleSubmit}>
-            Skapa behandling
-          </button>
+          <div className={styles.buttonRow}>
+            <button
+              type="button"
+              className={styles.cancelBtn}
+              onClick={onClose}
+            >
+              Avbryt
+            </button>
+
+            <button
+              type="button"
+              className={styles.createBtn}
+              onClick={handleSubmit}
+            >
+              Skapa behandling
+            </button>
+          </div>
         </div>
       </div>
     </div>

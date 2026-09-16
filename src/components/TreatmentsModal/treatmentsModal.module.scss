@@ -4,35 +4,78 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
+  z-index: 1000;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  padding: $indent__l;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  @include responsive-mobile {
+    padding: $indent__base;
+  }
 }
 
 .modalBox {
   position: relative;
-  background: $color-bg;
 
-  width: 100%;
-  max-width: 600px;
-
-  padding: $indent__l;
-
-  border-radius: 12px;
-  border: 1px solid $color-dark-outline;
+  width: min(600px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
   gap: $indent__base;
+
+  padding: $indent__l;
+
+  background: $color-bg;
+  color: $color-text;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+
+  @include responsive-mobile {
+    padding: $indent__m;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: $indent__base;
+  right: $indent__base;
+
+  border: 1px solid $color-dark-outline;
+  background: transparent;
+  color: $color-text;
+
+  padding: 6px 10px;
+
+  cursor: pointer;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__s;
+
+  &:hover {
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
+  }
 }
 
 .title {
-  font-size: $font-size__m;
+  margin: 0 0 $indent__m;
+
   color: $color-lynx-black;
+
+  font-size: $font-size__m;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .form {
@@ -45,25 +88,48 @@
 .textarea {
   width: 100%;
 
-  padding: $indent__s;
+  padding: 12px 14px;
 
   border: 1px solid $color-dark-outline;
   border-radius: 8px;
 
-  font-size: $font-size__base;
-  font-family: $font-montserrat;
-
   background: white;
+  color: $color-text;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__base;
+
+  outline: none;
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $color-goldenrod;
+    box-shadow: 0 0 8px rgba(210, 170, 55, 0.25);
+  }
+
+  &::placeholder {
+    color: $color-body-display;
+    opacity: 0.8;
+  }
 }
 
 .textarea {
-  min-height: 120px;
+  min-height: 180px;
   resize: vertical;
+  line-height: 1.5;
 }
 
 .inlineFields {
   display: flex;
   gap: $indent__base;
+
+  @include responsive-mobile {
+    flex-direction: column;
+  }
 }
 
 .field {
@@ -76,14 +142,15 @@
 
 .field label {
   text-align: left;
+
   font-size: $font-size__s;
   color: $color-body-display;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
   margin: 0;
+  -webkit-appearance: none;
 }
 
 input[type="number"] {
@@ -94,41 +161,55 @@ input[type="number"] {
   display: flex;
   justify-content: flex-end;
   gap: $indent__s;
+
+  margin-top: $indent__s;
+
+  @include responsive-mobile {
+    flex-direction: column;
+  }
 }
 
-.closeBtn {
-  position: absolute;
-  top: $indent__base;
-  right: $indent__base;
+.createBtn,
+.cancelBtn {
+  padding: 12px $indent__m;
 
-  background: transparent;
-  border: none;
-
-  cursor: pointer;
-
-  font-size: $font-size__m;
-  color: $color-lynx-black;
-}
-
-.createBtn {
-  background: $color-goldenrod;
-  color: white;
-
-  border: none;
   border-radius: 8px;
 
-  padding: $indent__s $indent__base;
+  font-family: $font-montserrat;
+  font-size: $font-size__base;
+  font-weight: 600;
 
   cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  @include responsive-mobile {
+    width: 100%;
+  }
 }
 
 .cancelBtn {
-  background: transparent;
-
   border: 1px solid $color-dark-outline;
-  border-radius: 8px;
+  background: transparent;
+  color: $color-text;
 
-  padding: $indent__s $indent__base;
+  &:hover {
+    border-color: $color-goldenrod;
+    color: $color-goldenrod;
+  }
+}
 
-  cursor: pointer;
+.createBtn {
+  border: 1px solid $color-goldenrod;
+  background: $color-goldenrod;
+  color: white;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  }
 }
