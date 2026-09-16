@@ -400,7 +400,9 @@ const OneMachine = () => {
               <button onClick={() => setEditSection(null)}>Avbryt</button>
             </div>
           ) : (
-            <button onClick={() => setEditSection("basic")}>Redigera</button>
+            <button 
+            className={styles["oneMachineStyle__editButton"]}
+            onClick={() => setEditSection("basic")}>Redigera</button>
           )}
         </div>
       </div>

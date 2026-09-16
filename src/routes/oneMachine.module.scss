@@ -13,9 +13,9 @@
   }
 
   &__left {
-    width: 30%;
+    width: 32%;
     position: sticky;
-    top: $indent__s;
+    top: $indent__m;
     height: fit-content;
 
     @include responsive-mobile {
@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: column;
     gap: $indent__s;
+
     @include responsive-mobile {
       width: 100%;
     }
@@ -36,27 +37,40 @@
 
   &__card {
     position: relative;
-    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-    border-radius: 28px;
+    background: white;
+    color: $color-text;
+    border: 1px solid $color-dark-outline;
+    border-radius: 12px;
     padding: $indent__m;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow:
-      0 10px 25px rgba(0, 0, 0, 0.06),
-      0 2px 6px rgba(0, 0, 0, 0.04);
-
     display: flex;
     flex-direction: column;
-    gap: $indent__s;
-    backdrop-filter: blur(6px);
+    gap: $indent__base;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  &__card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: $color-goldenrod;
   }
 
   &__name {
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    color: #111;
+    margin: 0;
+    padding-top: $indent__s;
     padding-bottom: $indent__s;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    color: $color-lynx-black;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    word-break: break-word;
   }
 
   &__mainInfo,
@@ -65,34 +79,38 @@
     display: flex;
     flex-direction: column;
     gap: $indent__s;
-    padding: $indent__s;
 
     p {
-      display: flex;
-      align-items: center;
-      gap: $indent__m;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: $indent__s;
+      align-items: baseline;
       margin: 0;
+      padding: $indent__s 0;
       color: $color-text;
       font-size: $font-size__base;
-      line-height: 1;
-      justify-content: space-between;
-      padding: 6px 0;
+      line-height: 1.4;
+      text-align: left;
+
+      @include responsive-mobile {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
     }
 
     span {
-      min-width: auto;
+      color: $color-body-display;
       font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: $color-body-display;
     }
   }
 
   &__divider {
     width: 100%;
-    height: 0.2px;
-    background: $color-dark-outline;
+    height: 1px;
+    background: rgba(37, 35, 35, 0.12);
   }
 
   &__description {
@@ -101,28 +119,64 @@
     flex-direction: column;
     align-items: flex-start;
     gap: $indent__s;
-    padding: $indent__s;
-
-    h3 {
-      margin: 0;
-      font-size: $font-size__base;
-      font-weight: 600;
-      color: $color-body-display;
-    }
+    padding: $indent__s 0;
 
     span {
-      min-width: auto;
+      color: $color-body-display;
       font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: $color-body-display;
     }
   }
 
+  &__textBox {
+    width: 100%;
+    box-sizing: border-box;
+    padding: $indent__base;
+    border: 1px solid rgba(37, 35, 35, 0.18);
+    border-radius: 8px;
+    background: $color-bg;
+    color: $color-text;
+    line-height: 1.6;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  &__editButton {
+  align-self: flex-end;
+
+  padding: 8px $indent__base;
+
+  border: 1px solid $color-dark-outline;
+  border-radius: 8px;
+
+  background: transparent;
+  color: $color-text;
+
+  font-family: $font-montserrat;
+  font-size: $font-size__s;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    color: $color-goldenrod;
+    border-color: $color-goldenrod;
+    transform: translateY(-1px);
+  }
+}
+
   &__section {
     background: white;
-    border-radius: 24px;
+    color: $color-text;
+    border-radius: 12px;
     padding: $indent__m;
     border: 1px solid $color-dark-outline;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
@@ -133,13 +187,43 @@
     h3 {
       margin: 0;
       color: $color-lynx-black;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
       text-align: left;
     }
 
     p {
       margin: 0;
-      line-height: 1.7;
       color: $color-text;
+      font-size: $font-size__base;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    button {
+      align-self: flex-end;
+      padding: 8px $indent__base;
+      border: 1px solid $color-dark-outline;
+      border-radius: 8px;
+      background: transparent;
+      color: $color-text;
+      font-family: $font-montserrat;
+      font-size: $font-size__s;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+
+      &:hover {
+        color: $color-goldenrod;
+        border-color: $color-goldenrod;
+        transform: translateY(-1px);
+      }
     }
   }
 
@@ -148,60 +232,74 @@
     flex-direction: column;
     gap: $indent__s;
     text-align: left;
+
+    p {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: $indent__s;
+      align-items: baseline;
+      padding: $indent__s 0;
+
+      @include responsive-mobile {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+    }
     span {
-      min-width: auto;
+      color: $color-body-display;
       font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: $color-body-display;
     }
   }
 
   &__inlineInfo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $indent__base;
+
+  p {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: $indent__l;
+    flex-direction: column;
+    gap: 4px;
 
-    p {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0;
-      color: $color-text;
-      font-size: $font-size__base;
-    }
+    padding: $indent__s 0;
 
-    span {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: $color-body-display;
-    }
-    @include responsive-mobile {
-      gap: 0;
-    }
+    border-top: 1px solid rgba(37, 35, 35, 0.12);
   }
 
-  &__textBox {
-    width: 100%;
-    box-sizing: border-box;
-    padding: $indent__s;
-    border: 1px solid $color-dark-outline;
-    border-radius: 16px;
-    background: #fafafa;
-    line-height: 1.7;
-    color: $color-text;
-    text-align: left;
-    white-space: pre-wrap;
+  span {
+    color: $color-body-display;
+
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
   }
 }
 
-.parameterStatus {
+  &__textBox {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: $indent__base;
+
+  border: 1px solid rgba(37, 35, 35, 0.18);
+  border-radius: 8px;
+
+  background: $color-bg;
+  color: $color-text;
+
+  line-height: 1.6;
   text-align: left;
-  padding: $indent__s 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  }
 }
 
 .setupMenuList {
@@ -289,9 +387,10 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  // gap: 4px;
+gap: $indent__s;
   margin-bottom: $indent__m;
-  align-items: stretch;
+ // align-items: stretch;
   text-align: left;
 }
 
@@ -301,17 +400,153 @@
 
 .setupDisplayItem {
   width: fit-content;
-  min-width: 180px;
+  max-width: 100%;
+  min-width: 220px;
   box-sizing: border-box;
 
-  padding: 6px $indent__s;
+  padding: 8px $indent__s;
 
-  border-bottom: 1px solid $color-dark-outline;
+  border: 1px solid rgba(37, 35, 35, 0.14);
+  border-left: 4px solid $color-goldenrod;
+  border-radius: 8px;
+
+  background: $color-bg;
   text-align: left;
 
   span {
-    display: block;
+      display: block;
+
+    color: $color-text;
+
+    font-size: $font-size__base;
     font-weight: 600;
+    line-height: 1.4;
+
+    word-break: break-word;
+  }
+
+   @include responsive-mobile {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+
+  }
+}
+
+
+.parameterDisplayList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  width: 100%;
+}
+
+.parameterDisplayRow {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: $indent__base;
+  align-items: center;
+
+  padding: $indent__s $indent__base;
+
+  border: 1px solid rgba(37, 35, 35, 0.14);
+  border-radius: 8px;
+
+  background: $color-bg;
+
+  span:first-child {
+    color: $color-text;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  span:last-child {
     color: $color-body-display;
+    text-align: right;
+    font-size: $font-size__s;
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+
+    span:last-child {
+      text-align: left;
+    }
+  }
+}
+
+.parameterDefinitionList {
+  display: flex;
+  flex-direction: column;
+  gap: $indent__s;
+
+  width: 100%;
+}
+
+.parameterDefinitionHeader {
+  display: grid;
+  grid-template-columns: 1fr 120px 90px;
+  gap: $indent__s;
+
+  color: $color-body-display;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  @include responsive-mobile {
+    display: none;
+  }
+}
+
+.parameterDefinitionRow {
+  display: grid;
+  grid-template-columns: 1fr 120px 90px;
+  gap: $indent__s;
+  align-items: center;
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: $indent__s;
+
+    border: 1px solid $color-dark-outline;
+    border-radius: 8px;
+
+    background: white;
+    color: $color-text;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__base;
+
+    &:focus {
+      outline: none;
+      border-color: $color-goldenrod;
+      box-shadow: 0 0 8px rgba(210, 170, 55, 0.25);
+    }
+  }
+
+  @include responsive-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .oneMachineStyle {
+    flex-direction: column;
+    padding: $indent__s;
+
+    &__left {
+      width: 100%;
+      position: static;
+    }
+
+    &__right {
+      width: 100%;
+    }
   }
 }
