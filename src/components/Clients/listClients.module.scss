@@ -2,31 +2,37 @@
 @use "../../styles/variables" as *;
 
 .list {
-  @include listbox;
+  display: flex;
+  align-items: center;
+  gap: $indent__s;
 
-  justify-content: space-between;
+  width: 100%;
 
   @include responsive-mobile {
-    align-items: center;
+    align-items: stretch;
+    gap: $indent__s;
   }
 
-  /* ROW */
   &__data {
-    background: #f5f5f5;
+    flex: 1;
 
-    @include listbox;
-
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.6fr;
     align-items: center;
-    justify-content: space-between;
+    gap: $indent__m;
 
-    border: 1px solid #e6e6e6;
+    background: white;
+
+    border: 1px solid $color-dark-outline;
     border-radius: 10px;
 
-    padding: 12px 16px;
-    width: 95%;
+    padding: 14px 18px;
 
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
 
     text-decoration: none;
     color: $color-text;
@@ -35,101 +41,95 @@
 
     &:hover {
       border-color: $color-goldenrod;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
       transform: translateY(-1px);
     }
 
     @include responsive-mobile {
-      width: 92%;
+      grid-template-columns: 1fr;
+      gap: 6px;
+
+      padding: $indent__base;
     }
   }
 
-  /* TEXT COLUMNS (KEEP SINGLE LINE) */
   &__dataName,
   &__dataTelephone,
   &__dataEmail {
-    width: 30%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 14px;
-  }
 
-  &__dataName {
-    padding-left: $indent__base;
-    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
 
     @include responsive-mobile {
       width: 100%;
-      text-align: center;
-      padding-left: 0;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      text-align: left;
+    }
+  }
+
+  &__dataName {
+    font-weight: 700;
+    color: $color-lynx-black;
+
+    @include responsive-mobile {
+      font-size: 1rem;
     }
   }
 
   &__dataTelephone {
-    @include responsive-mobile {
-      width: 100%;
-      text-align: center;
-    }
+    color: $color-text;
   }
 
   &__dataEmail {
-    color: #666;
-
-    @include responsive-mobile {
-      width: 100%;
-      text-align: center;
-    }
+    color: $color-body-display;
   }
 
-  /* ACTIONS INLINE */
   &__icons {
-    @include listbox;
+    display: flex;
     align-items: center;
-    gap: 8px;
-    margin-left: auto;
-    padding-left: 12px;
-    border-left: 1px solid #eee;
-    flex-shrink: 0;
+    justify-content: center;
 
-    @include responsive-mobile {
-      flex-direction: row;
-    }
+    flex-shrink: 0;
   }
 
-  /* BUTTONS (COMPACT INLINE) */
   &__edit,
   &__delete {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid $color-dark-outline;
+    border-radius: 10px;
 
     background: white;
+    color: $color-body-display;
+
     cursor: pointer;
 
-    font-size: $font-size__m;
+    font-size: $font-size__base;
 
-    transition: all 0.2s ease;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
 
-    @include responsive-mobile {
-      padding: 0;
+    &:hover {
+      color: $color-goldenrod;
+      border-color: $color-goldenrod;
+      transform: translateY(-1px);
     }
   }
 
-  &__edit:hover {
-    background-color: $color-goldenrod;
-    border: 2px solid $color-body-display;
-  }
-
   &__delete:hover {
-    background-color: #ff4d4f;
-    border: 2px solid #ff4d4f;
-    color: white;
+    color: #c0392b;
+    border-color: #c0392b;
   }
 }
