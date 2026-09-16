@@ -1,50 +1,126 @@
+// @use "../styles/variables" as *;
+// @use "../styles/mixins" as *;
+
+// .machinesStyle {
+
+//   padding: $indent__l;
+
+//   &__top {
+//     @include flexbox;
+
+//     align-items: center;
+
+//     margin-bottom: $indent__l;
+
+//     @include responsive-mobile {
+//       flex-direction: column;
+//       //align-items: flex-start;
+
+//       gap: $indent__base;
+//     }
+//   }
+
+//   &__title {
+//     font-size: $font-size__l;
+
+//     color: $color-lynx-black;
+//   }
+
+//   &__actions {
+//     display: flex;
+
+//     gap: $indent__s;
+//   }
+
+//   &__grid {
+//     @include gridbox(320px);
+
+//     gap: $indent__m;
+//   }
+
+//   &__createButton {
+//      display: flex;
+//     align-items: center;
+
+//     gap: 8px;
+
+//     border: none;
+//     border-radius: 10px;
+
+//     padding: 12px 18px;
+
+//     background: $color-goldenrod;
+//     color: white;
+
+//     font-size: 14px;
+//     font-weight: 600;
+
+//     cursor: pointer;
+
+//     transition: all 0.2s ease;
+
+//     &:hover {
+//       transform: scale(1.02);
+
+//       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+//     }
+
+//     &:active {
+//       transform: scale(1.02);
+//     }
+//   }
+// }
+
+
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
 .machinesStyle {
-
   padding: $indent__l;
 
   &__top {
-    @include flexbox;
-
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    gap: $indent__m;
 
     margin-bottom: $indent__l;
 
     @include responsive-mobile {
       flex-direction: column;
-      //align-items: flex-start;
-
+      align-items: stretch;
       gap: $indent__base;
     }
   }
 
   &__title {
+    margin: 0;
+
     font-size: $font-size__l;
-
     color: $color-lynx-black;
-  }
-
-  &__actions {
-    display: flex;
-
-    gap: $indent__s;
+    letter-spacing: 0.04em;
   }
 
   &__grid {
-    @include gridbox(320px);
-
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: $indent__m;
+    align-items: stretch;
+
+    @include responsive-mobile {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__createButton {
-     display: flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
 
-    gap: 8px;
+    min-width: 120px;
+    white-space: nowrap;
 
-    border: none;
+    border: 1px solid $color-goldenrod;
     border-radius: 10px;
 
     padding: 12px 18px;
@@ -52,21 +128,23 @@
     background: $color-goldenrod;
     color: white;
 
+    font-family: $font-montserrat;
     font-size: 14px;
     font-weight: 600;
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
 
     &:hover {
-      transform: scale(1.02);
-
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
-    &:active {
-      transform: scale(1.02);
+    @include responsive-mobile {
+      width: 100%;
     }
   }
 }
