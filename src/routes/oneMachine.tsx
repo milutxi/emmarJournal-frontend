@@ -382,8 +382,15 @@ const OneMachine = () => {
           </div>
 
           {editSection === "basic" ? (
-            <div>
+            <div className={styles["oneMachineStyle__buttonRow"]}>
               <button
+                className={styles["oneMachineStyle__cancelButton"]}
+                onClick={() => setEditSection(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className={styles["oneMachineStyle__saveButton"]}
                 onClick={async () => {
                   try {
                     const updatedMachine = await updateMachine(basicForm);
@@ -396,13 +403,14 @@ const OneMachine = () => {
               >
                 Spara
               </button>
-
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
             </div>
           ) : (
-            <button 
-            className={styles["oneMachineStyle__editButton"]}
-            onClick={() => setEditSection("basic")}>Redigera</button>
+            <button
+              className={styles["oneMachineStyle__editButton"]}
+              onClick={() => setEditSection("basic")}
+            >
+              Redigera
+            </button>
           )}
         </div>
       </div>
@@ -515,8 +523,15 @@ const OneMachine = () => {
                 </p>
               )}
 
-              <div>
+              <div className={styles["oneMachineStyle__buttonRow"]}>
                 <button
+                  className={styles["oneMachineStyle__cancelButton"]}
+                  onClick={() => setEditSection(null)}
+                >
+                  Avbryt
+                </button>
+                <button
+                  className={styles["oneMachineStyle__saveButton"]}
                   onClick={async () => {
                     try {
                       const updatedMachine =
@@ -530,8 +545,6 @@ const OneMachine = () => {
                 >
                   Spara
                 </button>
-
-                <button onClick={() => setEditSection(null)}>Avbryt</button>
               </div>
             </>
           ) : (
@@ -564,7 +577,10 @@ const OneMachine = () => {
                 )}
               </div>
 
-              <button onClick={() => setEditSection("acquisition")}>
+              <button
+                className={styles["oneMachineStyle__editButton"]}
+                onClick={() => setEditSection("acquisition")}
+              >
                 Redigera
               </button>
             </>
@@ -596,16 +612,21 @@ const OneMachine = () => {
                 + Lägg till menyval
               </button>
 
-              <div>
-                <button onClick={saveSetupMenu}>Spara</button>
-
+              <div className={styles["oneMachineStyle__buttonRow"]}>
                 <button
+                  className={styles["oneMachineStyle__cancelButton"]}
                   onClick={() => {
                     setSetupMenuForm(machine.setupMenu ?? []);
                     setEditSection(null);
                   }}
                 >
                   Avbryt
+                </button>
+                <button
+                  className={styles["oneMachineStyle__saveButton"]}
+                  onClick={saveSetupMenu}
+                >
+                  Spara
                 </button>
               </div>
             </>
@@ -624,6 +645,7 @@ const OneMachine = () => {
               )}
 
               <button
+                className={styles["oneMachineStyle__editButton"]}
                 onClick={() => {
                   setSetupMenuForm(machine.setupMenu ?? []);
                   setEditSection("setupMenu");
@@ -705,10 +727,9 @@ const OneMachine = () => {
                 + Lägg till parameter
               </button>
 
-              <div>
-                <button onClick={saveParameterDefinitions}>Spara</button>
-
+              <div className={styles["oneMachineStyle__buttonRow"]}>
                 <button
+                  className={styles["oneMachineStyle__cancelButton"]}
                   onClick={() => {
                     setParameterDefinitionsForm(
                       machine.parameterDefinitions ?? [],
@@ -717,6 +738,12 @@ const OneMachine = () => {
                   }}
                 >
                   Avbryt
+                </button>
+                <button
+                  className={styles["oneMachineStyle__saveButton"]}
+                  onClick={saveParameterDefinitions}
+                >
+                  Spara
                 </button>
               </div>
             </>
@@ -743,6 +770,7 @@ const OneMachine = () => {
               )}
 
               <button
+                className={styles["oneMachineStyle__editButton"]}
                 onClick={() => {
                   setParameterDefinitionsForm(
                     machine.parameterDefinitions ?? [],
@@ -824,8 +852,15 @@ const OneMachine = () => {
           </div>
 
           {editSection === "localService" ? (
-            <div>
+            <div className={styles["oneMachineStyle__buttonRow"]}>
               <button
+                className={styles["oneMachineStyle__cancelButton"]}
+                onClick={() => setEditSection(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className={styles["oneMachineStyle__saveButton"]}
                 onClick={async () => {
                   try {
                     const updatedMachine =
@@ -839,11 +874,12 @@ const OneMachine = () => {
               >
                 Spara
               </button>
-
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
             </div>
           ) : (
-            <button onClick={() => setEditSection("localService")}>
+            <button
+              className={styles["oneMachineStyle__editButton"]}
+              onClick={() => setEditSection("localService")}
+            >
               Redigera
             </button>
           )}
@@ -921,8 +957,15 @@ const OneMachine = () => {
           </div>
 
           {editSection === "manufacturerService" ? (
-            <div>
+            <div className={styles["oneMachineStyle__buttonRow"]}>
               <button
+                className={styles["oneMachineStyle__cancelButton"]}
+                onClick={() => setEditSection(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className={styles["oneMachineStyle__saveButton"]}
                 onClick={async () => {
                   try {
                     const updatedMachine = await updateMachine(
@@ -937,11 +980,12 @@ const OneMachine = () => {
               >
                 Spara
               </button>
-
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
             </div>
           ) : (
-            <button onClick={() => setEditSection("manufacturerService")}>
+            <button
+              className={styles["oneMachineStyle__editButton"]}
+              onClick={() => setEditSection("manufacturerService")}
+            >
               Redigera
             </button>
           )}
@@ -973,8 +1017,15 @@ const OneMachine = () => {
           )}
 
           {editSection === "comments" ? (
-            <div>
+            <div className={styles["oneMachineStyle__buttonRow"]}>
               <button
+                className={styles["oneMachineStyle__cancelButton"]}
+                onClick={() => setEditSection(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className={styles["oneMachineStyle__saveButton"]}
                 onClick={async () => {
                   try {
                     const updatedMachine = await updateMachine(commentsForm);
@@ -987,11 +1038,14 @@ const OneMachine = () => {
               >
                 Spara
               </button>
-
-              <button onClick={() => setEditSection(null)}>Avbryt</button>
             </div>
           ) : (
-            <button onClick={() => setEditSection("comments")}>Redigera</button>
+            <button
+              className={styles["oneMachineStyle__editButton"]}
+              onClick={() => setEditSection("comments")}
+            >
+              Redigera
+            </button>
           )}
         </section>
       </div>
