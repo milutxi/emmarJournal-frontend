@@ -39,8 +39,11 @@ const UserMenu = () => {
         className={styles.userButton}
         onClick={() => setIsOpen((current) => !current)}
         aria-label="Öppna användarmeny"
+        aria-expanded={isOpen}
       >
         <FaRegUserCircle />
+
+        <span className={styles.userName}>{user.name}</span>
       </button>
 
       {isOpen && (
