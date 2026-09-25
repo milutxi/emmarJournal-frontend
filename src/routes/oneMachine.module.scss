@@ -47,6 +47,47 @@
     gap: $indent__base;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     overflow: hidden;
+
+    input:not([type="radio"]) {
+      width: 100%;
+      box-sizing: border-box;
+
+      padding: 10px 12px;
+
+      border: 1px solid rgba(37, 35, 35, 0.18);
+      border-radius: 8px;
+
+      background: white;
+      color: $color-text;
+
+      font-family: $font-montserrat;
+      font-size: $font-size__base;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+
+      &:hover {
+        border-color: rgba(37, 35, 35, 0.35);
+      }
+
+      &:focus {
+        border-color: $color-goldenrod;
+        box-shadow: 0 0 0 3px rgba(210, 170, 55, 0.15);
+        background: white;
+      }
+    }
+
+    > input {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
   }
 
   &__card::before {
@@ -71,6 +112,14 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
     word-break: break-word;
+  }
+
+  &__editLabel {
+    color: $color-body-display;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   &__mainInfo,
@@ -142,36 +191,62 @@
     text-align: left;
     white-space: pre-wrap;
     word-break: break-word;
+
+    &:focus-within {
+      border-color: $color-goldenrod;
+      box-shadow: 0 0 0 3px rgba(210, 170, 55, 0.15);
+      background: white;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      box-sizing: border-box;
+
+      padding: 0;
+
+      border: none;
+      outline: none;
+
+      background: transparent;
+      color: $color-text;
+
+      font-family: $font-montserrat;
+      font-size: $font-size__base;
+      line-height: 1.6;
+
+      resize: vertical;
+    }
   }
 
   &__editButton {
-  align-self: flex-end;
+    align-self: flex-end;
 
-  padding: 8px $indent__base;
+    padding: 8px $indent__base;
 
-  border: 1px solid $color-dark-outline;
-  border-radius: 8px;
+    border: 1px solid $color-dark-outline;
+    border-radius: 8px;
 
-  background: transparent;
-  color: $color-text;
+    background: transparent;
+    color: $color-text;
 
-  font-family: $font-montserrat;
-  font-size: $font-size__s;
-  font-weight: 600;
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
 
-  &:hover {
-    color: $color-goldenrod;
-    border-color: $color-goldenrod;
-    transform: translateY(-1px);
+    &:hover {
+      color: $color-goldenrod;
+      border-color: $color-goldenrod;
+      transform: translateY(-1px);
+    }
   }
-}
 
   &__section {
     background: white;
@@ -183,6 +258,37 @@
     display: flex;
     flex-direction: column;
     gap: $indent__s;
+
+    input[type="date"] {
+      width: 100%;
+      box-sizing: border-box;
+
+      padding: 10px 12px;
+
+      border: 1px solid rgba(37, 35, 35, 0.18);
+      border-radius: 8px;
+
+      background: white;
+      color: $color-text;
+
+      font-family: $font-montserrat;
+      font-size: $font-size__base;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: rgba(37, 35, 35, 0.35);
+      }
+
+      &:focus {
+        border-color: $color-goldenrod;
+        box-shadow: 0 0 0 3px rgba(210, 170, 55, 0.15);
+      }
+    }
 
     h3 {
       margin: 0;
@@ -205,128 +311,122 @@
   }
 
   &__buttonRow {
-  display: flex;
-  justify-content: flex-end;
-  gap: $indent__s;
+    display: flex;
+    justify-content: flex-end;
+    gap: $indent__s;
 
-  margin-top: $indent__s;
-
-  @include responsive-mobile {
-    flex-direction: column-reverse;
+    margin-top: $indent__s;
   }
-}
 
-&__editButton,
-&__cancelButton,
-&__saveButton {
-  align-self: flex-end;
+  &__editButton,
+  &__cancelButton,
+  &__saveButton {
+    align-self: flex-end;
 
-  padding: 8px $indent__base;
+    padding: 8px $indent__base;
 
-  border-radius: 8px;
+    border-radius: 8px;
 
-  font-family: $font-montserrat;
-  font-size: $font-size__s;
-  font-weight: 600;
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-&__editButton,
-&__cancelButton {
-  border: 1px solid $color-dark-outline;
-
-  background: transparent;
-
-  color: $color-text;
-
-  &:hover {
-    border-color: $color-goldenrod;
-    color: $color-goldenrod;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
-}
 
-&__saveButton {
-  border: 1px solid $color-goldenrod;
+  &__editButton,
+  &__cancelButton {
+    border: 1px solid $color-dark-outline;
 
-  background-color: $color-goldenrod;
+    background: transparent;
 
-  color: white;
+    color: $color-text;
 
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    &:hover {
+      border-color: $color-goldenrod;
+      color: $color-goldenrod;
+    }
   }
-}
 
-.removeButton {
-  padding: 8px $indent__base;
+  &__saveButton {
+    border: 1px solid $color-goldenrod;
 
-  border: 1px solid #c0392b;
-  border-radius: 8px;
+    background-color: $color-goldenrod;
 
-  background: transparent;
-  color: #c0392b;
-
-  font-family: $font-montserrat;
-  font-size: $font-size__s;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background: rgba(192, 57, 43, 0.06);
-    border-color: #c0392b;
-    color: #c0392b;
-    transform: scale(1.02);
-  }
-}
-
-.addButton {
-  align-self: flex-start;
-
-  padding: 8px $indent__base;
-
-  border: 1px solid $color-goldenrod;
-  border-radius: 8px;
-
-  background: transparent;
-  color: $color-goldenrod;
-
-  font-family: $font-montserrat;
-  font-size: $font-size__s;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:hover {
-    background: $color-goldenrod;
     color: white;
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    }
   }
-}
 
+  .removeButton {
+    padding: 8px $indent__base;
 
+    border: 1px solid #c0392b;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #c0392b;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      background: rgba(192, 57, 43, 0.06);
+      border-color: #c0392b;
+      color: #c0392b;
+      transform: scale(1.02);
+    }
+  }
+
+  .addButton {
+    align-self: flex-start;
+
+    padding: 8px $indent__base;
+
+    border: 1px solid $color-goldenrod;
+    border-radius: 8px;
+
+    background: transparent;
+    color: $color-goldenrod;
+
+    font-family: $font-montserrat;
+    font-size: $font-size__s;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      background: $color-goldenrod;
+      color: white;
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+  }
 
   &__infoGroup {
     display: flex;
@@ -356,50 +456,111 @@
   }
 
   &__inlineInfo {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: $indent__base;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $indent__base;
 
-  p {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    p {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
 
-    padding: $indent__s 0;
+      padding: $indent__s 0;
 
-    border-top: 1px solid rgba(37, 35, 35, 0.12);
+      border-top: 1px solid rgba(37, 35, 35, 0.12);
+    }
+
+    span {
+      color: $color-body-display;
+
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @include responsive-mobile {
+      grid-template-columns: 1fr;
+    }
   }
-
-  span {
-    color: $color-body-display;
-
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  @include responsive-mobile {
-    grid-template-columns: 1fr;
-  }
-}
 
   &__textBox {
-  width: 100%;
-  box-sizing: border-box;
+    width: 100%;
+    box-sizing: border-box;
 
-  padding: $indent__base;
+    padding: $indent__base;
 
-  border: 1px solid rgba(37, 35, 35, 0.18);
-  border-radius: 8px;
+    border: 1px solid rgba(37, 35, 35, 0.18);
+    border-radius: 8px;
 
-  background: $color-bg;
-  color: $color-text;
+    background: $color-bg;
+    color: $color-text;
 
-  line-height: 1.6;
-  text-align: left;
-  white-space: pre-wrap;
-  word-break: break-word;
+    line-height: 1.6;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .acquisitionSelector {
+    display: flex;
+    gap: $indent__s;
+    flex-wrap: wrap;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 14px;
+
+      border: 1px solid $color-dark-outline;
+      border-radius: 8px;
+
+      background: white;
+      color: $color-text;
+
+      font-family: $font-montserrat;
+      font-size: $font-size__s;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+
+      &:hover {
+        border-color: $color-goldenrod;
+      }
+    }
+
+    input[type="radio"] {
+      width: 16px;
+      height: 16px;
+
+      margin: 0;
+
+      accent-color: $color-goldenrod;
+
+      cursor: pointer;
+    }
+
+    label:has(input:checked) {
+      border-color: $color-goldenrod;
+      background: rgba(210, 170, 55, 0.08);
+      color: $color-lynx-black;
+    }
+
+    @include responsive-mobile {
+      width: 100%;
+
+      label {
+        flex: 1;
+        justify-content: center;
+      }
+    }
   }
 }
 
@@ -424,13 +585,14 @@
 
   padding: $indent__s;
   border: 1px solid $color-dark-outline;
+  border-left: 3px solid $color-goldenrod;
   border-radius: 14px;
   background: #fafafa;
 
   input {
     width: 100%;
     padding: $indent__s;
-    border-radius: 12px;
+    border-radius: 8px;
     border: 1px solid $color-dark-outline;
     background: white;
     box-sizing: border-box;
@@ -444,7 +606,15 @@
 
   @include responsive-mobile {
     grid-template-columns: 1fr;
-    margin-left: 0 !important;
+    gap: $indent__s;
+
+    width: auto;
+    max-width: 100%;
+
+    padding: 10px;
+
+    border-radius: 8px;
+    border-left: 3px solid $color-goldenrod;
   }
 }
 
@@ -454,7 +624,18 @@
   align-items: center;
 
   @include responsive-mobile {
-    flex-wrap: wrap;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $indent__s;
+
+    .subMenuButton,
+    .removeButton {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
   }
 }
 
@@ -489,9 +670,9 @@
   display: flex;
   flex-direction: column;
   // gap: 4px;
-gap: $indent__s;
+  gap: $indent__s;
   margin-bottom: $indent__m;
- // align-items: stretch;
+  // align-items: stretch;
   text-align: left;
 }
 
@@ -515,7 +696,7 @@ gap: $indent__s;
   text-align: left;
 
   span {
-      display: block;
+    display: block;
 
     color: $color-text;
 
@@ -526,14 +707,12 @@ gap: $indent__s;
     word-break: break-word;
   }
 
-   @include responsive-mobile {
+  @include responsive-mobile {
     width: auto;
     min-width: 0;
     max-width: none;
-
   }
 }
-
 
 .parameterDisplayList {
   display: flex;
@@ -568,13 +747,14 @@ gap: $indent__s;
     font-size: $font-size__s;
   }
 
-  @include responsive-mobile {
-    grid-template-columns: 1fr;
+ @include responsive-mobile {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: $indent__s;
 
-    span:last-child {
-      text-align: left;
-    }
+  span:last-child {
+    text-align: right;
   }
+}
 }
 
 .parameterDefinitionList {
@@ -610,6 +790,7 @@ gap: $indent__s;
 
   input {
     width: 100%;
+    min-width: 0;
     box-sizing: border-box;
 
     padding: $indent__s;
@@ -631,10 +812,10 @@ gap: $indent__s;
   }
 
   @include responsive-mobile {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 80px auto;
+  gap: $indent__s;
   }
 }
-
 
 @media (max-width: 1024px) {
   .oneMachineStyle {

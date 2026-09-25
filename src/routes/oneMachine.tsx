@@ -262,16 +262,19 @@ const OneMachine = () => {
         <div className={styles["oneMachineStyle__card"]}>
           {/* <h1 className={styles["oneMachineStyle__name"]}>{machine.mName}</h1> */}
           {editSection === "basic" ? (
-            <input
-              type="text"
-              value={basicForm.mName}
-              onChange={(e) =>
-                setBasicForm({
-                  ...basicForm,
-                  mName: e.target.value,
-                })
-              }
-            />
+            <>
+              <span className={styles["oneMachineStyle__editLabel"]}>Namn</span>
+              <input
+                type="text"
+                value={basicForm.mName}
+                onChange={(e) =>
+                  setBasicForm({
+                    ...basicForm,
+                    mName: e.target.value,
+                  })
+                }
+              />
+            </>
           ) : (
             <h1 className={styles["oneMachineStyle__name"]}>{machine.mName}</h1>
           )}
